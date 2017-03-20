@@ -8,32 +8,33 @@ class App extends React.Component {
 		super(props);
 
 		this.state = {
-			navbarHeight: 50
+			navbarHeight: 100
 		};
 	}
 
 	render() {
 		return (
-			<div id="div-app row medium-uncollapse medium-12" style={{height:"100%"}}>
-                <div className="column callout medium-2" style={{height:"100%"}}>
-                    <div className="row">
-						<a href="">Circle 1</a>
+			<div id="div-app" className="expanded row">
+				<div id="left-column" className="column medium-2">
+					
+				</div>
+				<div id="main-content" className="column medium-10">
+					<div className="expanded row" style={{height: this.state.navbarHeight + "px"}}>
+						<div className="column medium-3" style={{height: "100%", border: "1px solid yellow"}}>
+							
+						</div>
+						<div className="column medium-9" style={{height: "100%", border: "1px solid violet"}}>
+
+						</div>
 					</div>
-					<div className="row">
-						<a href="">Circle 2</a>
+
+					<div className="expanded row" style={{height: "calc(100% - " + this.state.navbarHeight + "px)"}}>
+						<Circle />
+						<div className="column medium-3" style={{height: "100%", border: "1px solid orange"}}>
+
+						</div>
 					</div>
-                </div>
-                <div id="circle" className="column callout medium-10" style={{height:"100%"}}>
-                    <div id="top-circle" className="row">
-                        <div id="pp-circle" className="column callout medium-3" style={{height:"100%"}}></div>
-                        <div id="banner-circle" className="column callout medium-9" style={{height:"100%"}}></div>
-                    </div>
-                    <div id="content-circle" className="row">
-                        <div id="line-circle" className="column callout medium-9" style={{height: "100%"}}>
-                            <Circle />
-                        </div>
-                    </div>
-                </div>
+				</div>
 			</div>
 		);
 	}

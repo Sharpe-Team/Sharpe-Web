@@ -10,7 +10,7 @@ class Point extends React.Component {
 		return (
 			<li>
 				<div className="presMessage row">
-					<div className="userMessage column medium-4">{this.props.user}</div>
+					<div className="userMessage column medium-4"><b>{this.props.user}</b></div>
 					<div className="dateMessage column medium-8">{this.props.date.toString()}</div>
 				</div>
 				<div className="row">

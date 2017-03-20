@@ -19,10 +19,52 @@ class Line extends React.Component {
 					user: "Lala",
 					text: "Hey !",
 					date: new Date()
+				},
+				{
+					id: 2,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 3,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 4,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 5,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 6,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 7,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 8,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
 				}
 			],
 			newMessage: "",
-			newMessageHeight: 60
+			newMessageHeight: 40
 		};
 
 		// Register handler functions
@@ -35,8 +77,8 @@ class Line extends React.Component {
 
 	render() {
 		return (
-			<div id="div-line" className="column medium-10">
-				<ul id="messages" className="menu vertical" style={{height: "calc(100% - " + this.state.newMessageHeight + "px"}}>
+			<div id="div-line" className="column">
+				<ul id="messages" style={{height: "calc(100% - " + this.state.newMessageHeight + "px"}}>
 					{
 						this.state.messages.map(function(message) {
 							return <Point key={message.id} {...message} />
@@ -45,11 +87,11 @@ class Line extends React.Component {
 				</ul>
 
 				<form>
-					<div className="form-group" style={{borderTop: "1px solid black", paddingTop: "5px"}}>
-						<div className="column medium-11" style={{padding: 0}}>
-							<input type="text" id="new-message" className="form-control" value={this.state.newMessage} onChange={this.handleMessageChanges} />
+					<div className="row" style={{borderTop: "1px solid black", paddingTop: "0px"}}>
+						<div className="column" style={{padding: 0}}>
+							<input type="text" id="new-message" value={this.state.newMessage} onChange={this.handleMessageChanges} />
 						</div>
-						<div className="column medium-1">
+						<div className="column shrink">
 							<button type="button" id="send-message" className="button" onClick={this.handleSendAction} > Envoyer </button>
 						</div>
 					</div>

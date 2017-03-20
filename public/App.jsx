@@ -13,44 +13,24 @@ class App extends React.Component {
 	}
 
 	render() {
-		/*
 		return (
-			<div id="div-app">
-				<div className="row" style={{height: this.state.navbarHeight + "px"}}>
-					<div className="col-md-12 bordered">
-						<p>Hello World!!!</p>
-					</div>
-					<div className="col-md-12 bordered">
-						<a href="/toto">Clique moi !!</a>
-					</div>
-				</div>
-				<div className="row" style={{height: "calc(100% - " + this.state.navbarHeight + "px)"}}>
-					<div id="left-column" className="col-md-2">
-						lyfgiumjhbl
-					</div>
-					<Circle />
-				</div>
-			</div>
-		);*/
-
-		return (
-			<div id="div-app">
-				<div id="left-column" className="col-md-2">
+			<div id="div-app" className="expanded row">
+				<div id="left-column" className="column medium-2">
 					
 				</div>
-				<div id="main-content" className="col-md-10">
-					<div className="row" style={{height: this.state.navbarHeight + "px"}}>
-						<div className="col-md-2" style={{height: "100%", border: "1px solid yellow"}}>
+				<div id="main-content" className="column medium-10">
+					<div className="expanded row" style={{height: this.state.navbarHeight + "px"}}>
+						<div className="column medium-3" style={{height: "100%", border: "1px solid yellow"}}>
 							
 						</div>
-						<div className="col-md-10" style={{height: "100%", border: "1px solid violet"}}>
+						<div className="column medium-9" style={{height: "100%", border: "1px solid violet"}}>
 
 						</div>
 					</div>
 
-					<div className="row" style={{height: "calc(100% - " + this.state.navbarHeight + "px)"}}>
+					<div className="expanded row" style={{height: "calc(100% - " + this.state.navbarHeight + "px)"}}>
 						<Circle />
-						<div className="col-md-3" style={{height: "100%", border: "1px solid orange"}}>
+						<div className="column medium-3" style={{height: "100%", border: "1px solid orange"}}>
 
 						</div>
 					</div>

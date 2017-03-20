@@ -9,12 +9,12 @@ class Point extends React.Component {
 	render() {
 		return (
 			<li>
-				<div className="presMessage">
-					<div className="userMessage col-md-4"><b>{this.props.user}</b></div>
-					<div className="dateMessage col-md-8">{this.props.date.toString()}</div>
+				<div className="presMessage row">
+					<div className="userMessage column medium-4"><b>{this.props.user}</b></div>
+					<div className="dateMessage column medium-8">{this.props.date.toString()}</div>
 				</div>
-				<div className="">
-					<div className="message col-md-12">{this.props.text}</div>
+				<div className="row">
+					<div className="message column medium-12">{this.props.text}</div>
 				</div>
 			</li>
 		);

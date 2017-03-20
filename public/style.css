@@ -5,8 +5,8 @@ html, body, #app, #div-app {
 }
 
 * {
-	margin: 0%;
-	padding: 0%;
+	margin: !important 0px;
+	padding: !important 0px;
     box-sizing: border-box;
 }
 
@@ -43,14 +43,45 @@ html, body, #app, #div-app {
 	width: 85%;
 	display: inline-block;
 	*/
-	height: 100%;
+	height: 80%;
 	font-size: 1.0em;
-	border: 2px solid blue;
+}
+
+#circle {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#circle > * {
+    margin: 0px;
+    padding: 0px;
+}
+
+#top-circle {
+    height: 20%;
+}
+
+/*
+#pp-circle {
+    margin-bottom: 0px;
+}
+
+#banner-circle {
+    margin-bottom: 0px;
+}
+*/
+
+#content-circle {
+    height: 80%;
+    margin-bottom: 0px;
+}
+
+#line-circle {
+    margin-bottom: 0px;
 }
 
 #messages {
     list-style-type: none;
 }
-
-
-

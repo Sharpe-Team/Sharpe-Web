@@ -35,8 +35,8 @@ class Line extends React.Component {
 
 	render() {
 		return (
-			<div id="div-line" className="col-md-10">
-				<ul id="messages" className="list-unstyled" style={{height: "calc(100% - " + this.state.newMessageHeight + "px"}}>
+			<div id="div-line" className="column medium-10">
+				<ul id="messages" className="menu vertical" style={{height: "calc(100% - " + this.state.newMessageHeight + "px"}}>
 					{
 						this.state.messages.map(function(message) {
 							return <Point key={message.id} {...message} />
@@ -46,11 +46,11 @@ class Line extends React.Component {
 
 				<form>
 					<div className="form-group" style={{borderTop: "1px solid black", paddingTop: "5px"}}>
-						<div className="col-md-11" style={{padding: 0}}>
+						<div className="column medium-11" style={{padding: 0}}>
 							<input type="text" id="new-message" className="form-control" value={this.state.newMessage} onChange={this.handleMessageChanges} />
 						</div>
-						<div className="col-md-1">
-							<button type="button" id="send-message" className="btn btn-primary" onClick={this.handleSendAction} > Envoyer </button>
+						<div className="column medium-1">
+							<button type="button" id="send-message" className="button" onClick={this.handleSendAction} > Envoyer </button>
 						</div>
 					</div>
 				</form>

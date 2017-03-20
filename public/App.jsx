@@ -14,21 +14,26 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<div id="div-app">
-				<div className="row" style={{height: this.state.navbarHeight + "px"}}>
-					<div className="col-md-12">
-						<p>Hello World!!!</p>
+			<div id="div-app row medium-uncollapse medium-12" style={{height:"100%"}}>
+                <div className="column callout medium-2" style={{height:"100%"}}>
+                    <div className="row">
+						<a href="">Circle 1</a>
 					</div>
-					<div className="col-md-12">
-						<a href="/toto">Clique moi !!</a>
+					<div className="row">
+						<a href="">Circle 2</a>
 					</div>
-				</div>
-				<div className="row" style={{height: "calc(100% - " + this.state.navbarHeight + "px)"}}>
-					<div id="left-column" className="col-md-2">
-						lyfgiumjhbl
-					</div>
-					<Circle />
-				</div>
+                </div>
+                <div id="circle" className="column callout medium-10" style={{height:"100%"}}>
+                    <div id="top-circle" className="row">
+                        <div id="pp-circle" className="column callout medium-3" style={{height:"100%"}}></div>
+                        <div id="banner-circle" className="column callout medium-9" style={{height:"100%"}}></div>
+                    </div>
+                    <div id="content-circle" className="row">
+                        <div id="line-circle" className="column callout medium-9" style={{height: "100%"}}>
+                            <Circle />
+                        </div>
+                    </div>
+                </div>
 			</div>
 		);
 	}

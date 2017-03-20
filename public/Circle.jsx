@@ -19,6 +19,54 @@ class Circle extends React.Component {
 					user: "Lala",
 					text: "Hey !",
 					date: new Date()
+				},
+				{
+					id: 2,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 3,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 4,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 5,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 6,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 7,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 8,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 9,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
 				}
 			],
 			newMessage: "",
@@ -35,7 +83,7 @@ class Circle extends React.Component {
 
 	render() {
 		return (
-			<div id="div-circle" className="col-md-10">
+			<div id="div-circle" className="col-md-9">
 				<ul id="messages" className="list-unstyled" style={{height: "calc(100% - " + this.state.newMessageHeight + "px"}}>
 					{
 						this.state.messages.map(function(message) {
@@ -46,10 +94,10 @@ class Circle extends React.Component {
 
 				<form>
 					<div className="form-group" style={{borderTop: "1px solid black", paddingTop: "5px"}}>
-						<div className="col-md-11" style={{padding: 0}}>
+						<div style={{padding: "0px", width: "calc(100% - 90px)"}}>
 							<input type="text" id="new-message" className="form-control" value={this.state.newMessage} onChange={this.handleMessageChanges} />
 						</div>
-						<div className="col-md-1">
+						<div style={{padding: "0px", width: "77px"}}>
 							<button type="button" id="send-message" className="btn btn-primary" onClick={this.handleSendAction} > Envoyer </button>
 						</div>
 					</div>

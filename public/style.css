@@ -26,8 +26,7 @@ html, body, #app, #div-app {
 }
 
 #left-column {
-	border-right: 2px solid red;
-	border-top: 2px solid red;
+	border: 2px solid red;
 	height: 100%;
 
 	/*
@@ -49,8 +48,15 @@ html, body, #app, #div-app {
 }
 
 #messages {
-    list-style-type: none;
+	list-style: none;
+    /*list-style-type: none;*/
+    overflow: scroll;
 }
 
+#messages li {
+	margin-bottom: 10px;
+}
 
-
+#main-content {
+	height: 100%;
+}

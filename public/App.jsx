@@ -8,18 +8,19 @@ class App extends React.Component {
 		super(props);
 
 		this.state = {
-			navbarHeight: 50
+			navbarHeight: 100
 		};
 	}
 
 	render() {
+		/*
 		return (
 			<div id="div-app">
 				<div className="row" style={{height: this.state.navbarHeight + "px"}}>
-					<div className="col-md-12">
+					<div className="col-md-12 bordered">
 						<p>Hello World!!!</p>
 					</div>
-					<div className="col-md-12">
+					<div className="col-md-12 bordered">
 						<a href="/toto">Clique moi !!</a>
 					</div>
 				</div>
@@ -28,6 +29,31 @@ class App extends React.Component {
 						lyfgiumjhbl
 					</div>
 					<Circle />
+				</div>
+			</div>
+		);*/
+
+		return (
+			<div id="div-app">
+				<div id="left-column" className="col-md-2">
+					
+				</div>
+				<div id="main-content" className="col-md-10">
+					<div className="row" style={{height: this.state.navbarHeight + "px"}}>
+						<div className="col-md-2" style={{height: "100%", border: "1px solid yellow"}}>
+							
+						</div>
+						<div className="col-md-10" style={{height: "100%", border: "1px solid violet"}}>
+
+						</div>
+					</div>
+
+					<div className="row" style={{height: "calc(100% - " + this.state.navbarHeight + "px)"}}>
+						<Circle />
+						<div className="col-md-3" style={{height: "100%", border: "1px solid orange"}}>
+
+						</div>
+					</div>
 				</div>
 			</div>
 		);

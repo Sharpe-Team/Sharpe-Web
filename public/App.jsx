@@ -1,6 +1,7 @@
 import React from 'react';
 import Users from './Users.jsx';
 import Circle from './Circle.jsx';
+import {Link} from 'react-router';
 
 class App extends React.Component {
 
@@ -16,7 +17,7 @@ class App extends React.Component {
 		return (
 			<div id="div-app" className="expanded row">
 				<div id="left-column" className="column medium-2">
-					
+					<Link to="/circleForm">Create a new circle</Link>
 				</div>
 				<div id="main-content" className="column medium-10">
 					<div className="expanded row" style={{height: this.state.navbarHeight + "px"}}>

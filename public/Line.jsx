@@ -22,7 +22,7 @@ class Line extends React.Component {
 				}
 			],
 			newMessage: "",
-			newMessageHeight: 80
+			newMessageHeight: 50
 		};
 
 		// Register handler functions
@@ -47,7 +47,7 @@ class Line extends React.Component {
 				<form>
 					<div className="row" style={{borderTop: "1px solid black", paddingTop: "5px"}}>
 						<div className="column" style={{padding: 0}}>
-							<input type="text" id="new-message" className="form-control" value={this.state.newMessage} onChange={this.handleMessageChanges} />
+							<input type="text" id="new-message" value={this.state.newMessage} onChange={this.handleMessageChanges} />
 						</div>
 						<div className="column shrink">
 							<button type="button" id="send-message" className="button" onClick={this.handleSendAction} > Envoyer </button>

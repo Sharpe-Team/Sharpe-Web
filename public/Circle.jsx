@@ -16,17 +16,16 @@ class Circle extends React.Component {
         return (
             <div className="column medium-10" style={{height: "100%"}}>
                 <div className="expanded row" style={{height: this.state.navbarHeight + "px"}}>
-                    <div className="column medium-3" style={{height: "100%", border: "1px solid yellow"}}>
-
+                    <div id="profile" className="column medium-3">
                     </div>
-                    <div id="banner" className="column medium-9" style={{height: "100%", border: "1px solid violet", }}>
+                    <div id="banner" className="column medium-9">
                     </div>
                 </div>
 
                 <div className="row" style={{height: "calc(100% - " + this.state.navbarHeight + "px"}}>
-                    <Line />
+                    <Line style={{height: "100%"}}/>
 
-                    <div className="column medium-3" style={{height: "100%", border: "1px solid orange"}}>
+                    <div id="cubes" className="column medium-3">
                     </div>
                 </div>
             </div>

@@ -21,12 +21,11 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-		/*
-		socket.on('init', function(username) {
+		/*socket.on('init', function(username) {
 			console.log("Receive 'init' event !!");
 			console.log('Mon nom : ' + username);
-		});
-		*/
+		});*/
+    
 	}
 }
 

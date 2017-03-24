@@ -1,5 +1,7 @@
 import React from 'react';
 import Point from './Point.jsx';
+import MyEditor from './MyEditor.jsx';
+import {Editor, EditorState} from 'draft-js';
 
 class Line extends React.Component {
 
@@ -74,6 +76,8 @@ class Line extends React.Component {
 		// Register functions
 		this.getAllMessages = this.getAllMessages.bind(this);
 	}
+    
+    // <input type="text" id="new-message" value={this.state.newMessage} onChange={this.handleMessageChanges} />
 
 	render() {
 		return (
@@ -88,8 +92,8 @@ class Line extends React.Component {
 
 				<form>
 					<div className="row" style={{borderTop: "1px solid black", paddingTop: "0px"}}>
-						<div className="column" style={{padding: 0}}>
-							<input type="text" id="new-message" value={this.state.newMessage} onChange={this.handleMessageChanges} />
+						<div className="column" style={{padding: 0}}>	 
+                            <MyEditor />
 						</div>
 						<div className="column shrink">
 							<button type="button" id="send-message" className="button" onClick={this.handleSendAction} > Envoyer </button>

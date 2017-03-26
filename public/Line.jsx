@@ -68,7 +68,8 @@ class Line extends React.Component {
 				}
 			],
 			newMessage: "",
-			newMessageHeight: 40
+			newMessageHeight: 50,
+			messageAdded: true
 		};
 
 		// Register handler functions
@@ -77,6 +78,7 @@ class Line extends React.Component {
 
 		// Register functions
 		this.getAllMessages = this.getAllMessages.bind(this);
+		this.scrollToTop = this.scrollToTop.bind(this);
 	}
     
     // <input type="text" id="new-message" value={this.state.newMessage} onChange={this.handleMessageChanges} />
@@ -107,7 +109,16 @@ class Line extends React.Component {
 	}
 
 	componentDidMount() {
+
+		this.scrollToTop();
 		//this.getAllMessages();
+	}
+
+	componentDidUpdate() {
+		if(this.state.messageAdded) {
+			this.scrollToTop();
+			this.setState({messageAdded: false});
+		}
 	}
 
 	/************************************************
@@ -135,6 +146,8 @@ class Line extends React.Component {
 			//socket.emit('new-message', message);
 			messages.push(message);
 			this.setState({messages: messages});
+
+			this.setState({messageAdded: true});
 		}
 	}
 
@@ -158,6 +171,11 @@ class Line extends React.Component {
 		.catch(function(error) {
 			console.log(error);
 		});
+	}
+
+	scrollToTop() {
+		var messagesDiv = document.getElementById("messages");
+		messagesDiv.scrollTop = messagesDiv.scrollHeight;
 	}
 }
 

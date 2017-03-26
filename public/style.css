@@ -42,20 +42,20 @@ html, body, #app, #div-app {
 	*/
 	height: 100%;
 	font-size: 1.0em;
-	/*
 	border: 2px solid blue;
 	padding: 5px;
-	*/
+}
+
+#div-line input, #div-line button {
+	margin: 0px !important;
 }
 
 #messages {
 	list-style: none;
-    /*list-style-type: none;*/
-    overflow: scroll;
-    margin: 0px;
-    /*
-    padding: 5px;
-    */
+	/*list-style-type: none;*/
+	overflow: scroll;
+	margin: 0px;
+	padding: 5px;
 }
 
 #messages li {
@@ -66,9 +66,11 @@ html, body, #app, #div-app {
 	height: 100%;
 }
 
+/*
 input, button {
 	margin: 0px !important;
 }
+*/
 
 #cubes {
     height: 100%;

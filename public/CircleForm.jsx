@@ -56,7 +56,7 @@ class CircleForm extends React.Component {
 									</div>
 									<div className="column medium-7">
 										<label htmlFor="profile-picture" className="button">Photo de profil</label>
-										<input type="file" id="profile-picture" name="profilePicture" className="show-for-sr" accept=".jpg, .png, .jpeg, .gif" onChange={this.handleFileUpload}/>
+										<input type="file" id="profile-picture" name="profilePicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
 									</div>
 								</div>
 								<div className="row">
@@ -65,7 +65,7 @@ class CircleForm extends React.Component {
 									</div>
 									<div className="column medium-7">
 										<label htmlFor="banner-picture" className="button">Photo de la bannière</label>
-										<input type="file" id="banner-picture" name="bannerPicture" className="show-for-sr" accept=".jpg, .png, .jpeg, .gif" onChange={this.handleFileUpload}/>
+										<input type="file" id="banner-picture" name="bannerPicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
 									</div>
 								</div>
 								<div className="row">

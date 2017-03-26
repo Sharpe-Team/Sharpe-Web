@@ -1,5 +1,7 @@
 import React from 'react';
 import Point from './Point.jsx';
+import MyEditor from './MyEditor.jsx';
+import {Editor, EditorState} from 'draft-js';
 
 class Line extends React.Component {
 
@@ -19,10 +21,52 @@ class Line extends React.Component {
 					user: "Lala",
 					text: "Hey !",
 					date: new Date()
+				},
+				{
+					id: 2,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 3,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 4,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 5,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 6,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 7,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
+				},
+				{
+					id: 8,
+					user: "Lala",
+					text: "Hey !",
+					date: new Date()
 				}
 			],
 			newMessage: "",
-			newMessageHeight: 50
+			newMessageHeight: 40
 		};
 
 		// Register handler functions
@@ -32,6 +76,8 @@ class Line extends React.Component {
 		// Register functions
 		this.getAllMessages = this.getAllMessages.bind(this);
 	}
+    
+    // <input type="text" id="new-message" value={this.state.newMessage} onChange={this.handleMessageChanges} />
 
 	render() {
 		return (

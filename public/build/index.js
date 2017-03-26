@@ -12907,12 +12907,27 @@ var CircleForm = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (CircleForm.__proto__ || Object.getPrototypeOf(CircleForm)).call(this, props));
 
-		_this.state = { circleName: "" };
+		_this.state = {
+			circleName: "",
+			users: [{
+				id: 1,
+				name: "Toto"
+			}, {
+				id: 2,
+				name: "Lala"
+			}, {
+				id: 3,
+				name: "Lili"
+			}]
+		};
 
 		_this.handleChange = _this.handleChange.bind(_this);
+		_this.handleMultipleSelectChange = _this.handleMultipleSelectChange.bind(_this);
 		_this.handleFileUpload = _this.handleFileUpload.bind(_this);
 		_this.handleSubmit = _this.handleSubmit.bind(_this);
 
+		_this.getAllUsers = _this.getAllUsers.bind(_this);
+		_this.createCircle = _this.createCircle.bind(_this);
 		return _this;
 	}
 
@@ -12957,14 +12972,14 @@ var CircleForm = function (_React$Component) {
 										{ className: 'column medium-5' },
 										_react2.default.createElement(
 											'label',
-											{ htmlFor: 'name-circle', className: 'text-right middle' },
+											{ htmlFor: 'circle-name', className: 'text-right middle' },
 											'Nom : '
 										)
 									),
 									_react2.default.createElement(
 										'div',
 										{ className: 'column medium-7' },
-										_react2.default.createElement('input', { type: 'text', id: 'name-circle', name: 'circleName', onChange: this.handleChange })
+										_react2.default.createElement('input', { type: 'text', id: 'circle-name', name: 'circleName', onChange: this.handleChange, required: true })
 									)
 								),
 								_react2.default.createElement(
@@ -12987,7 +13002,7 @@ var CircleForm = function (_React$Component) {
 											{ htmlFor: 'profile-picture', className: 'button' },
 											'Photo de profil'
 										),
-										_react2.default.createElement('input', { type: 'file', id: 'profile-picture', name: 'profilePicture', className: 'show-for-sr', accept: '.jpg, .png, .jpeg', onChange: this.handleFileUpload })
+										_react2.default.createElement('input', { type: 'file', id: 'profile-picture', name: 'profilePicture', className: 'show-for-sr', accept: '.jpg, .png, .jpeg, .gif', onChange: this.handleFileUpload })
 									)
 								),
 								_react2.default.createElement(
@@ -13011,6 +13026,39 @@ var CircleForm = function (_React$Component) {
 											'Photo de la banni\xE8re'
 										),
 										_react2.default.createElement('input', { type: 'file', id: 'banner-picture', name: 'bannerPicture', className: 'show-for-sr', accept: '.jpg, .png, .jpeg, .gif', onChange: this.handleFileUpload })
+									)
+								),
+								_react2.default.createElement(
+									'div',
+									{ className: 'row' },
+									_react2.default.createElement(
+										'div',
+										{ className: 'column medium-5' },
+										_react2.default.createElement(
+											'label',
+											{ htmlFor: 'moderators', className: 'text-right middle' },
+											'Liste des mod\xE9rateurs : '
+										)
+									),
+									_react2.default.createElement(
+										'div',
+										{ className: 'column medium-7' },
+										_react2.default.createElement(
+											'select',
+											{ id: 'moderators', name: 'moderators', onChange: this.handleMultipleSelectChange, 'aria-describedby': 'select-help', multiple: true, required: true },
+											this.state.users.map(function (user) {
+												return _react2.default.createElement(
+													'option',
+													{ key: user.id, value: user.id },
+													user.name
+												);
+											})
+										),
+										_react2.default.createElement(
+											'p',
+											{ id: 'select-help', className: 'help-text' },
+											'Vous pouvez s\xE9lectionner plusieurs mod\xE9rateurs. Vous pouvez taper les premi\xE8res lettres du mod\xE9rateur pour le retrouver plus facilement.'
+										)
 									)
 								),
 								_react2.default.createElement(
@@ -13044,24 +13092,27 @@ var CircleForm = function (_React$Component) {
 				console.log('Mon nom : ' + username);
 			});
 
-			// Do something on upload progress:
-			siofu.addEventListener("progress", function (event) {
-				var percent = event.bytesLoaded / event.file.size * 100;
-				console.log("File is", percent.toFixed(2), "percent loaded");
-			});
-
-			// Do something when a file is uploaded:
-			siofu.addEventListener("complete", function (event) {
-				console.log(event.success);
-				console.log(event.file);
-			});
-
-			siofu.listenOnSubmit(document.getElementById("submit-btn"), document.getElementById("profile-picture"));
+			//siofu.listenOnSubmit(document.getElementById("submit-btn"), document.getElementById("profile-picture"));
+			//siofu.listenOnSubmit(document.getElementById("submit-btn"), document.getElementById("banner-picture"));
 		}
 	}, {
 		key: 'handleChange',
 		value: function handleChange(event) {
 			this.setState(_defineProperty({}, event.target.name, event.target.value));
+		}
+	}, {
+		key: 'handleMultipleSelectChange',
+		value: function handleMultipleSelectChange(event) {
+			var options = event.target.options;
+			var selectedOptions = [];
+
+			for (var i = 0; i < options.length; i++) {
+				if (options[i].selected) {
+					selectedOptions.push(options[i].value);
+				}
+			}
+
+			this.setState(_defineProperty({}, event.target.name, selectedOptions));
 		}
 	}, {
 		key: 'handleFileUpload',
@@ -13073,8 +13124,89 @@ var CircleForm = function (_React$Component) {
 	}, {
 		key: 'handleSubmit',
 		value: function handleSubmit(event) {
-
 			event.preventDefault();
+			var component = this;
+
+			var socket = io.connect();
+			var siofu = new SocketIOFileUpload(socket);
+			var files = [];
+
+			// Do something on upload progress:
+			siofu.addEventListener("progress", function (event) {
+				var percent = event.bytesLoaded / event.file.size * 100;
+				console.log("File is", percent.toFixed(2), "percent loaded");
+			});
+
+			// Do something when a file is uploaded:
+			siofu.addEventListener("complete", function (event) {
+				console.log(event.success);
+				console.log(event.file);
+
+				// If the files were uploaded successfuly, save the circle in the DataBase
+				if (event.success) {
+					component.createCircle();
+				} else {
+					alert("Une erreur est apparue lors de l'envoi des images...");
+				}
+			});
+
+			if (this.state.profilePicture instanceof File) {
+				files.push(this.state.profilePicture);
+			}
+			if (this.state.bannerPicture instanceof File) {
+				files.push(this.state.bannerPicture);
+			}
+			if (files.length > 0) {
+				siofu.submitFiles(files);
+			} else {
+				this.createCircle();
+			}
+		}
+	}, {
+		key: 'createCircle',
+		value: function createCircle() {
+			var component = this;
+
+			console.log(component.state.moderators);
+
+			fetch('http://localhost:8080/circle', {
+				method: 'POST',
+				mode: 'cors',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					circleName: component.state.circleName,
+					moderators: component.state.moderators
+				})
+			}).then(function (response) {
+				return response;
+			}).then(function (response) {
+				alert("Le cercle a bien été ajouté !");
+				// redirect to main file 'App'
+				_reactRouter.browserHistory.push('/');
+			}).catch(function (error) {
+				console.log(error);
+				alert("Une erreur est survenue lors de la création du nouveau cercle !");
+				_reactRouter.browserHistory.push('/');
+			});
+		}
+	}, {
+		key: 'getAllUsers',
+		value: function getAllUsers() {
+			var component = this;
+
+			fetch('http://localhost:8080/users', {
+				method: 'GET',
+				mode: 'cors'
+			}).then(function (response) {
+				return response.json();
+			}).then(function (users) {
+				component.setState({ users: users });
+			}).catch(function (error) {
+				console.log(error);
+			});
 		}
 	}]);
 

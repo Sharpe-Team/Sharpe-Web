@@ -76,3 +76,9 @@ input, button {
     height: 100%;
     background-color: #A12C26;
 }
+
+#error-message p {
+	margin-bottom: 0px;
+	font-size: 0.9em;
+
+}

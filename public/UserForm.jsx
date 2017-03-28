@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link, browserHistory} from 'react-router';
+import passwordHash from 'password-hash';
 
 class UserForm extends React.Component {
 
@@ -51,11 +52,11 @@ class UserForm extends React.Component {
 
 								<div className="row">
 									<div className="column medium-4">
-										<label htmlFor="user-pseudo" className="text-right middle">Pseudo : </label>
+										<label htmlFor="user-email" className="text-right middle">Email : </label>
 									</div>
 									<div className="column medium-8">
-										<input type="text" id="user-pseudo" name="userPseudo" onChange={this.handleChange} maxLength="20" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" aria-describedby="pseudo-help" required/>
-										<p id="pseudo-help" className="help-text">Le pseudo doit commencer par une lettre et suivi de lettres, chiffres, tirets et points.</p>
+										<input type="email" id="user-email" name="userEmail" onChange={this.handleChange} aria-describedby="email-help" required/>
+										<p id="email-help" className="help-text">L'adresse email doit respecter les normes usuelles.</p>
 									</div>
 								</div>
 
@@ -169,6 +170,8 @@ class UserForm extends React.Component {
 	createUser() {
 		var component = this;
 
+		var hashedPassword = passwordHash.generate(component.state.userPassword);
+
 		fetch('http://localhost:8080/users', {
 			method: 'POST',
 			mode: 'cors',
@@ -179,8 +182,8 @@ class UserForm extends React.Component {
 			body: JSON.stringify({
 				userFirstname: component.state.userFirstname,
 				userLastname: component.state.userLastname,
-				userPseudo: component.state.userPseudo,
-				userPassword: component.state.userPassword,
+				userEmail: component.state.userEmail,
+				userPassword: hashedPassword,
 				profilePicture: component.state.profilePicture
 			})
 		})

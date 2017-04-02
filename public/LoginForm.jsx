@@ -138,6 +138,13 @@ class LoginForm extends React.Component {
 					message: error.toString()
 				}
 			});
+
+			localStorage.setItem("token", "bouh");
+
+			var redirect = component.props.location.query.redirect;
+			var nextPage = (redirect) ? redirect : '/app';
+			console.log(nextPage);
+			browserHistory.push(nextPage);
 		});
 	}
 }

@@ -36205,11 +36205,12 @@ var App = function (_React$Component) {
 	}, {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
+			console.log("Hey in App.jsx");
+			localStorage.removeItem("token");
 			/*socket.on('init', function(username) {
    	console.log("Receive 'init' event !!");
    	console.log('Mon nom : ' + username);
    });*/
-
 		}
 	}]);
 
@@ -36265,8 +36266,65 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var AppRoutes = function (_React$Component) {
-	_inherits(AppRoutes, _React$Component);
+function requireAuth(Component) {
+	var AuthenticatedComponent = function (_React$Component) {
+		_inherits(AuthenticatedComponent, _React$Component);
+
+		function AuthenticatedComponent(props) {
+			_classCallCheck(this, AuthenticatedComponent);
+
+			var _this = _possibleConstructorReturn(this, (AuthenticatedComponent.__proto__ || Object.getPrototypeOf(AuthenticatedComponent)).call(this, props));
+
+			_this.checkAuth = _this.checkAuth.bind(_this);
+			return _this;
+		}
+
+		_createClass(AuthenticatedComponent, [{
+			key: 'render',
+			value: function render() {
+
+				return localStorage.getItem("isAuthorized") ? _react2.default.createElement(Component, this.props) : null;
+			}
+		}, {
+			key: 'componentWillMount',
+			value: function componentWillMount() {
+				this.checkAuth();
+			}
+		}, {
+			key: 'checkAuth',
+			value: function checkAuth() {
+				var token = null;
+				localStorage.setItem("isAuthorized", false);
+
+				console.log(localStorage.getItem("token"));
+				if (localStorage.getItem("token") != null) {
+					token = localStorage.getItem("token");
+
+					// Check validity of the token. If valid, authorize access to the route
+
+					localStorage.setItem("isAuthorized", true);
+				}
+
+				var isAuthorized = localStorage.getItem("isAuthorized");
+				if (!isAuthorized || isAuthorized == "false") {
+					console.log("Not Authorized !");
+
+					var location = this.props.location;
+					var redirect = location.pathname + location.search;
+
+					this.props.router.push('/?redirect=' + redirect);
+				}
+			}
+		}]);
+
+		return AuthenticatedComponent;
+	}(_react2.default.Component);
+
+	return (0, _reactRouter.withRouter)(AuthenticatedComponent);
+}
+
+var AppRoutes = function (_React$Component2) {
+	_inherits(AppRoutes, _React$Component2);
 
 	function AppRoutes() {
 		_classCallCheck(this, AppRoutes);
@@ -36281,9 +36339,9 @@ var AppRoutes = function (_React$Component) {
 				_reactRouter.Router,
 				{ history: _reactRouter.browserHistory },
 				_react2.default.createElement(_reactRouter.Route, { path: '/', component: _LoginForm2.default }),
-				_react2.default.createElement(_reactRouter.Route, { path: '/app', component: _App2.default }),
-				_react2.default.createElement(_reactRouter.Route, { path: '/circleForm', component: _CircleForm2.default }),
-				_react2.default.createElement(_reactRouter.Route, { path: '/userForm', component: _UserForm2.default }),
+				_react2.default.createElement(_reactRouter.Route, { path: '/app', component: requireAuth(_App2.default) }),
+				_react2.default.createElement(_reactRouter.Route, { path: '/circleForm', component: requireAuth(_CircleForm2.default) }),
+				_react2.default.createElement(_reactRouter.Route, { path: '/userForm', component: requireAuth(_UserForm2.default) }),
 				_react2.default.createElement(_reactRouter.Route, { path: '/*', component: _NotFoundPage2.default })
 			);
 		}
@@ -37171,6 +37229,13 @@ var LoginForm = function (_React$Component) {
 						message: error.toString()
 					}
 				});
+
+				localStorage.setItem("token", "bouh");
+
+				var redirect = component.props.location.query.redirect;
+				var nextPage = redirect ? redirect : '/app';
+				console.log(nextPage);
+				_reactRouter.browserHistory.push(nextPage);
 			});
 		}
 	}]);

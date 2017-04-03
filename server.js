@@ -104,15 +104,8 @@ io.sockets.on('connection', function (socket) {
 	var loggedUser;
 
 	console.log("New Connection !!");
-	io.emit('init', 'toto');
-
-	/**
-	* My custom event
-	*/
-	socket.on('my-event', function () {
-		//do something
-	});
-
+	socket.emit('init', 'toto');
+	
 	// Make an instance of SocketIOFileUpload and listen on this socket:
     var uploader = new socketIOFileUpload();
     uploader.dir = "./uploads";

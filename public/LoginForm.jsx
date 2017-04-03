@@ -19,13 +19,14 @@ class LoginForm extends React.Component {
 
 		this.clientConnection = this.clientConnection.bind(this);
 		this.handleClosingAlert = this.handleClosingAlert.bind(this);
+		this.handleShowingAlert = this.handleShowingAlert.bind(this);
 	}
 
 	render() {
 		return (
 			<div>
 				<p>Login form</p>
-				<Link to="/">Home</Link>
+				<Link to="/app">Home</Link>
 
 				<form onSubmit={this.handleSubmit}>
 					<div className="expanded row align-center">
@@ -100,12 +101,22 @@ class LoginForm extends React.Component {
 		});
 	}
 
+	handleShowingAlert(message) {
+		this.setState({
+			error: {
+				showError: true,
+				message: message
+			}
+		});
+	}
+
 	clientConnection(email, hashedPassword) {
 		var component = this;
-
+		
 		var params = "userEmail=" + email + 
 					"&userPassword=" + hashedPassword;
 
+		/*
 		fetch('http://localhost:8080/userLogin?' + params, {
 			method: 'GET',
 			mode: 'cors'
@@ -113,39 +124,82 @@ class LoginForm extends React.Component {
 		.then(function(response) {
 			return response.json();
 		})
-		.then(function(authentication) {
-			if(authentication.isAuthenticated) {
+		.then(function(response) {
+			if(response.isAuthenticated) {
 				component.setState({
 					error: {
 						showError: false,
 					}
 				});
-				browserHistory.push('/app');
+
+				localStorage.setItem('token', response.token);
+
+				var redirect = component.props.location.query.redirect;
+				var nextPage = (redirect) ? redirect : '/app';
+				console.log(nextPage);
+				browserHistory.push(nextPage);
 			} else {
+				var message = "Erreur inconnue...";
+
+				if(error.status == 404) {
+					message = "L'adresse email ou le mot de passe est incorrect.";
+				} else if(error.status == 401) {
+					message = "Permission refusée : vous n'êtes pas autorisé.";
+				}
+
 				component.setState({
 					error: {
 						showError: true,
-						message: "L'adresse email ou le mot de passe est incorrect."
+						message: message
 					}
 				});
 			}
 		})
 		.catch(function(error) {
 			console.log(error);
+
 			component.setState({
 				error: {
 					showError: true,
 					message: error.toString()
 				}
 			});
-
-			localStorage.setItem("token", "bouh");
-
-			var redirect = component.props.location.query.redirect;
-			var nextPage = (redirect) ? redirect : '/app';
-			console.log(nextPage);
-			browserHistory.push(nextPage);
 		});
+		*/
+
+		localStorage.setItem("token", "bouh");
+
+		var redirect = component.props.location.query.redirect;
+		var nextPage = (redirect) ? redirect : '/app';
+		console.log(nextPage);
+		browserHistory.push(nextPage);
+
+		/*
+		socket.emit('login', {'email': email, 'password': hashedPassword});
+
+		socket.on('login-response', function(data) {
+
+			// If the user is successfully authenticated
+			if(data.isAuthenticated) {
+				// Clean error message
+				component.handleClosingAlert();
+
+				// Clean the localStorage and save the user and the token in it
+				localStorage.clear();
+				localStorage.setItem("user", data.user);
+				localStorage.setItem("token", data.token);
+
+				// Find the next page to redirect to
+				var redirect = component.props.location.query.redirect;
+				var nextPage = (redirect) ? redirect : '/app';
+
+				browserHistory.push(nextPage);
+			} else {
+				// Show the error message
+				component.handleShowingAlert(data.message.toString());
+			}
+		});
+		*/
 	}
 }
 

@@ -23,7 +23,7 @@ class UserForm extends React.Component {
 		return (
 			<div>
 				<p>User form</p>
-				<Link to="/">Home</Link>
+				<Link to="/app">Home</Link>
 
 				<form onSubmit={this.handleSubmit}>
 					<div className="expanded row align-center">

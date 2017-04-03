@@ -1,6 +1,6 @@
 import React from 'react';
-import Circle from './Circle.jsx';
 import {Link} from 'react-router';
+import Circle from './Circle.jsx';
 
 class App extends React.Component {
 
@@ -17,6 +17,9 @@ class App extends React.Component {
 					</div>
 					<div className="row">
 						<Link to="/userForm">Créer un nouvel Utilisateur</Link>
+					</div>
+					<div className="row">
+						<Link to="/logout">Log out</Link>
 					</div>
 				</div>
                 

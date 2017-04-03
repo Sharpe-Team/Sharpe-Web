@@ -35,7 +35,7 @@ class CircleForm extends React.Component {
 		return (
 			<div>
 				<p>Cirlce form</p>
-				<Link to="/">Home</Link>
+				<Link to="/app">Home</Link>
 
 				<form onSubmit={this.handleSubmit}>
 					<div className="expanded row align-center">

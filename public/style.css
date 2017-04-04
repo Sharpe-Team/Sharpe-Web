@@ -8,13 +8,13 @@ html, body, #app, #div-app {
     box-sizing: border-box;
 }
 
-.userMessage {
+.userPoint {
 	/*width: 50%;*/
 	text-align: left;
 	/*display: inline-block;*/
 }
 
-.dateMessage {
+.datePoint {
 	/*width: 50%;*/
 	text-align: right;
 }
@@ -50,7 +50,7 @@ html, body, #app, #div-app {
 	margin: 0px !important;
 }
 
-#messages {
+#points {
 	list-style: none;
 	/*list-style-type: none;*/
 	overflow: scroll;
@@ -58,7 +58,7 @@ html, body, #app, #div-app {
 	padding: 5px;
 }
 
-#messages li {
+#points li {
 	margin-bottom: 10px;
 }
 
@@ -77,8 +77,12 @@ input, button {
     background-color: #A12C26;
 }
 
-#error-message p {
+#error-point p {
 	margin-bottom: 0px;
 	font-size: 0.9em;
+}
 
+.point {
+	background-color: #f4f4f4;
+	padding: 5px;
 }

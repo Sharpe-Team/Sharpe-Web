@@ -23,7 +23,7 @@ class Circle extends React.Component {
                 </div>
 
                 <div className="row" style={{height: "calc(100% - " + this.state.navbarHeight + "px"}}>
-                    <Line style={{height: "100%"}}/>
+                    <Line idLine="1" style={{height: "100%"}}/>
 
                     <div id="cubes" className="column medium-3">
                     </div>

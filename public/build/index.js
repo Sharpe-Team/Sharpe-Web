@@ -36208,7 +36208,7 @@ var App = function (_React$Component) {
 						)
 					)
 				),
-				_react2.default.createElement(_Circle2.default, null)
+				_react2.default.createElement(_Circle2.default, { idCircle: '1' })
 			);
 		}
 	}, {
@@ -36480,7 +36480,7 @@ var Circle = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'row', style: { height: "calc(100% - " + this.state.navbarHeight + "px" } },
-                    _react2.default.createElement(_Line2.default, { style: { height: "100%" } }),
+                    _react2.default.createElement(_Line2.default, { idLine: '1', style: { height: "100%" } }),
                     _react2.default.createElement('div', { id: 'cubes', className: 'column medium-3' })
                 )
             );
@@ -36864,6 +36864,8 @@ var _draftJs = __webpack_require__(280);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -36874,6 +36876,8 @@ import MyEditor from './MyEditor.jsx';
 */
 
 
+var socket = io.connect();
+
 var Line = function (_React$Component) {
 	_inherits(Line, _React$Component);
 
@@ -36883,68 +36887,24 @@ var Line = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (Line.__proto__ || Object.getPrototypeOf(Line)).call(this, props));
 
 		_this.state = {
-			messages: [{
-				id: 0,
-				user: "Toto",
-				text: "Coucou !",
-				date: new Date()
-			}, {
-				id: 1,
-				user: "Lala",
-				text: "Hey !",
-				date: new Date()
-			}, {
-				id: 2,
-				user: "Lala",
-				text: "Hey !",
-				date: new Date()
-			}, {
-				id: 3,
-				user: "Lala",
-				text: "Hey !",
-				date: new Date()
-			}, {
-				id: 4,
-				user: "Lala",
-				text: "Hey !",
-				date: new Date()
-			}, {
-				id: 5,
-				user: "Lala",
-				text: "Hey !",
-				date: new Date()
-			}, {
-				id: 6,
-				user: "Lala",
-				text: "Hey !",
-				date: new Date()
-			}, {
-				id: 7,
-				user: "Lala",
-				text: "Hey !",
-				date: new Date()
-			}, {
-				id: 8,
-				user: "Lala",
-				text: "Hey !",
-				date: new Date()
-			}],
-			newMessage: "",
-			newMessageHeight: 50,
-			messageAdded: true
+			points: [],
+			newPoint: "",
+			newPointHeight: 50,
+			pointAdded: true
 		};
 
 		// Register handler functions
-		_this.handleMessageChanges = _this.handleMessageChanges.bind(_this);
-		_this.handleSendAction = _this.handleSendAction.bind(_this);
+		_this.handleChange = _this.handleChange.bind(_this);
+		_this.handleSubmit = _this.handleSubmit.bind(_this);
 
 		// Register functions
-		_this.getAllMessages = _this.getAllMessages.bind(_this);
-		_this.scrollToTop = _this.scrollToTop.bind(_this);
+		_this.getAllPoints = _this.getAllPoints.bind(_this);
+		_this.saveNewPoint = _this.saveNewPoint.bind(_this);
+		_this.scrollToBottom = _this.scrollToBottom.bind(_this);
 		return _this;
 	}
 
-	// <input type="text" id="new-message" value={this.state.newMessage} onChange={this.handleMessageChanges} />
+	// <input type="text" id="new-point" value={this.state.newpoint} onChange={this.handlePointChanges} />
 
 	_createClass(Line, [{
 		key: 'render',
@@ -36954,28 +36914,28 @@ var Line = function (_React$Component) {
 				{ id: 'div-line', className: 'column' },
 				_react2.default.createElement(
 					'ul',
-					{ id: 'messages', style: { height: "calc(100% - " + this.state.newMessageHeight + "px" } },
-					this.state.messages.map(function (message) {
-						return _react2.default.createElement(_Point2.default, _extends({ key: message.id }, message));
+					{ id: 'points', style: { height: "calc(100% - " + this.state.newPointHeight + "px" } },
+					this.state.points.map(function (point) {
+						return _react2.default.createElement(_Point2.default, _extends({ key: point.id }, point));
 					})
 				),
 				_react2.default.createElement(
 					'form',
-					null,
+					{ onSubmit: this.handleSubmit },
 					_react2.default.createElement(
 						'div',
-						{ className: 'row', style: { borderTop: "1px solid black", paddingTop: "5px" } },
+						{ className: 'row', style: { borderTop: "4px solid #f4f4f4", paddingTop: "5px" } },
 						_react2.default.createElement(
 							'div',
 							{ className: 'column', style: { padding: 0 } },
-							_react2.default.createElement('input', { type: 'text', id: 'new-message', value: this.state.newMessage, onChange: this.handleMessageChanges })
+							_react2.default.createElement('input', { type: 'text', id: 'new-point', name: 'newPoint', value: this.state.newPoint, onChange: this.handleChange })
 						),
 						_react2.default.createElement(
 							'div',
 							{ className: 'column shrink' },
 							_react2.default.createElement(
 								'button',
-								{ type: 'button', id: 'send-message', className: 'button', onClick: this.handleSendAction },
+								{ type: 'submit', id: 'send-point', className: 'button' },
 								' Envoyer '
 							)
 						)
@@ -36984,18 +36944,45 @@ var Line = function (_React$Component) {
 			);
 		}
 	}, {
+		key: 'componentWillMount',
+		value: function componentWillMount() {
+			// Get all points of this line from DB
+			this.getAllPoints();
+
+			// Get the current user from the token
+			//var token = localStorage.getItem('token');
+
+			this.setState({
+				user: {
+					id: 1,
+					email: "toto@toto.fr",
+					name: "Toto"
+				}
+			});
+
+			var component = this;
+
+			// Define events function from SocketIO
+			socket.on('new-point', function (point) {
+				point.created = new Date(point.created);
+				var points = component.state.points;
+				points.push(point);
+				component.setState({ points: points });
+				component.setState({ pointAdded: true });
+			});
+		}
+	}, {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 
-			this.scrollToTop();
-			//this.getAllMessages();
+			this.scrollToBottom();
 		}
 	}, {
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate() {
-			if (this.state.messageAdded) {
-				this.scrollToTop();
-				this.setState({ messageAdded: false });
+			if (this.state.pointAdded) {
+				this.scrollToBottom();
+				this.setState({ pointAdded: false });
 			}
 		}
 
@@ -37004,31 +36991,22 @@ var Line = function (_React$Component) {
   *************************************************/
 
 	}, {
-		key: 'handleMessageChanges',
-		value: function handleMessageChanges(event) {
-			this.setState({ newMessage: event.target.value });
+		key: 'handleChange',
+		value: function handleChange(event) {
+			this.setState(_defineProperty({}, event.target.name, event.target.value));
 		}
 	}, {
-		key: 'handleSendAction',
-		value: function handleSendAction(event) {
+		key: 'handleSubmit',
+		value: function handleSubmit(event) {
+			event.preventDefault();
 
-			var messages = this.state.messages;
-			var id = messages[messages.length - 1].id + 1;
-			var message = {
-				id: id,
-				user: "Moi",
-				text: this.state.newMessage.trim(),
-				date: new Date()
-			};
+			var points = this.state.points;
+			var text = this.state.newPoint.trim();
 
-			this.state.newMessage = "";
+			this.state.newPoint = "";
 
-			if (message.text.length !== 0) {
-				//socket.emit('new-message', message);
-				messages.push(message);
-				this.setState({ messages: messages });
-
-				this.setState({ messageAdded: true });
+			if (text.length !== 0) {
+				this.saveNewPoint(text);
 			}
 		}
 
@@ -37037,26 +37015,84 @@ var Line = function (_React$Component) {
   *************************************************/
 
 	}, {
-		key: 'getAllMessages',
-		value: function getAllMessages() {
+		key: 'getAllPoints',
+		value: function getAllPoints() {
 			var component = this;
 
-			fetch('http://localhost:8080/messages', {
+			fetch('http://localhost:8080/points/getPointsOfCercle?line=' + this.props.idLine, {
 				method: 'GET',
 				mode: 'cors'
 			}).then(function (response) {
 				return response.json();
-			}).then(function (messages) {
-				component.setState({ messages: messages });
+			}).then(function (points) {
+				component.setState({ points: points });
 			}).catch(function (error) {
 				console.log(error);
+
+				var points = [];
+				for (var i = 0; i < 10; i++) {
+					points.push({
+						id: i + 1,
+						idLine: 1,
+						idUser: i % 2 == 0 ? 1 : 2,
+						content: "Coucou ! " + i,
+						created: new Date(),
+						updated: new Date()
+					});
+				}
+
+				component.setState({
+					points: points
+				});
 			});
 		}
 	}, {
-		key: 'scrollToTop',
-		value: function scrollToTop() {
-			var messagesDiv = document.getElementById("messages");
-			messagesDiv.scrollTop = messagesDiv.scrollHeight;
+		key: 'saveNewPoint',
+		value: function saveNewPoint(text) {
+			var component = this;
+
+			/*
+   fetch('http://localhost:8080/points/insertPointIntoCercle', {
+   	method: 'POST',
+   	mode: 'cors',
+   	headers: {
+   		'Accept': 'application/json',
+   		'Content-Type': 'application/json'
+   	},
+   	body: JSON.stringify({
+   		idLine: component.props.idLine,
+   		idUser: component.state.user.id,
+   		content: text,
+   		created: new Date()
+   	})
+   })
+   .then(function(response) {
+   	return response.json();
+   })
+   .then(function(point) {
+   	// Send the new point to the connected users
+   	socket.emit('new-point', point);
+   })
+   .catch(function(error) {
+   	console.log(error);
+   });
+   */
+
+			var points = this.state.points;
+			var point = {
+				id: points[points.length - 1].id + 1,
+				idLine: this.props.idLine,
+				idUser: this.state.user.id,
+				content: text,
+				created: new Date()
+			};
+			socket.emit('new-point', point);
+		}
+	}, {
+		key: 'scrollToBottom',
+		value: function scrollToBottom() {
+			var pointsDiv = document.getElementById("points");
+			pointsDiv.scrollTop = pointsDiv.scrollHeight;
 		}
 	}]);
 
@@ -37326,7 +37362,7 @@ var LoginForm = function (_React$Component) {
    });
    */
 
-			localStorage.setItem("token", "bouh");
+			localStorage.setItem("token", email);
 
 			var redirect = component.props.location.query.redirect;
 			var nextPage = redirect ? redirect : '/app';
@@ -37551,20 +37587,20 @@ var Point = function (_React$Component) {
 				null,
 				_react2.default.createElement(
 					"div",
-					{ className: "presMessage row" },
+					{ className: "presPoint row" },
 					_react2.default.createElement(
 						"div",
-						{ className: "userMessage column medium-4" },
+						{ className: "userPoint column medium-6" },
 						_react2.default.createElement(
 							"b",
 							null,
-							this.props.user
+							this.props.idUser
 						)
 					),
 					_react2.default.createElement(
 						"div",
-						{ className: "dateMessage column medium-8" },
-						this.props.date.toLocaleDateString()
+						{ className: "datePoint column medium-6" },
+						this.props.created.toLocaleDateString()
 					)
 				),
 				_react2.default.createElement(
@@ -37572,8 +37608,8 @@ var Point = function (_React$Component) {
 					{ className: "row" },
 					_react2.default.createElement(
 						"div",
-						{ className: "message column medium-12" },
-						this.props.text
+						{ className: "point column medium-12" },
+						this.props.content
 					)
 				)
 			);

@@ -85,16 +85,6 @@ app.get('/toto', function(req, res) {
 });
 */
 
-/**
-
-FAIRE API REST COMME SUIT :
-
-app.get('/users', function(req, res) {
-	Récupère tous les users depuis la BDD et les renvoie en JSON
-});
-
-*/
-
 // Gestion des sockets avec les clients
 io.sockets.on('connection', function (socket) {
 
@@ -104,8 +94,12 @@ io.sockets.on('connection', function (socket) {
 	var loggedUser;
 
 	console.log("New Connection !!");
-	socket.emit('init', 'toto');
-	
+
+	socket.on('new-point', function(point) {
+		// Emit the new point to all connected users
+		io.emit('new-point', point);
+	});
+
 	// Make an instance of SocketIOFileUpload and listen on this socket:
     var uploader = new socketIOFileUpload();
     uploader.dir = "./uploads";

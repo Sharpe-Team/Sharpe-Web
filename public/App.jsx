@@ -23,7 +23,7 @@ class App extends React.Component {
 					</div>
 				</div>
                 
-                <Circle />
+                <Circle idCircle="1" />
 			</div>
 		);
 	}

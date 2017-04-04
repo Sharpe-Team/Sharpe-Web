@@ -167,7 +167,7 @@ class LoginForm extends React.Component {
 		});
 		*/
 
-		localStorage.setItem("token", "bouh");
+		localStorage.setItem("token", email);
 
 		var redirect = component.props.location.query.redirect;
 		var nextPage = (redirect) ? redirect : '/app';

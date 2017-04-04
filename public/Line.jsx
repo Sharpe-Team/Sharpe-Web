@@ -5,102 +5,50 @@ import MyEditor from './MyEditor.jsx';
 */
 import {Editor, EditorState} from 'draft-js';
 
+var socket = io.connect();
+
 class Line extends React.Component {
 
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			messages: [
-				{
-					id: 0,
-					user: "Toto",
-					text: "Coucou !",
-					date: new Date()
-				},
-				{
-					id: 1,
-					user: "Lala",
-					text: "Hey !",
-					date: new Date()
-				},
-				{
-					id: 2,
-					user: "Lala",
-					text: "Hey !",
-					date: new Date()
-				},
-				{
-					id: 3,
-					user: "Lala",
-					text: "Hey !",
-					date: new Date()
-				},
-				{
-					id: 4,
-					user: "Lala",
-					text: "Hey !",
-					date: new Date()
-				},
-				{
-					id: 5,
-					user: "Lala",
-					text: "Hey !",
-					date: new Date()
-				},
-				{
-					id: 6,
-					user: "Lala",
-					text: "Hey !",
-					date: new Date()
-				},
-				{
-					id: 7,
-					user: "Lala",
-					text: "Hey !",
-					date: new Date()
-				},
-				{
-					id: 8,
-					user: "Lala",
-					text: "Hey !",
-					date: new Date()
-				}
-			],
-			newMessage: "",
-			newMessageHeight: 50,
-			messageAdded: true
+			points: [],
+			newPoint: "",
+			newPointHeight: 50,
+			pointAdded: true
 		};
 
 		// Register handler functions
-		this.handleMessageChanges = this.handleMessageChanges.bind(this);
-		this.handleSendAction = this.handleSendAction.bind(this);
+		this.handleChange = this.handleChange.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 
 		// Register functions
-		this.getAllMessages = this.getAllMessages.bind(this);
-		this.scrollToTop = this.scrollToTop.bind(this);
+		this.getAllPoints = this.getAllPoints.bind(this);
+		this.saveNewPoint = this.saveNewPoint.bind(this);
+		this.scrollToBottom = this.scrollToBottom.bind(this);
 	}
     
-    // <input type="text" id="new-message" value={this.state.newMessage} onChange={this.handleMessageChanges} />
+    // <input type="text" id="new-point" value={this.state.newpoint} onChange={this.handlePointChanges} />
 
 	render() {
 		return (
 			<div id="div-line" className="column">
-				<ul id="messages" style={{height: "calc(100% - " + this.state.newMessageHeight + "px"}}>
+				<ul id="points" style={{height: "calc(100% - " + this.state.newPointHeight + "px"}}>
 					{
-						this.state.messages.map(function(message) {
-							return <Point key={message.id} {...message} />
+						this.state.points.map(function(point) {
+							return <Point key={point.id} {...point} />
 						})
 					}
 				</ul>
 
-				<form>
-					<div className="row" style={{borderTop: "1px solid black", paddingTop: "5px"}}>
+				<form onSubmit={this.handleSubmit}>
+					<div className="row" style={{borderTop: "4px solid #f4f4f4", paddingTop: "5px"}}>
 						<div className="column" style={{padding: 0}}>
-							<input type="text" id="new-message" value={this.state.newMessage} onChange={this.handleMessageChanges} />
+							<input type="text" id="new-point" name="newPoint" value={this.state.newPoint} onChange={this.handleChange} />
 						</div>
 						<div className="column shrink">
-							<button type="button" id="send-message" className="button" onClick={this.handleSendAction} > Envoyer </button>
+							<button type="submit" id="send-point" className="button"> Envoyer </button>
 						</div>
 					</div>
 				</form>
@@ -108,16 +56,42 @@ class Line extends React.Component {
 		);
 	}
 
+	componentWillMount() {
+		// Get all points of this line from DB
+		this.getAllPoints();
+
+		// Get the current user from the token
+		//var token = localStorage.getItem('token');
+
+		this.setState({
+			user: {
+				id: 1,
+				email: "toto@toto.fr",
+				name: "Toto"
+			}
+		});
+
+		var component = this;
+
+		// Define events function from SocketIO
+		socket.on('new-point', function(point) {
+			point.created = new Date(point.created);
+			var points = component.state.points;
+			points.push(point);
+			component.setState({points: points});
+			component.setState({pointAdded: true});
+		});
+	}
+
 	componentDidMount() {
 
-		this.scrollToTop();
-		//this.getAllMessages();
+		this.scrollToBottom();
 	}
 
 	componentDidUpdate() {
-		if(this.state.messageAdded) {
-			this.scrollToTop();
-			this.setState({messageAdded: false});
+		if(this.state.pointAdded) {
+			this.scrollToBottom();
+			this.setState({pointAdded: false});
 		}
 	}
 
@@ -125,29 +99,20 @@ class Line extends React.Component {
 	*				HANDLER FUNCTIONS 				*
 	*************************************************/
 
-	handleMessageChanges(event) {
-		this.setState({newMessage: event.target.value});
+	handleChange(event) {
+		this.setState({[event.target.name]: event.target.value});
 	}
 
-	handleSendAction(event) {
+	handleSubmit(event) {
+		event.preventDefault();
 
-		var messages = this.state.messages;
-		var id = messages[messages.length - 1].id + 1;
-		var message = {
-			id: id,
-			user: "Moi",
-			text: this.state.newMessage.trim(),
-			date: new Date()
-		};
+		var points = this.state.points;
+		var text = this.state.newPoint.trim();
 
-		this.state.newMessage = "";
+		this.state.newPoint = "";
 
-		if(message.text.length !== 0) {
-			//socket.emit('new-message', message);
-			messages.push(message);
-			this.setState({messages: messages});
-
-			this.setState({messageAdded: true});
+		if(text.length !== 0) {
+			this.saveNewPoint(text);
 		}
 	}
 
@@ -155,27 +120,86 @@ class Line extends React.Component {
 	*					FUNCTIONS 					*
 	*************************************************/
 
-	getAllMessages() {
+	getAllPoints() {
 		var component = this;
 
-		fetch('http://localhost:8080/messages', {
+		fetch('http://localhost:8080/points/getPointsOfCercle?line=' + this.props.idLine, {
 			method: 'GET',
 			mode: 'cors'
 		})
 		.then(function(response) {
 			return response.json();
 		})
-		.then(function(messages) {
-			component.setState({messages: messages});
+		.then(function(points) {
+			component.setState({points: points});
+		})
+		.catch(function(error) {
+			console.log(error);
+
+			var points = [];
+			for(var i=0; i<10; i++) {
+				points.push(
+					{
+						id: i+1,
+						idLine: 1,
+						idUser: (i%2 == 0) ? 1 : 2,
+						content: "Coucou ! " + i,
+						created: new Date(),
+						updated: new Date()
+					}
+				);
+			}
+
+			component.setState({
+				points: points
+			});
+		});
+	}
+
+	saveNewPoint(text) {
+		var component = this;
+
+		/*
+		fetch('http://localhost:8080/points/insertPointIntoCercle', {
+			method: 'POST',
+			mode: 'cors',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				idLine: component.props.idLine,
+				idUser: component.state.user.id,
+				content: text,
+				created: new Date()
+			})
+		})
+		.then(function(response) {
+			return response.json();
+		})
+		.then(function(point) {
+			// Send the new point to the connected users
+			socket.emit('new-point', point);
 		})
 		.catch(function(error) {
 			console.log(error);
 		});
+		*/
+
+		var points = this.state.points;
+		var point = {
+			id: points[points.length - 1].id + 1,
+			idLine: this.props.idLine,
+			idUser: this.state.user.id,
+			content: text,
+			created: new Date()
+		};
+		socket.emit('new-point', point);
 	}
 
-	scrollToTop() {
-		var messagesDiv = document.getElementById("messages");
-		messagesDiv.scrollTop = messagesDiv.scrollHeight;
+	scrollToBottom() {
+		var pointsDiv = document.getElementById("points");
+		pointsDiv.scrollTop = pointsDiv.scrollHeight;
 	}
 }
 

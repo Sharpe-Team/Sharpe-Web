@@ -93,7 +93,7 @@ class Line extends React.Component {
 				<form>
 					<div className="row" style={{borderTop: "1px solid black", paddingTop: "0px"}}>
 						<div className="column" style={{padding: 0}}>	 
-                            <MyEditor />
+                            <input type="text" id="new-message" value={this.state.newMessage} onChange={this.handleMessageChanges} />
 						</div>
 						<div className="column shrink">
 							<button type="button" id="send-message" className="button" onClick={this.handleSendAction} > Envoyer </button>

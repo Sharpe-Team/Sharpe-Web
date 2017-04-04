@@ -1,6 +1,7 @@
 import React from 'react';
 import Users from './Users.jsx';
 import Circle from './Circle.jsx';
+import Navigator from './Navigator.jsx';
 
 class App extends React.Component {
 
@@ -11,10 +12,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div id="div-app" className="expanded row">
-				<div id="left-column" className="column medium-2">
-					
-				</div>
-                
+				<Navigator />
                 <Circle />
 			</div>
 		);

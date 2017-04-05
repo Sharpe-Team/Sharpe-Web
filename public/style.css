@@ -79,3 +79,11 @@ input, button {
 #search {
     margin-bottom: 30px;
 }
+
+.navigationList {
+    overflow: scroll;
+}
+
+::-webkit-scrollbar { 
+    display: none; 
+}

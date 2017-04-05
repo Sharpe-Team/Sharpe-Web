@@ -13,6 +13,7 @@ var http = require('http').Server(app);
 var io = require('socket.io').listen(http);
 var notifier = require('node-notifier');
 var path = require('path');
+var fs = require('fs');
 var socketIOFileUpload = require('socketio-file-upload');
 
 var rootPathView = __dirname + '/public';
@@ -85,25 +86,83 @@ app.get('/toto', function(req, res) {
 });
 */
 
+var connectedUsers = [];
+
+function findUserByToken(token) {
+	var result = connectedUsers.findIndex(function(element) {
+		return element.token == token;
+	});
+
+	return result;
+}
+
+function removeUser(loggedUser) {
+	var userIndex = findUserByToken(loggedUser.token);
+	if(userIndex > -1) {
+		connectedUsers.splice(userIndex, 1);
+	}
+}
+
 // Gestion des sockets avec les clients
 io.sockets.on('connection', function (socket) {
 
-	/**
-	* Utilisateur connecté à la socket
-	*/
-	var loggedUser;
-
 	console.log("New Connection !!");
 
-	socket.on('new-point', function(point) {
-		// Emit the new point to all connected users
-		io.emit('new-point', point);
-	});
+	/**
+	* Logged user of the socket
+	*/
+	var loggedUser = {
+		token: null,
+		disconnected: false
+	};
 
 	// Make an instance of SocketIOFileUpload and listen on this socket:
     var uploader = new socketIOFileUpload();
     uploader.dir = "./uploads";
     uploader.listen(socket);
+
+    socket.on('login', function(token) {
+    	if(token != null) {
+    		var userIndex = findUserByToken(token);
+
+    		if(userIndex > -1) {
+    			// The current socket is the new socket of a previous connected user
+    			// Assign to this new socket the previous data of the user
+    			loggedUser = connectedUsers[userIndex];
+    			loggedUser.disconnected = false;
+    		} else {
+    			// Add a new user in the list of connected users
+		    	loggedUser = {
+					token: token,
+					disconnected: false
+				};
+				connectedUsers.push(loggedUser);
+    		}
+    	} else {
+    		console.log("Unregistered user connected...");
+    	}
+		console.log(connectedUsers);
+    });
+
+    socket.on('disconnect', function() {
+    	loggedUser.disconnected = true;
+
+    	// The user get 10 seconds to reconnect
+    	setTimeout(function() {
+    		if(loggedUser.disconnected) {
+    			removeUser(loggedUser);
+    		}
+    	}, 10000);
+    });
+
+    socket.on('logout', function() {
+		removeUser(loggedUser);
+    });
+
+	socket.on('new-point', function(point) {
+		// Emit the new point to all connected users
+		io.emit('new-point', point);
+	});
 
     // Do something when a file is saved:
     uploader.on("saved", function(event) {
@@ -114,6 +173,13 @@ io.sockets.on('connection', function (socket) {
     uploader.on("error", function(event) {
         console.log("Error from uploader", event);
     });
+});
+
+// Create directory for uploads if it doesn't exist
+fs.mkdir("uploads", 0777, function(err) {
+	if (err && err.code != 'EEXIST') {
+		console.log("An error happened while creating the 'upload' directory...", err);
+	}
 });
 
 /**

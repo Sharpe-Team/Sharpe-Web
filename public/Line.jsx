@@ -5,8 +5,6 @@ import MyEditor from './MyEditor.jsx';
 */
 import {Editor, EditorState} from 'draft-js';
 
-var socket = io.connect();
-
 class Line extends React.Component {
 
 	constructor(props) {

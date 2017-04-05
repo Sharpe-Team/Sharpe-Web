@@ -23,10 +23,12 @@ class LogoutComponent extends React.Component {
 			})
 			.then(function(response) {
 				localStorage.clear();
+				socket.emit('logout');
 				browserHistory.push('/');
 			})
 			.catch(function(error) {
 				localStorage.clear();
+				socket.emit('logout');
 				browserHistory.push('/');
 			});
 		}

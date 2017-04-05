@@ -15,8 +15,16 @@
 
 		<!--******************** JAVASCRIPT ********************-->
 
-		<script src="/siofu/client.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
+		<script src="/siofu/client.js"></script>
+		<script>
+			// Global var for the app
+			var socket = io.connect();
+			var siofu = new SocketIOFileUpload(socket);
+
+			// Send a login event to the server
+			socket.emit('login', localStorage.getItem('token'));
+		</script>
 		<script type="text/javascript" src="foundation/js/vendor/jquery.js"></script>
 		<script type="text/javascript" src="foundation/js/vendor/what-input.js"></script>
 		<script type="text/javascript" src="foundation/js/vendor/foundation.min.js"></script>

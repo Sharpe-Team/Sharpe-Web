@@ -99,14 +99,6 @@ class CircleForm extends React.Component {
 
 	componentDidMount() {
 
-		var socket = io.connect();
-		var siofu = new SocketIOFileUpload(socket);
-
-		socket.on('init', function(username) {
-			console.log("Receive 'init' event !!");
-			console.log('Mon nom : ' + username);
-		});
-
 	    //siofu.listenOnSubmit(document.getElementById("submit-btn"), document.getElementById("profile-picture"));
 	    //siofu.listenOnSubmit(document.getElementById("submit-btn"), document.getElementById("banner-picture"));
 	}
@@ -138,8 +130,6 @@ class CircleForm extends React.Component {
 		event.preventDefault();
 		var component = this;
 
-		var socket = io.connect();
-		var siofu = new SocketIOFileUpload(socket);
 		var files = [];
 
 		// Do something on upload progress:
@@ -157,7 +147,7 @@ class CircleForm extends React.Component {
 	        if(event.success) {
 	        	component.createCircle();
 	        } else {
-	        	alert("Une erreur est apparue lors de l'envoi des images...");
+	        	alert("Une erreur est survenue lors de l'envoi des images...");
 	        }
 	    });
 
@@ -197,12 +187,11 @@ class CircleForm extends React.Component {
 		.then(function(response) {
 			alert("Le cercle a bien été ajouté !");
 			// redirect to main file 'App'
-			browserHistory.push('/');
+			browserHistory.push('/app');
 		})
 		.catch(function(error) {
 			console.log(error);
 			alert("Une erreur est survenue lors de la création du nouveau cercle !");
-			browserHistory.push('/');
 		});
 	}
 

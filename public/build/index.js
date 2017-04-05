@@ -35135,15 +35135,7 @@ function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
 }
 
-//import App from './App.jsx';
-
-//var socket = io.connect();
-//var siofu = new SocketIOFileUpload(socket);
-
-//ReactDOM.render(<App />, document.getElementById('app'));
-
 //window.onload = () => {
-
 _reactDom2.default.render(_react2.default.createElement(_AppRoutes2.default, null), document.getElementById('app'));
 //};
 
@@ -36706,14 +36698,6 @@ var CircleForm = function (_React$Component) {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 
-			var socket = io.connect();
-			var siofu = new SocketIOFileUpload(socket);
-
-			socket.on('init', function (username) {
-				console.log("Receive 'init' event !!");
-				console.log('Mon nom : ' + username);
-			});
-
 			//siofu.listenOnSubmit(document.getElementById("submit-btn"), document.getElementById("profile-picture"));
 			//siofu.listenOnSubmit(document.getElementById("submit-btn"), document.getElementById("banner-picture"));
 		}
@@ -36749,8 +36733,6 @@ var CircleForm = function (_React$Component) {
 			event.preventDefault();
 			var component = this;
 
-			var socket = io.connect();
-			var siofu = new SocketIOFileUpload(socket);
 			var files = [];
 
 			// Do something on upload progress:
@@ -36768,7 +36750,7 @@ var CircleForm = function (_React$Component) {
 				if (event.success) {
 					component.createCircle();
 				} else {
-					alert("Une erreur est apparue lors de l'envoi des images...");
+					alert("Une erreur est survenue lors de l'envoi des images...");
 				}
 			});
 
@@ -36807,11 +36789,10 @@ var CircleForm = function (_React$Component) {
 			}).then(function (response) {
 				alert("Le cercle a bien été ajouté !");
 				// redirect to main file 'App'
-				_reactRouter.browserHistory.push('/');
+				_reactRouter.browserHistory.push('/app');
 			}).catch(function (error) {
 				console.log(error);
 				alert("Une erreur est survenue lors de la création du nouveau cercle !");
-				_reactRouter.browserHistory.push('/');
 			});
 		}
 	}, {
@@ -36875,8 +36856,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 import MyEditor from './MyEditor.jsx';
 */
 
-
-var socket = io.connect();
 
 var Line = function (_React$Component) {
 	_inherits(Line, _React$Component);
@@ -37363,6 +37342,7 @@ var LoginForm = function (_React$Component) {
    */
 
 			localStorage.setItem("token", email);
+			socket.emit('login', email);
 
 			var redirect = component.props.location.query.redirect;
 			var nextPage = redirect ? redirect : '/app';
@@ -37451,9 +37431,11 @@ var LogoutComponent = function (_React$Component) {
 					return response.json();
 				}).then(function (response) {
 					localStorage.clear();
+					socket.emit('logout');
 					_reactRouter.browserHistory.push('/');
 				}).catch(function (error) {
 					localStorage.clear();
+					socket.emit('logout');
 					_reactRouter.browserHistory.push('/');
 				});
 			}
@@ -37532,7 +37514,7 @@ var NotFoundPage = function (_React$Component) {
                     null,
                     _react2.default.createElement(
                         _reactRouter.Link,
-                        { to: '/' },
+                        { to: '/app' },
                         'Go back to the main page'
                     )
                 )

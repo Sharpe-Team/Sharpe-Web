@@ -23,7 +23,8 @@ class App extends React.Component {
                 {
                     id: 3,
                     name: "Circle 3"
-                },{
+                },
+                {
                     id: 4,
                     name: "Circle 4"
                 },
@@ -34,7 +35,8 @@ class App extends React.Component {
                 {
                     id: 6,
                     name: "Circle 6"
-                },{
+                },
+                {
                     id: 7,
                     name: "Circle 7"
                 },
@@ -61,32 +63,31 @@ class App extends React.Component {
                     name: "User 3"
                 }
             ],
-            selectedCircle: 1
+            selectedCircle: null
             
         };
         
-        this.handler = this.handler.bind(this)
+        this.updateSelectedCircle = this.updateSelectedCircle.bind(this);
 	}
     
-    handler(id, e) {
-        alert(this.id);
+    updateSelectedCircle(id) {
+    	var newCircle = this.state.circles.find(function(element) {
+    		return element.id == id;
+    	});
+        this.setState({selectedCircle: newCircle});
     }
 
 	render() {
 		return (
 			<div id="div-app" className="expanded row">
-				<Navigator handler= {this.handler} circles={this.state.circles} users={this.state.users}/>
-                <Circle circle={this.state.circles[this.state.selectedCircle]}/>
+				<Navigator updateSelectedCircle={this.updateSelectedCircle} circles={this.state.circles} users={this.state.users}/>
+                <Circle circle={this.state.selectedCircle}/>
 			</div>
 		);
 	}
 
-	componentDidMount() {
-		/*socket.on('init', function(username) {
-			console.log("Receive 'init' event !!");
-			console.log('Mon nom : ' + username);
-		});*/
-    
+	componentWillMount() {
+		this.setState({selectedCircle: this.state.circles[1]});
 	}
 }
 

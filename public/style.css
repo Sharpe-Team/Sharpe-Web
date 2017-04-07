@@ -80,6 +80,7 @@ input, button {
     color: #FFFFFF;
     margin-bottom: 10px;
     font-size: 150%;
+    cursor: pointer;
 }
 
 #search {

@@ -16,33 +16,35 @@ class App extends React.Component {
                 },
                 {
                     id: 2,
-                    name: "Circle 2"
+                    name: "Circle 2",
+                    profilePicture: "resource/profilePicture.jpg",
+                    bannerPicture: "resource/bannerPicture.jpg"
                 },
                 {
                     id: 3,
                     name: "Circle 3"
                 },{
                     id: 4,
-                    name: "Circle 1"
+                    name: "Circle 4"
                 },
                 {
                     id: 5,
-                    name: "Circle 2"
+                    name: "Circle 5"
                 },
                 {
                     id: 6,
-                    name: "Circle 3"
+                    name: "Circle 6"
                 },{
                     id: 7,
-                    name: "Circle 1"
+                    name: "Circle 7"
                 },
                 {
                     id: 8,
-                    name: "Circle 2"
+                    name: "Circle 8"
                 },
                 {
                     id: 9,
-                    name: "Circle 3"
+                    name: "Circle 9"
                 }
             ],
             users: [
@@ -59,20 +61,22 @@ class App extends React.Component {
                     name: "User 3"
                 }
             ],
-            selectedCircle: {
-                    id: 2,
-                    name: "Circle 2",
-                    profilePicture: "resource/profilePicture.jpg",
-                    bannerPicture: "resource/bannerPicture.jpg"
-            }
+            selectedCircle: 1
+            
         };
+        
+        this.handler = this.handler.bind(this)
 	}
+    
+    handler(id, e) {
+        alert(this.id);
+    }
 
 	render() {
 		return (
 			<div id="div-app" className="expanded row">
-				<Navigator circles={this.state.circles} users={this.state.users}/>
-                <Circle circle={this.state.selectedCircle}/>
+				<Navigator handler= {this.handler} circles={this.state.circles} users={this.state.users}/>
+                <Circle circle={this.state.circles[this.state.selectedCircle]}/>
 			</div>
 		);
 	}

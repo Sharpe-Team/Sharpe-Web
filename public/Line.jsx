@@ -12,55 +12,55 @@ class Line extends React.Component {
 			messages: [
 				{
 					id: 0,
-					user: "Toto",
+					user: this.props.users[0],
 					text: "Coucou !",
 					date: new Date()
 				},
 				{
 					id: 1,
-					user: "Lala",
+					user: this.props.users[1],
 					text: "Hey !",
 					date: new Date()
 				},
 				{
 					id: 2,
-					user: "Lala",
+					user: this.props.users[1],
 					text: "Hey !",
 					date: new Date()
 				},
 				{
 					id: 3,
-					user: "Lala",
+					user: this.props.users[0],
 					text: "Hey !",
 					date: new Date()
 				},
 				{
 					id: 4,
-					user: "Lala",
+					user: this.props.users[1],
 					text: "Hey !",
 					date: new Date()
 				},
 				{
 					id: 5,
-					user: "Lala",
+					user: this.props.users[1],
 					text: "Hey !",
 					date: new Date()
 				},
 				{
 					id: 6,
-					user: "Lala",
+					user: this.props.users[0],
 					text: "Hey !",
 					date: new Date()
 				},
 				{
 					id: 7,
-					user: "Lala",
+					user: this.props.users[1],
 					text: "Hey !",
 					date: new Date()
 				},
 				{
 					id: 8,
-					user: "Lala",
+					user: this.props.users[0],
 					text: "Hey !",
 					date: new Date()
 				}

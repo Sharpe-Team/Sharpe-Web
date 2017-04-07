@@ -7,13 +7,72 @@ class App extends React.Component {
 
 	constructor(props) {
 		super(props);
+        
+        this.state = {
+            circles: [
+                {
+                    id: 1,
+                    name: "Circle 1"
+                },
+                {
+                    id: 2,
+                    name: "Circle 2"
+                },
+                {
+                    id: 3,
+                    name: "Circle 3"
+                },{
+                    id: 4,
+                    name: "Circle 1"
+                },
+                {
+                    id: 5,
+                    name: "Circle 2"
+                },
+                {
+                    id: 6,
+                    name: "Circle 3"
+                },{
+                    id: 7,
+                    name: "Circle 1"
+                },
+                {
+                    id: 8,
+                    name: "Circle 2"
+                },
+                {
+                    id: 9,
+                    name: "Circle 3"
+                }
+            ],
+            users: [
+                {
+                    id: 1,
+                    name: "User 1"
+                },
+                {
+                    id: 2,
+                    name: "User 2"
+                },
+                {
+                    id: 3,
+                    name: "User 3"
+                }
+            ],
+            selectedCircle: {
+                    id: 2,
+                    name: "Circle 2",
+                    profilePicture: "resource/profilePicture.jpg",
+                    bannerPicture: "resource/bannerPicture.jpg"
+            }
+        };
 	}
 
 	render() {
 		return (
 			<div id="div-app" className="expanded row">
-				<Navigator />
-                <Circle />
+				<Navigator circles={this.state.circles} users={this.state.users}/>
+                <Circle circle={this.state.selectedCircle}/>
 			</div>
 		);
 	}

@@ -17,6 +17,7 @@ html, body, #app, #div-app {
 .dateMessage {
 	/*width: 50%;*/
 	text-align: right;
+    color: #CCCCCC;
 }
 
 #left-column {
@@ -86,4 +87,47 @@ input, button {
 
 ::-webkit-scrollbar { 
     display: none; 
+}
+
+#banner {
+    display:table-cell; 
+    vertical-align:middle; 
+    text-align:center
+}
+
+.bannerPicture {
+    height:100%;
+}
+
+.circularImageContainer {
+    margin: 5px;
+    display: inline-block;
+    position: relative;
+    width: 90px;
+    height: 90px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.circularImageContainer img {
+    width: auto;
+    height: 100%;
+}
+
+.circleTitle {
+    line-height: 230%;
+    text-align: center;
+    color: #FFFFFF
+}
+
+.imageLine {
+    height:100%;
+    display:table-cell; 
+    vertical-align:middle;
+    text-align:center;
+}
+
+.userPicture {
+    height:40px;
+    
 }

@@ -58,6 +58,11 @@ html, body, #app, #div-app {
 	margin-bottom: 10px;
 }
 
+.message {
+    padding: 10px;
+    background-color: #f4f4f4;
+}
+
 #main-content {
 	height: 100%;
 }
@@ -84,10 +89,11 @@ input, button {
 .navigationList {
     overflow: scroll;
 }
-
+/*
 ::-webkit-scrollbar { 
     display: none; 
 }
+*/
 
 #banner {
     display:table-cell; 

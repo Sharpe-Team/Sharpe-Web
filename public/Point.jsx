@@ -16,10 +16,10 @@ class Point extends React.Component {
 		return (
 			<li>
                 <div className="row">
-                    <div className="imageLine column medium-2">
+                    <div className="imageLine column medium-1">
                         <img className="userPicture" src={this.props.user.picture}/>
                     </div>
-                    <div className="message column medium-10">
+                    <div className="column medium-11">
                         <div className="presMessage row">
                             <div className="userMessage column medium-4"><b>{this.props.user.name}</b></div>
                             <div className="dateMessage column medium-8">{this.renderDate(this.props.date)}</div>

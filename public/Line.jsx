@@ -1,7 +1,7 @@
 import React from 'react';
 import Point from './Point.jsx';
-import MyEditor from './MyEditor.jsx';
-import {Editor, EditorState} from 'draft-js';
+//import MyEditor from './MyEditor.jsx';
+//import {Editor, EditorState} from 'draft-js';
 
 class Line extends React.Component {
 
@@ -66,7 +66,7 @@ class Line extends React.Component {
 				}
 			],
 			newMessage: "",
-			newMessageHeight: 40
+			newMessageHeight: 41
 		};
 
 		// Register handler functions

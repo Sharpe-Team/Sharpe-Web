@@ -18,9 +18,9 @@ class Navigator extends React.Component {
                     </div>
                     <ul className="navigationList" style={{height: "40%"}}> 
                         {
-                            this.state.circles.map(function(circle){
-                                return <div key={circle.id} className="row circleListItem">{circle.name}</div>
-                            })
+                            this.state.circles.map(function(circle) {
+                                return <div key={circle.id} onClick={this.props.handler.bind(this, circle.id)} className="row circleListItem">{circle.name}</div>
+                            }, this)
                         }
                     </ul>
                     <hr></hr>
@@ -34,6 +34,7 @@ class Navigator extends React.Component {
 					
 				</div>)
     }
+    
 }
 
 export default Navigator;

@@ -1,7 +1,6 @@
 import React from 'react';
 import Point from './Point.jsx';
 import MyEditor from './MyEditor.jsx';
-import {Editor, EditorState} from 'draft-js';
 
 class Line extends React.Component {
 

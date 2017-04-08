@@ -90,11 +90,10 @@ input, button {
 .navigationList {
     overflow: scroll;
 }
-/*
+
 ::-webkit-scrollbar { 
     display: none; 
 }
-*/
 
 #banner {
     display:table-cell; 
@@ -137,8 +136,4 @@ input, button {
 .userPicture {
     height:40px;
     
-}
-
-::-webkit-scrollbar { 
-    display: none; 
 }

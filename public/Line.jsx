@@ -146,7 +146,7 @@ class Line extends React.Component {
 							id: i+1,
 							name: i%2==0 ? "Toto" : "Lala",
 							email: i%2==0 ? "toto@toto.fr" : "lala@lala.fr",
-							picture: i%2==0 ? "/resource/toto.jpg" : "/resource/lala.jpg"
+							picture: i%2==0 ? "/resource/toto.jpg" : "/resource/lala.png"
 						},
 						content: "Coucou ! " + i,
 						created: new Date(),

@@ -12,7 +12,7 @@ class Circle extends React.Component {
 			lines: [
 				{
 					id: 1,
-					idCircle: this.state.circle.id,
+					idCircle: props.circle.id,
 					name: "My Line",
 					announcement: "My announcement message"
 				}
@@ -23,12 +23,15 @@ class Circle extends React.Component {
 		this.getAllLines = this.getAllLines.bind(this);
 	}
 
+	componentWillMount() {
+		
+		this.setState({selectedLine: this.state.lines[0]});
+	}
+
 	componentWillReceiveProps(nextProps) {
 		this.setState({circle: nextProps.circle});
 
 		this.getAllLines();
-
-		this.setState({selectedLine: this.state.lines[0]});
 	}
 
 	render() {

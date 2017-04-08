@@ -25560,7 +25560,7 @@ var Circle = function (_React$Component) {
 			navbarHeight: 100,
 			lines: [{
 				id: 1,
-				idCircle: _this.state.circle.id,
+				idCircle: props.circle.id,
 				name: "My Line",
 				announcement: "My announcement message"
 			}],
@@ -25572,13 +25572,17 @@ var Circle = function (_React$Component) {
 	}
 
 	_createClass(Circle, [{
+		key: 'componentWillMount',
+		value: function componentWillMount() {
+
+			this.setState({ selectedLine: this.state.lines[0] });
+		}
+	}, {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
 			this.setState({ circle: nextProps.circle });
 
 			this.getAllLines();
-
-			this.setState({ selectedLine: this.state.lines[0] });
 		}
 	}, {
 		key: 'render',
@@ -26173,7 +26177,7 @@ var Line = function (_React$Component) {
 							id: i + 1,
 							name: i % 2 == 0 ? "Toto" : "Lala",
 							email: i % 2 == 0 ? "toto@toto.fr" : "lala@lala.fr",
-							picture: i % 2 == 0 ? "/resource/toto.jpg" : "/resource/lala.jpg"
+							picture: i % 2 == 0 ? "/resource/toto.jpg" : "/resource/lala.png"
 						},
 						content: "Coucou ! " + i,
 						created: new Date(),

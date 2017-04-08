@@ -36,7 +36,9 @@ class Circle extends React.Component {
 						<div className="row">
 							<div className="column medium-4" style={{height: "100%"}}>
 								<div className="circularImageContainer">
-									<img className="profilePicture" src={this.state.circle.profilePicture}/>
+									{ this.state.circle.profilePicture &&
+										<img className="profilePicture" src={this.state.circle.profilePicture}/>
+									}
 								</div>
 							</div>
 							<div className="column medium-8" style={{height: "100%"}}>
@@ -45,7 +47,9 @@ class Circle extends React.Component {
 						</div>
 					</div>
 					<div id="banner" className="column medium-9">
-						<img className="bannerPicture" src={this.state.circle.bannerPicture}/>
+						{ this.state.circle.bannerPicture &&
+							<img className="bannerPicture" src={this.state.circle.bannerPicture}/>
+						}
 					</div>
 				</div>
 				<div className="row" style={{height: "calc(100% - " + this.state.navbarHeight + "px"}}>

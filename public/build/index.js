@@ -9647,7 +9647,6 @@ var Circle = function (_React$Component) {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
 			this.setState({ circle: nextProps.circle });
-			console.log(nextProps.circle);
 		}
 	}, {
 		key: 'render',
@@ -9670,7 +9669,7 @@ var Circle = function (_React$Component) {
 								_react2.default.createElement(
 									'div',
 									{ className: 'circularImageContainer' },
-									_react2.default.createElement('img', { className: 'profilePicture', src: this.state.circle.profilePicture })
+									this.state.circle.profilePicture && _react2.default.createElement('img', { className: 'profilePicture', src: this.state.circle.profilePicture })
 								)
 							),
 							_react2.default.createElement(
@@ -9687,7 +9686,7 @@ var Circle = function (_React$Component) {
 					_react2.default.createElement(
 						'div',
 						{ id: 'banner', className: 'column medium-9' },
-						_react2.default.createElement('img', { className: 'bannerPicture', src: this.state.circle.bannerPicture })
+						this.state.circle.bannerPicture && _react2.default.createElement('img', { className: 'bannerPicture', src: this.state.circle.bannerPicture })
 					)
 				),
 				_react2.default.createElement(

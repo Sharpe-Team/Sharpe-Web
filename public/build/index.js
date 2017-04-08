@@ -26064,7 +26064,7 @@ var Line = function (_React$Component) {
 						_react2.default.createElement(
 							'div',
 							{ className: 'column', style: { padding: 0 } },
-							_react2.default.createElement('input', { type: 'text', id: 'new-point', name: 'newPoint', value: this.state.newPoint, onChange: this.handleChange })
+							_react2.default.createElement('input', { type: 'text', id: 'new-point', name: 'newPoint', value: this.state.newPoint, onChange: this.handleChange, autoComplete: 'off', placeholder: 'Ecrivez un message...' })
 						),
 						_react2.default.createElement(
 							'div',
@@ -26160,7 +26160,12 @@ var Line = function (_React$Component) {
 
 			fetch('http://localhost:8080/points/getPointsOfCercle?line=' + this.state.line.id, {
 				method: 'GET',
-				mode: 'cors'
+				mode: 'no-cors'
+				/*
+    ,headers: {
+    	'Access-Control-Allow-Origin': '*'
+    }
+    */
 			}).then(function (response) {
 				return response.json();
 			}).then(function (points) {
@@ -26430,7 +26435,7 @@ var LoginForm = function (_React$Component) {
 		value: function handleSubmit(event) {
 			event.preventDefault();
 
-			var hashedPassword = _passwordHash2.default.generate(this.state.userPassword);
+			var hashedPassword = this.state.userPassword; //passwordHash.generate(this.state.userPassword);
 
 			this.clientConnection(this.state.userEmail, hashedPassword);
 		}
@@ -26458,61 +26463,74 @@ var LoginForm = function (_React$Component) {
 		value: function clientConnection(email, hashedPassword) {
 			var component = this;
 
-			var params = "userEmail=" + email + "&userPassword=" + hashedPassword;
+			console.log(email, hashedPassword);
+
+			fetch('http://localhost:8080/login', {
+				method: 'POST',
+				//mode: 'cors',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					username: email,
+					password: hashedPassword
+				})
+			}).then(function (response) {
+				console.log(response);
+
+				if (response.status == 200) {
+					return response;
+				} else {
+					return response.json();
+				}
+			}).then(function (response) {
+				console.log(response);
+
+				if (response.status == 200) {
+					component.setState({
+						error: {
+							showError: false
+						}
+					});
+
+					var authorizationHeader = response.headers.get('Authorization');
+					var token = authorizationHeader.split(" ")[1];
+
+					localStorage.setItem('token', token);
+
+					var redirect = component.props.location.query.redirect;
+					var nextPage = redirect ? redirect : '/app';
+					console.log(nextPage);
+					_reactRouter.browserHistory.push(nextPage);
+				} else {
+					component.setState({
+						error: {
+							showError: true,
+							message: response.message
+						}
+					});
+				}
+			}).catch(function (error) {
+				console.log(error);
+				console.log(error.status, error.error, error.message);
+
+				component.setState({
+					error: {
+						showError: true,
+						message: error.toString()
+					}
+				});
+			});
 
 			/*
-   fetch('http://localhost:8080/userLogin?' + params, {
-   	method: 'GET',
-   	mode: 'cors'
-   })
-   .then(function(response) {
-   	return response.json();
-   })
-   .then(function(response) {
-   	if(response.isAuthenticated) {
-   		component.setState({
-   			error: {
-   				showError: false,
-   			}
-   		});
-   			localStorage.setItem('token', response.token);
-   			var redirect = component.props.location.query.redirect;
-   		var nextPage = (redirect) ? redirect : '/app';
-   		console.log(nextPage);
-   		browserHistory.push(nextPage);
-   	} else {
-   		var message = "Erreur inconnue...";
-   			if(error.status == 404) {
-   			message = "L'adresse email ou le mot de passe est incorrect.";
-   		} else if(error.status == 401) {
-   			message = "Permission refusée : vous n'êtes pas autorisé.";
-   		}
-   			component.setState({
-   			error: {
-   				showError: true,
-   				message: message
-   			}
-   		});
-   	}
-   })
-   .catch(function(error) {
-   	console.log(error);
-   		component.setState({
-   		error: {
-   			showError: true,
-   			message: error.toString()
-   		}
-   	});
-   });
+   localStorage.setItem("token", email);
+   socket.emit('login', email);
+   	var redirect = component.props.location.query.redirect;
+   var nextPage = (redirect) ? redirect : '/app';
+   console.log(nextPage);
+   browserHistory.push(nextPage);
    */
-
-			localStorage.setItem("token", email);
-			socket.emit('login', email);
-
-			var redirect = component.props.location.query.redirect;
-			var nextPage = redirect ? redirect : '/app';
-			console.log(nextPage);
-			_reactRouter.browserHistory.push(nextPage);
 
 			/*
    socket.emit('login', {'email': email, 'password': hashedPassword});
@@ -26829,7 +26847,7 @@ var Point = function (_React$Component) {
                 null,
                 _react2.default.createElement(
                     'div',
-                    { className: 'row' },
+                    { className: 'row align-middle' },
                     _react2.default.createElement(
                         'div',
                         { className: 'imageLine column medium-1' },
@@ -27197,18 +27215,19 @@ var UserForm = function (_React$Component) {
 
 			var hashedPassword = _passwordHash2.default.generate(component.state.userPassword);
 
-			fetch('http://localhost:8080/users', {
+			fetch('http://localhost:8080/users/subscribe', {
 				method: 'POST',
 				mode: 'cors',
 				headers: {
+					'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb2NvQGFzdGljb3QuZnIiLCJleHAiOjE0OTE3MzY1NzJ9.i8bmwwMrWpz_X1ft7ymAvHacyp3RdZQ0T5M50MT3tU10Q9f-4Ci68JOllhjWMrrIgjvAMq6rN9wNCErVANEhvA',
 					'Accept': 'application/json',
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-					userFirstname: component.state.userFirstname,
-					userLastname: component.state.userLastname,
-					userEmail: component.state.userEmail,
-					userPassword: hashedPassword,
+					firstname: component.state.userFirstname,
+					lastname: component.state.userLastname,
+					email: component.state.userEmail,
+					password: hashedPassword,
 					profilePicture: component.state.profilePicture
 				})
 			}).then(function (response) {
@@ -27219,7 +27238,6 @@ var UserForm = function (_React$Component) {
 			}).catch(function (error) {
 				console.log(error);
 				alert("Une erreur est survenue lors de la création du nouvel utilisateur !");
-				_reactRouter.browserHistory.push('/');
 			});
 		}
 	}, {

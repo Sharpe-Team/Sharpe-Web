@@ -42,7 +42,7 @@ class Line extends React.Component {
 				<form onSubmit={this.handleSubmit}>
 					<div className="row" style={{borderTop: "4px solid #f4f4f4", paddingTop: "5px"}}>
 						<div className="column" style={{padding: 0}}>
-							<input type="text" id="new-point" name="newPoint" value={this.state.newPoint} onChange={this.handleChange} />
+							<input type="text" id="new-point" name="newPoint" value={this.state.newPoint} onChange={this.handleChange} autoComplete="off" placeholder="Ecrivez un message..." />
 						</div>
 						<div className="column shrink">
 							<button type="submit" id="send-point" className="button"> Envoyer </button>
@@ -125,7 +125,12 @@ class Line extends React.Component {
 
 		fetch('http://localhost:8080/points/getPointsOfCercle?line=' + this.state.line.id, {
 			method: 'GET',
-			mode: 'cors'
+			mode: 'no-cors'
+			/*
+			,headers: {
+				'Access-Control-Allow-Origin': '*'
+			}
+			*/
 		})
 		.then(function(response) {
 			return response.json();

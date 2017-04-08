@@ -88,7 +88,7 @@ class LoginForm extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
-		var hashedPassword = passwordHash.generate(this.state.userPassword);
+		var hashedPassword = this.state.userPassword; //passwordHash.generate(this.state.userPassword);
 
 		this.clientConnection(this.state.userEmail, hashedPassword);
 	}
@@ -112,51 +112,57 @@ class LoginForm extends React.Component {
 
 	clientConnection(email, hashedPassword) {
 		var component = this;
-		
-		var params = "userEmail=" + email + 
-					"&userPassword=" + hashedPassword;
 
-		/*
-		fetch('http://localhost:8080/userLogin?' + params, {
-			method: 'GET',
-			mode: 'cors'
+		console.log(email, hashedPassword);
+
+		fetch('http://localhost:8080/login', {
+			method: 'POST',
+			//mode: 'cors',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				username: email,
+				password: hashedPassword
+			})
 		})
 		.then(function(response) {
-			return response.json();
+			if(response.status == 200) {
+				return response;
+			} else {
+				return response.json();
+			}
 		})
 		.then(function(response) {
-			if(response.isAuthenticated) {
+			if(response.status == 200) {
 				component.setState({
 					error: {
 						showError: false,
 					}
 				});
 
-				localStorage.setItem('token', response.token);
+				var authorizationHeader = response.headers.get('Authorization');
+				var token = authorizationHeader.split(" ")[1];
+
+				localStorage.setItem('token', token);
 
 				var redirect = component.props.location.query.redirect;
 				var nextPage = (redirect) ? redirect : '/app';
 				console.log(nextPage);
 				browserHistory.push(nextPage);
 			} else {
-				var message = "Erreur inconnue...";
-
-				if(error.status == 404) {
-					message = "L'adresse email ou le mot de passe est incorrect.";
-				} else if(error.status == 401) {
-					message = "Permission refusée : vous n'êtes pas autorisé.";
-				}
-
 				component.setState({
 					error: {
 						showError: true,
-						message: message
+						message: response.message
 					}
 				});
 			}
 		})
 		.catch(function(error) {
 			console.log(error);
+			console.log(error.status, error.error, error.message);
 
 			component.setState({
 				error: {
@@ -165,8 +171,8 @@ class LoginForm extends React.Component {
 				}
 			});
 		});
-		*/
-
+		
+		/*
 		localStorage.setItem("token", email);
 		socket.emit('login', email);
 
@@ -174,6 +180,8 @@ class LoginForm extends React.Component {
 		var nextPage = (redirect) ? redirect : '/app';
 		console.log(nextPage);
 		browserHistory.push(nextPage);
+		*/
+		
 
 		/*
 		socket.emit('login', {'email': email, 'password': hashedPassword});

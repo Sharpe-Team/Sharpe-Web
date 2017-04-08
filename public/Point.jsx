@@ -15,7 +15,7 @@ class Point extends React.Component {
 	render() {
 		return (
 			<li>
-                <div className="row">
+                <div className="row align-middle">
                     <div className="imageLine column medium-1">
                         <img className="userPicture" src={this.props.user.picture}/>
                     </div>

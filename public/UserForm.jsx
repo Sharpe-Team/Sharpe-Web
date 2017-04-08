@@ -172,18 +172,19 @@ class UserForm extends React.Component {
 
 		var hashedPassword = passwordHash.generate(component.state.userPassword);
 
-		fetch('http://localhost:8080/users', {
+		fetch('http://localhost:8080/users/subscribe', {
 			method: 'POST',
 			mode: 'cors',
 			headers: {
+				'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb2NvQGFzdGljb3QuZnIiLCJleHAiOjE0OTE3MzY1NzJ9.i8bmwwMrWpz_X1ft7ymAvHacyp3RdZQ0T5M50MT3tU10Q9f-4Ci68JOllhjWMrrIgjvAMq6rN9wNCErVANEhvA',
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				userFirstname: component.state.userFirstname,
-				userLastname: component.state.userLastname,
-				userEmail: component.state.userEmail,
-				userPassword: hashedPassword,
+				firstname: component.state.userFirstname,
+				lastname: component.state.userLastname,
+				email: component.state.userEmail,
+				password: hashedPassword,
 				profilePicture: component.state.profilePicture
 			})
 		})
@@ -197,7 +198,6 @@ class UserForm extends React.Component {
 		.catch(function(error) {
 			console.log(error);
 			alert("Une erreur est survenue lors de la création du nouvel utilisateur !");
-			browserHistory.push('/');
 		});
 	}
 

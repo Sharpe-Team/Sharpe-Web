@@ -8,13 +8,13 @@ html, body, #app, #div-app {
     box-sizing: border-box;
 }
 
-.userMessage {
+.userPoint {
 	/*width: 50%;*/
 	text-align: left;
 	/*display: inline-block;*/
 }
 
-.dateMessage {
+.datePoint {
 	/*width: 50%;*/
 	text-align: right;
     color: #CCCCCC;
@@ -44,32 +44,40 @@ html, body, #app, #div-app {
 	*/
 	height: 100%;
 	font-size: 1.0em;
+	border: 2px solid blue;
+	padding: 5px;
 }
 
-#messages {
+#div-line input, #div-line button {
+	margin: 0px !important;
+}
+
+#points {
 	list-style: none;
-    /*list-style-type: none;*/
-    overflow: scroll;
-    margin: 0px;
-    padding: 5px;
+	/*list-style-type: none;*/
+	overflow: scroll;
+	margin: 0px;
+	padding: 5px;
 }
 
-#messages li {
+#points li {
 	margin-bottom: 10px;
 }
 
-.message {
-    padding: 10px;
+.point {
     background-color: #f4f4f4;
+    padding: 5px;
 }
 
 #main-content {
 	height: 100%;
 }
 
+/*
 input, button {
 	margin: 0px !important;
 }
+*/
 
 #cubes {
     height: 100%;
@@ -136,4 +144,9 @@ input, button {
 .userPicture {
     height:40px;
     
+}
+
+#error-point p {
+	margin-bottom: 0px;
+	font-size: 0.9em;
 }

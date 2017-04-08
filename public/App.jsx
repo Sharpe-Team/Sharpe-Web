@@ -1,5 +1,5 @@
 import React from 'react';
-import Users from './Users.jsx';
+import {Link} from 'react-router';
 import Circle from './Circle.jsx';
 import Navigator from './Navigator.jsx';
 

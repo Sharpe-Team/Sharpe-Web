@@ -9,23 +9,26 @@ class Circle extends React.Component {
 		this.state = {
 			circle: props.circle,
 			navbarHeight: 100,
-			users: [
-				{
-					id: 0,
-					name: "Toto",
-					picture: "/resource/toto.jpg"
-				},
+			lines: [
 				{
 					id: 1,
-					name: "Lala",
-					picture: "/resource/lala.png"
+					idCircle: this.state.circle.id,
+					name: "My Line",
+					announcement: "My announcement message"
 				}
-			]
+			],
+			selectedLine: null
 		};
+
+		this.getAllLines = this.getAllLines.bind(this);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		this.setState({circle: nextProps.circle});
+
+		this.getAllLines();
+
+		this.setState({selectedLine: this.state.lines[0]});
 	}
 
 	render() {
@@ -53,12 +56,17 @@ class Circle extends React.Component {
 					</div>
 				</div>
 				<div className="row" style={{height: "calc(100% - " + this.state.navbarHeight + "px"}}>
-					<Line users={this.state.users} style={{height: "100%"}}/>
+					<Line line={this.state.selectedLine} style={{height: "100%"}}/>
 					<div id="cubes" className="column medium-3">
 					</div>
 				</div>
 			</div>
 		);
+	}
+
+	getAllLines() {
+
+
 	}
 }
                 

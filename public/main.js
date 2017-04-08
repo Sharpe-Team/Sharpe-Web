@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App.jsx';
+import AppRoutes from './AppRoutes.jsx';
 
-ReactDOM.render(<App />, document.getElementById('app'));
+//window.onload = () => {
+	ReactDOM.render(<AppRoutes/>, document.getElementById('app'));
+//};

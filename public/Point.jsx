@@ -20,12 +20,12 @@ class Point extends React.Component {
                         <img className="userPicture" src={this.props.user.picture}/>
                     </div>
                     <div className="column medium-11">
-                        <div className="presMessage row">
-                            <div className="userMessage column medium-4"><b>{this.props.user.name}</b></div>
-                            <div className="dateMessage column medium-8">{this.renderDate(this.props.date)}</div>
+                        <div className="row">
+                            <div className="userPoint column medium-6"><b>{this.props.user.name}</b></div>
+                            <div className="datePoint column medium-6">{this.renderDate(this.props.created)}</div>
                         </div>
                         <div className="row">
-                            <div className="message column medium-12">{this.props.text}</div>
+                            <div className="point column medium-12">{this.props.content}</div>
                         </div>
                     </div>
                 </div>

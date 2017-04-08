@@ -9,15 +9,8 @@ class Circle extends React.Component {
 		this.state = {
 			circle: props.circle,
 			navbarHeight: 100,
-			lines: [
-				{
-					id: 1,
-					idCircle: props.circle.id,
-					name: "My Line",
-					announcement: "My announcement message"
-				}
-			],
-			selectedLine: null
+			lines: [],
+			selectedLine:  null
 		};
 
 		this.getAllLines = this.getAllLines.bind(this);
@@ -25,7 +18,7 @@ class Circle extends React.Component {
 
 	componentWillMount() {
 		
-		this.setState({selectedLine: this.state.lines[0]});
+		this.getAllLines();
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -35,31 +28,43 @@ class Circle extends React.Component {
 	}
 
 	render() {
+
+		var line;
+		if(this.state.selectedLine) {
+			line = (<Line line={this.state.selectedLine} style={{height: "100%"}}/>);
+		} else {
+			line = (
+				<div id="div-line" className="column">
+					<h3>Aucune ligne existante pour le cercle selectionné...</h3>
+				</div>
+			);
+		}
+
 		return (
 			<div className="column medium-10" style={{height: "100%"}}>
 				<div className="expanded row" style={{height: this.state.navbarHeight + "px"}}>
-					<div id="profile" className="column medium-3">
+					<div id="profile" className="column medium-6">
 						<div className="row">
-							<div className="column medium-4" style={{height: "100%"}}>
+							<div className="column medium-3" style={{height: "100%"}}>
 								<div className="circularImageContainer">
-									{ this.state.circle.profilePicture &&
-										<img className="profilePicture" src={this.state.circle.profilePicture}/>
+									{ this.state.circle.pictureUrl &&
+										<img className="profilePicture" src={'uploads/' + this.state.circle.pictureUrl}/>
 									}
 								</div>
 							</div>
-							<div className="column medium-8" style={{height: "100%"}}>
+							<div className="column medium-9" style={{height: "100%"}}>
 								<h2 className="circleTitle">{this.state.circle.name}</h2>
 							</div>
 						</div>
 					</div>
-					<div id="banner" className="column medium-9">
-						{ this.state.circle.bannerPicture &&
-							<img className="bannerPicture" src={this.state.circle.bannerPicture}/>
+					<div id="banner" className="column medium-6">
+						{ this.state.circle.bannerPictureUrl &&
+							<img className="bannerPicture" src={this.state.circle.bannerPictureUrl}/>
 						}
 					</div>
 				</div>
 				<div className="row" style={{height: "calc(100% - " + this.state.navbarHeight + "px"}}>
-					<Line line={this.state.selectedLine} style={{height: "100%"}}/>
+					{ line }
 					<div id="cubes" className="column medium-3">
 					</div>
 				</div>
@@ -68,8 +73,28 @@ class Circle extends React.Component {
 	}
 
 	getAllLines() {
+		var component = this;
 
+		fetch('http://localhost:8080/lines?idCircle=' + this.state.circle.id, {
+			method: 'GET',
+			headers: {
+				'Authorization': 'Bearer ' + localStorage.getItem('token')
+			}
+		})
+		.then(function(response) {
+			return response.json();
+		})
+		.then(function(lines) {
+			component.setState({lines: lines});
 
+			if(lines.length > 0) {
+				component.setState({selectedLine: lines[0]});
+			}
+		})
+		.catch(function(error) {
+			console.log(error);
+			component.setState({selectedLine: null});
+		});
 	}
 }
                 

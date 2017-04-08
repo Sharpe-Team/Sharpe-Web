@@ -25210,7 +25210,7 @@ PEMEncoder.prototype.encode = function encode(data, options) {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+	value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -25238,88 +25238,42 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var App = function (_React$Component) {
-    _inherits(App, _React$Component);
+	_inherits(App, _React$Component);
 
-    function App(props) {
-        _classCallCheck(this, App);
+	function App(props) {
+		_classCallCheck(this, App);
 
-        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+		var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-        _this.state = {
-            circles: [{
-                id: 1,
-                name: "Circle 1"
-            }, {
-                id: 2,
-                name: "Circle 2",
-                profilePicture: "resource/profilePicture.jpg",
-                bannerPicture: "resource/bannerPicture.jpg"
-            }, {
-                id: 3,
-                name: "Circle 3"
-            }, {
-                id: 4,
-                name: "Circle 4"
-            }, {
-                id: 5,
-                name: "Circle 5"
-            }, {
-                id: 6,
-                name: "Circle 6"
-            }, {
-                id: 7,
-                name: "Circle 7"
-            }, {
-                id: 8,
-                name: "Circle 8"
-            }, {
-                id: 9,
-                name: "Circle 9"
-            }],
-            users: [{
-                id: 1,
-                name: "User 1"
-            }, {
-                id: 2,
-                name: "User 2"
-            }, {
-                id: 3,
-                name: "User 3"
-            }],
-            selectedCircle: null
+		_this.state = {
+			selectedCircle: null
+		};
 
-        };
+		_this.updateSelectedCircle = _this.updateSelectedCircle.bind(_this);
+		return _this;
+	}
 
-        _this.updateSelectedCircle = _this.updateSelectedCircle.bind(_this);
-        return _this;
-    }
+	_createClass(App, [{
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'div',
+				{ id: 'div-app', className: 'expanded row' },
+				_react2.default.createElement(_Navigator2.default, { updateSelectedCircle: this.updateSelectedCircle }),
+				this.state.selectedCircle && _react2.default.createElement(_Circle2.default, { circle: this.state.selectedCircle })
+			);
+		}
+	}, {
+		key: 'componentWillMount',
+		value: function componentWillMount() {}
+	}, {
+		key: 'updateSelectedCircle',
+		value: function updateSelectedCircle(circle) {
+			this.setState({ selectedCircle: circle });
+		}
+	}]);
 
-    _createClass(App, [{
-        key: 'updateSelectedCircle',
-        value: function updateSelectedCircle(id) {
-            var newCircle = this.state.circles.find(function (element) {
-                return element.id == id;
-            });
-            this.setState({ selectedCircle: newCircle });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'div',
-                { id: 'div-app', className: 'expanded row' },
-                _react2.default.createElement(_Navigator2.default, { updateSelectedCircle: this.updateSelectedCircle, circles: this.state.circles, users: this.state.users }),
-                _react2.default.createElement(_Circle2.default, { circle: this.state.selectedCircle })
-            );
-        }
-    }, {
-        key: 'componentWillMount',
-        value: function componentWillMount() {
-            this.setState({ selectedCircle: this.state.circles[1] });
-        }
-    }]);
-
-    return App;
+	return App;
 }(_react2.default.Component);
 
 exports.default = App;
@@ -25558,12 +25512,7 @@ var Circle = function (_React$Component) {
 		_this.state = {
 			circle: props.circle,
 			navbarHeight: 100,
-			lines: [{
-				id: 1,
-				idCircle: props.circle.id,
-				name: "My Line",
-				announcement: "My announcement message"
-			}],
+			lines: [],
 			selectedLine: null
 		};
 
@@ -25575,7 +25524,7 @@ var Circle = function (_React$Component) {
 		key: 'componentWillMount',
 		value: function componentWillMount() {
 
-			this.setState({ selectedLine: this.state.lines[0] });
+			this.getAllLines();
 		}
 	}, {
 		key: 'componentWillReceiveProps',
@@ -25587,6 +25536,22 @@ var Circle = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
+
+			var line;
+			if (this.state.selectedLine) {
+				line = _react2.default.createElement(_Line2.default, { line: this.state.selectedLine, style: { height: "100%" } });
+			} else {
+				line = _react2.default.createElement(
+					'div',
+					{ id: 'div-line', className: 'column' },
+					_react2.default.createElement(
+						'h3',
+						null,
+						'Aucune ligne existante pour le cercle selectionn\xE9...'
+					)
+				);
+			}
+
 			return _react2.default.createElement(
 				'div',
 				{ className: 'column medium-10', style: { height: "100%" } },
@@ -25595,22 +25560,22 @@ var Circle = function (_React$Component) {
 					{ className: 'expanded row', style: { height: this.state.navbarHeight + "px" } },
 					_react2.default.createElement(
 						'div',
-						{ id: 'profile', className: 'column medium-3' },
+						{ id: 'profile', className: 'column medium-6' },
 						_react2.default.createElement(
 							'div',
 							{ className: 'row' },
 							_react2.default.createElement(
 								'div',
-								{ className: 'column medium-4', style: { height: "100%" } },
+								{ className: 'column medium-3', style: { height: "100%" } },
 								_react2.default.createElement(
 									'div',
 									{ className: 'circularImageContainer' },
-									this.state.circle.profilePicture && _react2.default.createElement('img', { className: 'profilePicture', src: this.state.circle.profilePicture })
+									this.state.circle.pictureUrl && _react2.default.createElement('img', { className: 'profilePicture', src: 'uploads/' + this.state.circle.pictureUrl })
 								)
 							),
 							_react2.default.createElement(
 								'div',
-								{ className: 'column medium-8', style: { height: "100%" } },
+								{ className: 'column medium-9', style: { height: "100%" } },
 								_react2.default.createElement(
 									'h2',
 									{ className: 'circleTitle' },
@@ -25621,21 +25586,41 @@ var Circle = function (_React$Component) {
 					),
 					_react2.default.createElement(
 						'div',
-						{ id: 'banner', className: 'column medium-9' },
-						this.state.circle.bannerPicture && _react2.default.createElement('img', { className: 'bannerPicture', src: this.state.circle.bannerPicture })
+						{ id: 'banner', className: 'column medium-6' },
+						this.state.circle.bannerPictureUrl && _react2.default.createElement('img', { className: 'bannerPicture', src: this.state.circle.bannerPictureUrl })
 					)
 				),
 				_react2.default.createElement(
 					'div',
 					{ className: 'row', style: { height: "calc(100% - " + this.state.navbarHeight + "px" } },
-					_react2.default.createElement(_Line2.default, { line: this.state.selectedLine, style: { height: "100%" } }),
+					line,
 					_react2.default.createElement('div', { id: 'cubes', className: 'column medium-3' })
 				)
 			);
 		}
 	}, {
 		key: 'getAllLines',
-		value: function getAllLines() {}
+		value: function getAllLines() {
+			var component = this;
+
+			fetch('http://localhost:8080/lines?idCircle=' + this.state.circle.id, {
+				method: 'GET',
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('token')
+				}
+			}).then(function (response) {
+				return response.json();
+			}).then(function (lines) {
+				component.setState({ lines: lines });
+
+				if (lines.length > 0) {
+					component.setState({ selectedLine: lines[0] });
+				}
+			}).catch(function (error) {
+				console.log(error);
+				component.setState({ selectedLine: null });
+			});
+		}
 	}]);
 
 	return Circle;
@@ -25682,16 +25667,7 @@ var CircleForm = function (_React$Component) {
 
 		_this.state = {
 			circleName: "",
-			users: [{
-				id: 1,
-				name: "Toto"
-			}, {
-				id: 2,
-				name: "Lala"
-			}, {
-				id: 3,
-				name: "Lili"
-			}]
+			users: []
 		};
 
 		_this.handleChange = _this.handleChange.bind(_this);
@@ -25823,7 +25799,9 @@ var CircleForm = function (_React$Component) {
 												return _react2.default.createElement(
 													'option',
 													{ key: user.id, value: user.id },
-													user.name
+													user.firstname,
+													' ',
+													user.lastname
 												);
 											})
 										),
@@ -25859,6 +25837,11 @@ var CircleForm = function (_React$Component) {
 
 			//siofu.listenOnSubmit(document.getElementById("submit-btn"), document.getElementById("profile-picture"));
 			//siofu.listenOnSubmit(document.getElementById("submit-btn"), document.getElementById("banner-picture"));
+		}
+	}, {
+		key: 'componentWillMount',
+		value: function componentWillMount() {
+			this.getAllUsers();
 		}
 	}, {
 		key: 'handleChange',
@@ -25932,23 +25915,34 @@ var CircleForm = function (_React$Component) {
 
 			console.log(component.state.moderators);
 
-			fetch('http://localhost:8080/circle', {
+			fetch('http://localhost:8080/circles', {
 				method: 'POST',
-				mode: 'cors',
 				headers: {
 					'Accept': 'application/json',
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					'Authorization': 'Bearer ' + localStorage.getItem('token')
 				},
 				body: JSON.stringify({
-					circleName: component.state.circleName,
-					moderators: component.state.moderators
+					name: component.state.circleName,
+					//moderators: component.state.moderators,
+					pictureUrl: component.state.profilePicture.name,
+					bannerPictureUrl: component.state.bannerPicture
 				})
 			}).then(function (response) {
-				return response;
+				if (response.status == 201) {
+					return response;
+				} else {
+					return response.json();
+				}
 			}).then(function (response) {
-				alert("Le cercle a bien été ajouté !");
-				// redirect to main file 'App'
-				_reactRouter.browserHistory.push('/app');
+				if (response.status == 201) {
+					alert("Le cercle a bien été ajouté !");
+					// redirect to main file 'App'
+					_reactRouter.browserHistory.push('/app');
+				} else {
+					console.log(error);
+					alert("Une erreur est survenue lors de la création du nouveau cercle !");
+				}
 			}).catch(function (error) {
 				console.log(error);
 				alert("Une erreur est survenue lors de la création du nouveau cercle !");
@@ -25961,7 +25955,9 @@ var CircleForm = function (_React$Component) {
 
 			fetch('http://localhost:8080/users', {
 				method: 'GET',
-				mode: 'cors'
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('token')
+				}
 			}).then(function (response) {
 				return response.json();
 			}).then(function (users) {
@@ -26158,41 +26154,17 @@ var Line = function (_React$Component) {
 		value: function getAllPoints() {
 			var component = this;
 
-			fetch('http://localhost:8080/points/getPointsOfCercle?line=' + this.state.line.id, {
+			fetch('http://localhost:8080/points?idLine=' + this.state.line.id, {
 				method: 'GET',
-				mode: 'no-cors'
-				/*
-    ,headers: {
-    	'Access-Control-Allow-Origin': '*'
-    }
-    */
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('token')
+				}
 			}).then(function (response) {
 				return response.json();
 			}).then(function (points) {
 				component.setState({ points: points });
 			}).catch(function (error) {
 				console.log(error);
-
-				var points = [];
-				for (var i = 0; i < 10; i++) {
-					points.push({
-						id: i + 1,
-						idLine: 1,
-						user: {
-							id: i + 1,
-							name: i % 2 == 0 ? "Toto" : "Lala",
-							email: i % 2 == 0 ? "toto@toto.fr" : "lala@lala.fr",
-							picture: i % 2 == 0 ? "/resource/toto.jpg" : "/resource/lala.png"
-						},
-						content: "Coucou ! " + i,
-						created: new Date(),
-						updated: new Date()
-					});
-				}
-
-				component.setState({
-					points: points
-				});
 			});
 		}
 	}, {
@@ -26477,16 +26449,12 @@ var LoginForm = function (_React$Component) {
 					password: hashedPassword
 				})
 			}).then(function (response) {
-				console.log(response);
-
 				if (response.status == 200) {
 					return response;
 				} else {
 					return response.json();
 				}
 			}).then(function (response) {
-				console.log(response);
-
 				if (response.status == 200) {
 					component.setState({
 						error: {
@@ -26674,9 +26642,20 @@ var Navigator = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Navigator.__proto__ || Object.getPrototypeOf(Navigator)).call(this, props));
 
         _this.state = {
-            circles: props.circles,
-            users: props.users
+            circles: [],
+            users: [{
+                id: 1,
+                name: "User 1"
+            }, {
+                id: 2,
+                name: "User 2"
+            }, {
+                id: 3,
+                name: "User 3"
+            }]
         };
+
+        _this.getAllCircles = _this.getAllCircles.bind(_this);
         return _this;
     }
 
@@ -26702,7 +26681,7 @@ var Navigator = function (_React$Component) {
                     this.state.circles.map(function (circle) {
                         return _react2.default.createElement(
                             "div",
-                            { key: circle.id, onClick: this.props.updateSelectedCircle.bind(this, circle.id), className: "row circleListItem" },
+                            { key: circle.id, onClick: this.props.updateSelectedCircle.bind(this, circle), className: "row circleListItem" },
                             circle.name
                         );
                     }, this)
@@ -26720,6 +26699,45 @@ var Navigator = function (_React$Component) {
                     })
                 )
             );
+        }
+    }, {
+        key: "componentWillMount",
+        value: function componentWillMount() {
+            this.getAllCircles();
+        }
+    }, {
+        key: "getAllCircles",
+        value: function getAllCircles() {
+            var component = this;
+
+            fetch('http://localhost:8080/circles', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(function (response) {
+                return response.json();
+            }).then(function (circles) {
+                component.setState({ circles: circles });
+
+                if (circles.length > 0) {
+                    component.props.updateSelectedCircle(circles[0]);
+                }
+            }).catch(function (error) {
+                console.log(error);
+
+                var circles = [];
+                for (var i = 0; i < 10; i++) {
+                    circles.push({
+                        id: i + 1,
+                        name: "Circle " + (i + 1),
+                        profilePicture: "resource/profilePicture.jpg",
+                        bannerPicture: "resource/bannerPicture.jpg"
+                    });
+                }
+
+                component.props.updateSelectedCircle(circles[0]);
+            });
         }
     }]);
 

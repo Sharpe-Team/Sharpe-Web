@@ -17,6 +17,7 @@ var fs = require('fs');
 var socketIOFileUpload = require('socketio-file-upload');
 
 var rootPathView = __dirname + '/public';
+const UPLOAD_DIRECTORY = __dirname + '/public/uploads';
 
 /**
  * Gestion des requêtes HTTP des utilisateurs en leur renvoyant les fichiers du dossier 'public'
@@ -176,7 +177,7 @@ io.sockets.on('connection', function (socket) {
 });
 
 // Create directory for uploads if it doesn't exist
-fs.mkdir("uploads", 0777, function(err) {
+fs.mkdir(UPLOAD_DIRECTORY, 0777, function(err) {
 	if (err && err.code != 'EEXIST') {
 		console.log("An error happened while creating the 'upload' directory...", err);
 	}

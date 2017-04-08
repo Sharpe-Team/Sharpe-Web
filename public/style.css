@@ -44,7 +44,6 @@ html, body, #app, #div-app {
 	*/
 	height: 100%;
 	font-size: 1.0em;
-	border: 2px solid blue;
 	padding: 5px;
 }
 
@@ -97,6 +96,7 @@ input, button {
 
 .navigationList {
     overflow: scroll;
+    margin: 0px;
 }
 
 ::-webkit-scrollbar { 

@@ -8,18 +8,7 @@ class CircleForm extends React.Component {
 
 		this.state = {
 			circleName: "",
-			users: [{
-						id: 1,
-						name: "Toto"
-					},
-					{
-						id: 2,
-						name: "Lala"
-					},
-					{
-						id: 3,
-						name: "Lili"
-					}]
+			users: []
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -76,7 +65,7 @@ class CircleForm extends React.Component {
 										<select id="moderators" name="moderators" onChange={this.handleMultipleSelectChange} aria-describedby="select-help" multiple required>
 											{
 												this.state.users.map(function(user) {
-													return <option key={user.id} value={user.id}>{user.name}</option>
+													return <option key={user.id} value={user.id}>{user.firstname} {user.lastname}</option>
 												})
 											}
 										</select>
@@ -101,6 +90,10 @@ class CircleForm extends React.Component {
 
 	    //siofu.listenOnSubmit(document.getElementById("submit-btn"), document.getElementById("profile-picture"));
 	    //siofu.listenOnSubmit(document.getElementById("submit-btn"), document.getElementById("banner-picture"));
+	}
+
+	componentWillMount() {
+		this.getAllUsers();
 	}
 
 	handleChange(event) {
@@ -169,25 +162,36 @@ class CircleForm extends React.Component {
 
 		console.log(component.state.moderators);
 
-		fetch('http://localhost:8080/circle', {
+		fetch('http://localhost:8080/circles', {
 			method: 'POST',
-			mode: 'cors',
 			headers: {
 				'Accept': 'application/json',
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
 			},
 			body: JSON.stringify({
-				circleName: component.state.circleName,
-				moderators: component.state.moderators
+				name: component.state.circleName,
+				//moderators: component.state.moderators,
+				pictureUrl: component.state.profilePicture.name,
+				bannerPictureUrl: component.state.bannerPicture
 			})
 		})
 		.then(function(response) {
-			return response;
+			if(response.status == 201) {
+				return response;
+			} else {
+				return response.json();
+			}
 		})
 		.then(function(response) {
-			alert("Le cercle a bien été ajouté !");
-			// redirect to main file 'App'
-			browserHistory.push('/app');
+			if(response.status == 201) {
+				alert("Le cercle a bien été ajouté !");
+				// redirect to main file 'App'
+				browserHistory.push('/app');
+			} else {
+				console.log(error);
+				alert("Une erreur est survenue lors de la création du nouveau cercle !");
+			}
 		})
 		.catch(function(error) {
 			console.log(error);
@@ -200,7 +204,9 @@ class CircleForm extends React.Component {
 
 		fetch('http://localhost:8080/users', {
 			method: 'GET',
-			mode: 'cors'
+			headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
 		})
 		.then(function(response) {
 			return response.json();

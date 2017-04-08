@@ -123,14 +123,11 @@ class Line extends React.Component {
 	getAllPoints() {
 		var component = this;
 
-		fetch('http://localhost:8080/points/getPointsOfCercle?line=' + this.state.line.id, {
+		fetch('http://localhost:8080/points?idLine=' + this.state.line.id, {
 			method: 'GET',
-			mode: 'no-cors'
-			/*
-			,headers: {
-				'Access-Control-Allow-Origin': '*'
+			headers: {
+				'Authorization': 'Bearer ' + localStorage.getItem('token')
 			}
-			*/
 		})
 		.then(function(response) {
 			return response.json();
@@ -140,29 +137,6 @@ class Line extends React.Component {
 		})
 		.catch(function(error) {
 			console.log(error);
-
-			var points = [];
-			for(var i=0; i<10; i++) {
-				points.push(
-					{
-						id: i+1,
-						idLine: 1,
-						user: {
-							id: i+1,
-							name: i%2==0 ? "Toto" : "Lala",
-							email: i%2==0 ? "toto@toto.fr" : "lala@lala.fr",
-							picture: i%2==0 ? "/resource/toto.jpg" : "/resource/lala.png"
-						},
-						content: "Coucou ! " + i,
-						created: new Date(),
-						updated: new Date()
-					}
-				);
-			}
-
-			component.setState({
-				points: points
-			});
 		});
 	}
 

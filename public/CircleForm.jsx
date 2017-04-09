@@ -22,45 +22,48 @@ class CircleForm extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<p>Cirlce form</p>
-				<Link to="/app">Home</Link>
+			<div className="circle-form-root">
+                <Link to="/app"><img className="home-button" src="/resource/home.png"></img></Link>
 
 				<form onSubmit={this.handleSubmit}>
 					<div className="expanded row align-center">
 						<div className="column medium-6">
-							<fieldset className="fieldset">
-								<legend>Création d'un nouveau cercle</legend>
+                            <h2 className="form-title">Ajout d'un nouveau cercle</h2>
+							<fieldset className="fieldset form-fieldset">
 								<div className="row">
-									<div className="column medium-5">
-										<label htmlFor="circle-name" className="text-right middle">Nom : </label>
+									<div className="column medium-4">
+										<label htmlFor="circle-name" className="text-right middle form-label">Nom </label>
 									</div>
+                                    <div className="colum medium-1"></div>
 									<div className="column medium-7">
 										<input type="text" id="circle-name" name="circleName" onChange={this.handleChange} required/>
 									</div>
 								</div>
 								<div className="row">
-									<div className="column medium-5">
-										<label htmlFor="" className="text-right middle">Ajouter une photo de profil : </label>
+									<div className="column medium-4">
+										<label htmlFor="" className="text-right middle form-label">Ajouter une photo de profil </label>
 									</div>
+                                    <div className="colum medium-1"></div>
 									<div className="column medium-7">
 										<label htmlFor="profile-picture" className="button">Photo de profil</label>
 										<input type="file" id="profile-picture" name="profilePicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
 									</div>
 								</div>
 								<div className="row">
-									<div className="column medium-5">
-										<label htmlFor="" className="text-right middle">Ajouter une photo de bannière : </label>
+									<div className="column medium-4">
+										<label htmlFor="" className="text-right middle form-label">Ajouter une photo de bannière </label>
 									</div>
+                                    <div className="colum medium-1"></div>
 									<div className="column medium-7">
-										<label htmlFor="banner-picture" className="button">Photo de la bannière</label>
+										<label htmlFor="banner-picture" className="button">Bannière</label>
 										<input type="file" id="banner-picture" name="bannerPicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
 									</div>
 								</div>
 								<div className="row">
-									<div className="column medium-5">
-										<label htmlFor="moderators" className="text-right middle">Liste des modérateurs : </label>
+									<div data-tooltip aria-haspopup="true" class="has-tip" title="Vous pouvez sélectionner plusieurs modérateurs. Vous pouvez taper les premières lettres du modérateur pour le retrouver plus facilement." className="column medium-4 form-label">
+										<label htmlFor="moderators" className="text-right middle">Liste des modérateurs</label>
 									</div>
+                                    <div className="colum medium-1"></div>
 									<div className="column medium-7">
 										<select id="moderators" name="moderators" onChange={this.handleMultipleSelectChange} aria-describedby="select-help" multiple required>
 											{
@@ -69,7 +72,6 @@ class CircleForm extends React.Component {
 												})
 											}
 										</select>
-										<p id="select-help" className="help-text">Vous pouvez sélectionner plusieurs modérateurs. Vous pouvez taper les premières lettres du modérateur pour le retrouver plus facilement.</p>
 									</div>
 								</div>
 

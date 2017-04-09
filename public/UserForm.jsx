@@ -7,7 +7,9 @@ class UserForm extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {};
+		this.state = {
+            percent: 25
+        };
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handlePasswordAgainChange = this.handlePasswordAgainChange.bind(this);
@@ -21,72 +23,73 @@ class UserForm extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<p>User form</p>
-				<Link to="/app">Home</Link>
+			<div className="user-form-root">
+				<Link to="/app"><img className="home-button" src="/resource/home.png"></img></Link>
 
 				<form onSubmit={this.handleSubmit}>
 					<div className="expanded row align-center">
 						<div className="column medium-6">
-							<fieldset className="fieldset">
-								<legend>Création d'un nouvel utilisateur</legend>
+                            <h2 className="form-title">Création d'un nouvel utilisateur</h2>
+							<fieldset className="fieldset form-fieldset">
 								<div className="row">
-									<div className="column medium-4">
-										<label htmlFor="user-firstname" className="text-right middle">Prénom : </label>
+									<div data-tooltip aria-haspopup="true" title="Le prénom doit commencer par une majuscule et suivi de lettres minuscules" className="column medium-4">
+										<label htmlFor="user-firstname" className="text-right middle">Prénom</label>
 									</div>
-									<div className="column medium-8">
+                                    <div className="colum medium-1"></div>
+									<div className="column medium-7">
 										<input type="text" id="user-firstname" name="userFirstname" onChange={this.handleChange} maxLength="30" pattern="^[A-Z][a-z]{1,30}$" aria-describedby="firstname-help" required/>
-										<p id="firstname-help" className="help-text">Le prénom doit commencer par une majuscule et suivi de lettres minuscules.</p>
 									</div>
 								</div>
 
 								<div className="row">
-									<div className="column medium-4">
-										<label htmlFor="user-lastname" className="text-right middle">Nom : </label>
+									<div data-tooltip aria-haspopup="true" title="Le nom doit commencer par une majuscule et suivi de lettres minuscules. Le nom peut comporter plusieurs mots." className="column medium-4">
+										<label htmlFor="user-lastname" className="text-right middle">Nom</label>
 									</div>
-									<div className="column medium-8">
+                                    <div className="colum medium-1"></div>
+									<div className="column medium-7">
 										<input type="text" id="user-lastname" name="userLastname" onChange={this.handleChange} maxLength="30" pattern="^([A-Z][a-z]{1,30})( [A-Z][a-z]{1,30})*$" aria-describedby="lastname-help" required/>
-										<p id="lastname-help" className="help-text">Le nom doit commencer par une majuscule et suivi de lettres minuscules. Le nom peut comporter plusieurs mots.</p>
 									</div>
 								</div>
 
 								<div className="row">
-									<div className="column medium-4">
-										<label htmlFor="user-email" className="text-right middle">Email : </label>
+									<div data-tooltip aria-haspopup="true" title="L'adresse email doit respecter les normes usuelles." className="column medium-4">
+										<label htmlFor="user-email" className="text-right middle">Email</label>
 									</div>
-									<div className="column medium-8">
+                                    <div className="colum medium-1"></div>
+									<div className="column medium-7">
 										<input type="email" id="user-email" name="userEmail" onChange={this.handleChange} aria-describedby="email-help" required/>
-										<p id="email-help" className="help-text">L'adresse email doit respecter les normes usuelles.</p>
 									</div>
 								</div>
 
 								<div className="row">
-									<div className="column medium-4">
-										<label htmlFor="user-password" className="text-right middle">Mot de passe : </label>
+									<div data-tooltip aria-haspopup="true" title="Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et/ou un caractère spécial. Il doit contenir au moins 8 caractères." className="column medium-4">
+										<label htmlFor="user-password" className="text-right middle">Mot de passe</label>
 									</div>
-									<div className="column medium-8">
+                                    <div className="colum medium-1"></div>
+									<div className="column medium-7">
 										<input type="password" id="user-password" name="userPassword" onChange={this.handleChange} pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" aria-describedby="password-help" required/>
-										<p id="password-help" className="help-text">Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et/ou un caractère spécial. Il doit contenir au moins 8 caractères.</p>
 									</div>
 								</div>
 
 								<div className="row">
-									<div className="column medium-4">
-										<label htmlFor="user-password-again" className="text-right middle">Mot de passe (vérification) : </label>
+									<div data-tooltip aria-haspopup="true" title="Saisissez à nouveau le mot de passe" className="column medium-4">
+										<label htmlFor="user-password-again" className="text-right middle">Mot de passe (vérification)</label>
 									</div>
-									<div className="column medium-8">
+                                    <div className="colum medium-1"></div>
+									<div className="column medium-7">
 										<input type="password" id="user-password-again" name="userPasswordAgain" onChange={this.handlePasswordAgainChange} pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" aria-describedby="password-again-help" required/>
-										<p id="password-again-help" className="help-text">Saisissez à nouveau le mot de passe.</p>
 									</div>
 								</div>
 
 								<div className="row">
 									<div className="column medium-4">
-										<label htmlFor="" className="text-right middle">Ajouter une photo de profil : </label>
+										<label htmlFor="" className="text-right middle">Ajouter une photo de profil</label>
 									</div>
-									<div className="column medium-8">
+                                    <div className="colum medium-1"></div>
+									<div className="column medium-7">
 										<label htmlFor="profile-picture" className="button">Photo de profil</label>
 										<input type="file" id="profile-picture" name="profilePicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
+                                        <progress max="100" value={this.state.percent}></progress>
 									</div>
 								</div>
 
@@ -141,7 +144,7 @@ class UserForm extends React.Component {
 		// Do something on upload progress:
 	    siofu.addEventListener("progress", function(event) {
 	        var percent = event.bytesLoaded / event.file.size * 100;
-	        console.log("File is", percent.toFixed(2), "percent loaded");
+	        component.setState({percent: percent});
 	    });
 
 	    // Do something when a file is uploaded:

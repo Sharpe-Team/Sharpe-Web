@@ -34,8 +34,8 @@ class Line extends React.Component {
 				<ul id="points" style={{height: "calc(100% - " + this.state.newPointHeight + "px"}}>
 					{
 						this.state.points.map(function(point) {
-							return <Point key={point.id} {...point} />
-						})
+							return <Point key={point.id} point={point} />
+						}, this)
 					}
 				</ul>
 
@@ -54,8 +54,6 @@ class Line extends React.Component {
 	}
 
 	componentWillMount() {
-		// Get all points of this line from DB
-		this.getAllPoints();
 
 		// Get the current user from the token
 		//var token = localStorage.getItem('token');
@@ -63,17 +61,22 @@ class Line extends React.Component {
 		this.setState({
 			user: {
 				id: 1,
-				name: "Toto",
+				firstname: "Toto",
+				lastname: 'Lasticot',
 				email: "toto@toto.fr",
-				picture: "/resource/toto.jpg"
+				profilePicture: "/uploads/sc2.jpg"
 			}
 		});
+
+		// Get all points of this line from DB
+		this.getAllPoints();
 
 		var component = this;
 
 		// Define events function from SocketIO
 		socket.on('new-point', function(point) {
 			point.created = new Date(point.created);
+			point.user = component.state.user;
 			var points = component.state.points;
 			points.push(point);
 			component.setState({
@@ -133,6 +136,10 @@ class Line extends React.Component {
 			return response.json();
 		})
 		.then(function(points) {
+			for(var i=0; i<points.length; i++) {
+				points[i].created = new Date(points[i].created);
+				points[i].updated = new Date(points[i].updated);
+			}
 			component.setState({points: points});
 		})
 		.catch(function(error) {
@@ -143,16 +150,15 @@ class Line extends React.Component {
 	saveNewPoint(text) {
 		var component = this;
 
-		/*
-		fetch('http://localhost:8080/points/insertPointIntoCercle', {
+		fetch('http://localhost:8080/points', {
 			method: 'POST',
-			mode: 'cors',
 			headers: {
 				'Accept': 'application/json',
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + localStorage.getItem('token')
 			},
 			body: JSON.stringify({
-				idLine: component.props.idLine,
+				idLine: component.state.line.id,
 				idUser: component.state.user.id,
 				content: text,
 				created: new Date()
@@ -168,17 +174,6 @@ class Line extends React.Component {
 		.catch(function(error) {
 			console.log(error);
 		});
-		*/
-
-		var points = this.state.points;
-		var point = {
-			id: points[points.length - 1].id + 1,
-			idLine: this.props.idLine,
-			user: this.state.user,
-			content: text,
-			created: new Date()
-		};
-		socket.emit('new-point', point);
 	}
 
 	scrollToBottom() {

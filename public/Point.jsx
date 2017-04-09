@@ -13,19 +13,26 @@ class Point extends React.Component {
     }
 
 	render() {
+        var pictureUrl = (this.props.point.user.profilePicture);
+        if(!pictureUrl) {
+            pictureUrl = "/resource/toto.jpg";
+        }
 		return (
 			<li>
                 <div className="row align-middle">
                     <div className="imageLine column medium-1">
-                        <img className="userPicture" src={this.props.user.picture}/>
+                        <img className="userPicture" src={pictureUrl} />
                     </div>
                     <div className="column medium-11">
                         <div className="row">
-                            <div className="userPoint column medium-6"><b>{this.props.user.name}</b></div>
-                            <div className="datePoint column medium-6">{this.renderDate(this.props.created)}</div>
+                            <div className="userPoint column medium-6">
+                                <b>{this.props.point.user.firstname}</b>
+                                &nbsp;{this.props.point.user.lastname}
+                            </div>
+                            <div className="datePoint column medium-6">{this.renderDate(this.props.point.created)}</div>
                         </div>
                         <div className="row">
-                            <div className="point column medium-12">{this.props.content}</div>
+                            <div className="point column medium-12">{this.props.point.content}</div>
                         </div>
                     </div>
                 </div>

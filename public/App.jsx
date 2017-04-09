@@ -30,7 +30,9 @@ class App extends React.Component {
 	}
 
 	updateSelectedCircle(circle) {
-		this.setState({selectedCircle: circle});
+		if(!this.state.selectedCircle || this.state.selectedCircle.id != circle.id) {
+			this.setState({selectedCircle: circle});
+		}
 	}
 }
 

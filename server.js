@@ -14,6 +14,7 @@ var io = require('socket.io').listen(http);
 var notifier = require('node-notifier');
 var path = require('path');
 var fs = require('fs');
+var nJwt = require('njwt');
 var socketIOFileUpload = require('socketio-file-upload');
 
 var rootPathView = __dirname + '/public';
@@ -104,6 +105,11 @@ function removeUser(loggedUser) {
 	}
 }
 
+function getUserInfoFromToken(token) {
+
+	return null;
+}
+
 // Gestion des sockets avec les clients
 io.sockets.on('connection', function (socket) {
 
@@ -114,6 +120,7 @@ io.sockets.on('connection', function (socket) {
 	*/
 	var loggedUser = {
 		token: null,
+		user: null,
 		disconnected: false
 	};
 
@@ -135,6 +142,7 @@ io.sockets.on('connection', function (socket) {
     			// Add a new user in the list of connected users
 		    	loggedUser = {
 					token: token,
+					user: getUserInfoFromToken(token),
 					disconnected: false
 				};
 				connectedUsers.push(loggedUser);

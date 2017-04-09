@@ -77,20 +77,6 @@ class Navigator extends React.Component {
         })
         .catch(function(error) {
             console.log(error);
-
-            var circles = [];
-            for(var i=0; i<10; i++) {
-                circles.push(
-                    {
-                        id: i+1,
-                        name: "Circle " + (i+1),
-                        profilePicture: "resource/profilePicture.jpg",
-                        bannerPicture: "resource/bannerPicture.jpg"
-                    }
-                );
-            }
-
-            component.props.updateSelectedCircle(circles[0]);
         });
     }
     

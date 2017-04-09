@@ -25269,7 +25269,9 @@ var App = function (_React$Component) {
 	}, {
 		key: 'updateSelectedCircle',
 		value: function updateSelectedCircle(circle) {
-			this.setState({ selectedCircle: circle });
+			if (!this.state.selectedCircle || this.state.selectedCircle.id != circle.id) {
+				this.setState({ selectedCircle: circle });
+			}
 		}
 	}]);
 
@@ -25984,8 +25986,6 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(6);
@@ -26048,8 +26048,8 @@ var Line = function (_React$Component) {
 					'ul',
 					{ id: 'points', style: { height: "calc(100% - " + this.state.newPointHeight + "px" } },
 					this.state.points.map(function (point) {
-						return _react2.default.createElement(_Point2.default, _extends({ key: point.id }, point));
-					})
+						return _react2.default.createElement(_Point2.default, { key: point.id, point: point });
+					}, this)
 				),
 				_react2.default.createElement(
 					'form',
@@ -26078,8 +26078,6 @@ var Line = function (_React$Component) {
 	}, {
 		key: 'componentWillMount',
 		value: function componentWillMount() {
-			// Get all points of this line from DB
-			this.getAllPoints();
 
 			// Get the current user from the token
 			//var token = localStorage.getItem('token');
@@ -26087,17 +26085,22 @@ var Line = function (_React$Component) {
 			this.setState({
 				user: {
 					id: 1,
-					name: "Toto",
+					firstname: "Toto",
+					lastname: 'Lasticot',
 					email: "toto@toto.fr",
-					picture: "/resource/toto.jpg"
+					profilePicture: "/uploads/sc2.jpg"
 				}
 			});
+
+			// Get all points of this line from DB
+			this.getAllPoints();
 
 			var component = this;
 
 			// Define events function from SocketIO
 			socket.on('new-point', function (point) {
 				point.created = new Date(point.created);
+				point.user = component.state.user;
 				var points = component.state.points;
 				points.push(point);
 				component.setState({
@@ -26162,6 +26165,10 @@ var Line = function (_React$Component) {
 			}).then(function (response) {
 				return response.json();
 			}).then(function (points) {
+				for (var i = 0; i < points.length; i++) {
+					points[i].created = new Date(points[i].created);
+					points[i].updated = new Date(points[i].updated);
+				}
 				component.setState({ points: points });
 			}).catch(function (error) {
 				console.log(error);
@@ -26172,42 +26179,27 @@ var Line = function (_React$Component) {
 		value: function saveNewPoint(text) {
 			var component = this;
 
-			/*
-   fetch('http://localhost:8080/points/insertPointIntoCercle', {
-   	method: 'POST',
-   	mode: 'cors',
-   	headers: {
-   		'Accept': 'application/json',
-   		'Content-Type': 'application/json'
-   	},
-   	body: JSON.stringify({
-   		idLine: component.props.idLine,
-   		idUser: component.state.user.id,
-   		content: text,
-   		created: new Date()
-   	})
-   })
-   .then(function(response) {
-   	return response.json();
-   })
-   .then(function(point) {
-   	// Send the new point to the connected users
-   	socket.emit('new-point', point);
-   })
-   .catch(function(error) {
-   	console.log(error);
-   });
-   */
-
-			var points = this.state.points;
-			var point = {
-				id: points[points.length - 1].id + 1,
-				idLine: this.props.idLine,
-				user: this.state.user,
-				content: text,
-				created: new Date()
-			};
-			socket.emit('new-point', point);
+			fetch('http://localhost:8080/points', {
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+					'Authorization': 'Bearer ' + localStorage.getItem('token')
+				},
+				body: JSON.stringify({
+					idLine: component.state.line.id,
+					idUser: component.state.user.id,
+					content: text,
+					created: new Date()
+				})
+			}).then(function (response) {
+				return response.json();
+			}).then(function (point) {
+				// Send the new point to the connected users
+				socket.emit('new-point', point);
+			}).catch(function (error) {
+				console.log(error);
+			});
 		}
 	}, {
 		key: 'scrollToBottom',
@@ -26725,18 +26717,6 @@ var Navigator = function (_React$Component) {
                 }
             }).catch(function (error) {
                 console.log(error);
-
-                var circles = [];
-                for (var i = 0; i < 10; i++) {
-                    circles.push({
-                        id: i + 1,
-                        name: "Circle " + (i + 1),
-                        profilePicture: "resource/profilePicture.jpg",
-                        bannerPicture: "resource/bannerPicture.jpg"
-                    });
-                }
-
-                component.props.updateSelectedCircle(circles[0]);
             });
         }
     }]);
@@ -26860,6 +26840,10 @@ var Point = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            var pictureUrl = this.props.point.user.profilePicture;
+            if (!pictureUrl) {
+                pictureUrl = "/resource/toto.jpg";
+            }
             return _react2.default.createElement(
                 'li',
                 null,
@@ -26869,7 +26853,7 @@ var Point = function (_React$Component) {
                     _react2.default.createElement(
                         'div',
                         { className: 'imageLine column medium-1' },
-                        _react2.default.createElement('img', { className: 'userPicture', src: this.props.user.picture })
+                        _react2.default.createElement('img', { className: 'userPicture', src: pictureUrl })
                     ),
                     _react2.default.createElement(
                         'div',
@@ -26883,13 +26867,15 @@ var Point = function (_React$Component) {
                                 _react2.default.createElement(
                                     'b',
                                     null,
-                                    this.props.user.name
-                                )
+                                    this.props.point.user.firstname
+                                ),
+                                '\xA0',
+                                this.props.point.user.lastname
                             ),
                             _react2.default.createElement(
                                 'div',
                                 { className: 'datePoint column medium-6' },
-                                this.renderDate(this.props.created)
+                                this.renderDate(this.props.point.created)
                             )
                         ),
                         _react2.default.createElement(
@@ -26898,7 +26884,7 @@ var Point = function (_React$Component) {
                             _react2.default.createElement(
                                 'div',
                                 { className: 'point column medium-12' },
-                                this.props.content
+                                this.props.point.content
                             )
                         )
                     )

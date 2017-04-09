@@ -12,6 +12,7 @@ function requireAuth(Component) {
 
 			this.checkAuth = this.checkAuth.bind(this);
 			this.redirectToLogin = this.redirectToLogin.bind(this);
+			this.storeUserInStorage = this.storeUserInStorage.bind(this);
 		}
 
 		render() {
@@ -29,7 +30,7 @@ function requireAuth(Component) {
 			});
 
 			socket.on('verify-token-success', function(user) {
-				localStorage.setItem('user', user);
+				component.storeUserInStorage(user);
 				component.setState({isAuthorized: true});
 			});
 
@@ -53,6 +54,14 @@ function requireAuth(Component) {
 			const redirect = location.pathname + location.search;
 
 			this.props.router.push('/?redirect=' + redirect);
+		}
+
+		storeUserInStorage(user) {
+			localStorage.setItem('user-id', user.id);
+			localStorage.setItem('user-firstname', user.firstname);
+			localStorage.setItem('user-lastname', user.lastname);
+			localStorage.setItem('user-email', user.email);
+			localStorage.setItem('user-profile-picture', user.profilePicture);
 		}
 	}
 

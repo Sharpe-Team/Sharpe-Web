@@ -25405,6 +25405,7 @@ function requireAuth(Component) {
 
 			_this.checkAuth = _this.checkAuth.bind(_this);
 			_this.redirectToLogin = _this.redirectToLogin.bind(_this);
+			_this.storeUserInStorage = _this.storeUserInStorage.bind(_this);
 			return _this;
 		}
 
@@ -25425,7 +25426,8 @@ function requireAuth(Component) {
 					component.redirectToLogin();
 				});
 
-				socket.on('verify-token-success', function () {
+				socket.on('verify-token-success', function (user) {
+					component.storeUserInStorage(user);
 					component.setState({ isAuthorized: true });
 				});
 
@@ -25451,6 +25453,15 @@ function requireAuth(Component) {
 				var redirect = location.pathname + location.search;
 
 				this.props.router.push('/?redirect=' + redirect);
+			}
+		}, {
+			key: 'storeUserInStorage',
+			value: function storeUserInStorage(user) {
+				localStorage.setItem('user-id', user.id);
+				localStorage.setItem('user-firstname', user.firstname);
+				localStorage.setItem('user-lastname', user.lastname);
+				localStorage.setItem('user-email', user.email);
+				localStorage.setItem('user-profile-picture', user.profilePicture);
 			}
 		}]);
 
@@ -26006,6 +26017,7 @@ var Line = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (Line.__proto__ || Object.getPrototypeOf(Line)).call(this, props));
 
 		_this.state = {
+			user: null,
 			line: props.line,
 			points: [],
 			newPoint: "",
@@ -26021,6 +26033,7 @@ var Line = function (_React$Component) {
 		_this.getAllPoints = _this.getAllPoints.bind(_this);
 		_this.saveNewPoint = _this.saveNewPoint.bind(_this);
 		_this.scrollToBottom = _this.scrollToBottom.bind(_this);
+		_this.getUserFromStorage = _this.getUserFromStorage.bind(_this);
 		return _this;
 	}
 
@@ -26067,28 +26080,18 @@ var Line = function (_React$Component) {
 		key: 'componentWillMount',
 		value: function componentWillMount() {
 
-			// Get the current user from the token
-			//var token = localStorage.getItem('token');
+			var component = this;
 
 			this.setState({
-				user: {
-					id: 1,
-					firstname: "Toto",
-					lastname: 'Lasticot',
-					email: "toto@toto.fr",
-					profilePicture: "/uploads/sc2.jpg"
-				}
+				user: component.getUserFromStorage()
 			});
 
 			// Get all points of this line from DB
 			this.getAllPoints();
 
-			var component = this;
-
 			// Define events function from SocketIO
 			socket.on('new-point', function (point) {
 				point.created = new Date(point.created);
-				point.user = component.state.user;
 				var points = component.state.points;
 				points.push(point);
 				component.setState({
@@ -26140,6 +26143,17 @@ var Line = function (_React$Component) {
   *					FUNCTIONS 					*
   *************************************************/
 
+	}, {
+		key: 'getUserFromStorage',
+		value: function getUserFromStorage() {
+			return {
+				id: localStorage.getItem('user-id'),
+				firstname: localStorage.getItem('user-firstname'),
+				lastname: localStorage.getItem('user-lastname'),
+				email: localStorage.getItem('user-email'),
+				profilePicture: localStorage.getItem('user-profile-picture')
+			};
+		}
 	}, {
 		key: 'getAllPoints',
 		value: function getAllPoints() {
@@ -26256,6 +26270,8 @@ var LoginForm = function (_React$Component) {
 		_this.clientConnection = _this.clientConnection.bind(_this);
 		_this.handleClosingAlert = _this.handleClosingAlert.bind(_this);
 		_this.handleShowingAlert = _this.handleShowingAlert.bind(_this);
+		_this.goToNextPage = _this.goToNextPage.bind(_this);
+		_this.storeUserInStorage = _this.storeUserInStorage.bind(_this);
 		return _this;
 	}
 
@@ -26375,8 +26391,15 @@ var LoginForm = function (_React$Component) {
 			);
 		}
 	}, {
-		key: 'componentDidMount',
-		value: function componentDidMount() {}
+		key: 'componentWillMount',
+		value: function componentWillMount() {
+			var component = this;
+
+			socket.on('login-response', function (user) {
+				storeUserInStorage(user);
+				component.goToNextPage();
+			});
+		}
 	}, {
 		key: 'handleChange',
 		value: function handleChange(event) {
@@ -26411,6 +26434,23 @@ var LoginForm = function (_React$Component) {
 			});
 		}
 	}, {
+		key: 'goToNextPage',
+		value: function goToNextPage() {
+			var redirect = this.props.location.query.redirect;
+			var nextPage = redirect ? redirect : '/app';
+			console.log(nextPage);
+			_reactRouter.browserHistory.push(nextPage);
+		}
+	}, {
+		key: 'storeUserInStorage',
+		value: function storeUserInStorage(user) {
+			localStorage.setItem('user-id', user.id);
+			localStorage.setItem('user-firstname', user.firstname);
+			localStorage.setItem('user-lastname', user.lastname);
+			localStorage.setItem('user-email', user.email);
+			localStorage.setItem('user-profile-picture', user.profilePicture);
+		}
+	}, {
 		key: 'clientConnection',
 		value: function clientConnection(email, hashedPassword) {
 			var component = this;
@@ -26419,7 +26459,6 @@ var LoginForm = function (_React$Component) {
 
 			fetch('http://localhost:8080/login', {
 				method: 'POST',
-				//mode: 'cors',
 				headers: {
 					'Accept': 'application/json',
 					'Content-Type': 'application/json'
@@ -26447,13 +26486,6 @@ var LoginForm = function (_React$Component) {
 
 					localStorage.setItem('token', token);
 					socket.emit('login', token);
-
-					socket.on('login-response', function (user) {});
-
-					var redirect = component.props.location.query.redirect;
-					var nextPage = redirect ? redirect : '/app';
-					console.log(nextPage);
-					_reactRouter.browserHistory.push(nextPage);
 				} else {
 					component.setState({
 						error: {
@@ -26473,37 +26505,6 @@ var LoginForm = function (_React$Component) {
 					}
 				});
 			});
-
-			/*
-   localStorage.setItem("token", email);
-   socket.emit('login', email);
-   	var redirect = component.props.location.query.redirect;
-   var nextPage = (redirect) ? redirect : '/app';
-   console.log(nextPage);
-   browserHistory.push(nextPage);
-   */
-
-			/*
-   socket.emit('login', {'email': email, 'password': hashedPassword});
-   	socket.on('login-response', function(data) {
-   		// If the user is successfully authenticated
-   	if(data.isAuthenticated) {
-   		// Clean error message
-   		component.handleClosingAlert();
-   			// Clean the localStorage and save the user and the token in it
-   		localStorage.clear();
-   		localStorage.setItem("user", data.user);
-   		localStorage.setItem("token", data.token);
-   			// Find the next page to redirect to
-   		var redirect = component.props.location.query.redirect;
-   		var nextPage = (redirect) ? redirect : '/app';
-   			browserHistory.push(nextPage);
-   	} else {
-   		// Show the error message
-   		component.handleShowingAlert(data.message.toString());
-   	}
-   });
-   */
 		}
 	}]);
 

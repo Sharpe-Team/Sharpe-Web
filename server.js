@@ -142,6 +142,8 @@ io.sockets.on('connection', function (socket) {
 				};
 				connectedUsersMap.set(token, loggedUser);
     		}
+
+    		socket.emit('login-response', loggedUser.user);
     	} else {
     		console.log("Unregistered user connected...");
     	}
@@ -164,12 +166,15 @@ io.sockets.on('connection', function (socket) {
     });
 
 	socket.on('new-point', function(point) {
+		// Add info of the point's sender
+		point.user = loggedUser.user;
 		// Emit the new point to all connected users
 		io.emit('new-point', point);
 	});
 
 	socket.on('verify-token', function(token) {
 		var decodedToken = getDecodedToken(token);
+
 		if(decodedToken) {
 			socket.emit('verify-token-success', decodedToken.body.user);
 		} else {

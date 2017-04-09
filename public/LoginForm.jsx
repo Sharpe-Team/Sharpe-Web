@@ -20,6 +20,8 @@ class LoginForm extends React.Component {
 		this.clientConnection = this.clientConnection.bind(this);
 		this.handleClosingAlert = this.handleClosingAlert.bind(this);
 		this.handleShowingAlert = this.handleShowingAlert.bind(this);
+		this.goToNextPage = this.goToNextPage.bind(this);
+		this.storeUserInStorage = this.storeUserInStorage.bind(this);
 	}
 
 	render() {
@@ -78,7 +80,13 @@ class LoginForm extends React.Component {
 		);
 	}
 
-	componentDidMount() {
+	componentWillMount() {
+		var component = this;
+
+		socket.on('login-response', function(user) {
+			storeUserInStorage(user);
+			component.goToNextPage();
+		});
 	}
 
 	handleChange(event) {
@@ -110,6 +118,21 @@ class LoginForm extends React.Component {
 		});
 	}
 
+	goToNextPage() {
+		var redirect = this.props.location.query.redirect;
+		var nextPage = (redirect) ? redirect : '/app';
+		console.log(nextPage);
+		browserHistory.push(nextPage);
+	}
+
+	storeUserInStorage(user) {
+		localStorage.setItem('user-id', user.id);
+		localStorage.setItem('user-firstname', user.firstname);
+		localStorage.setItem('user-lastname', user.lastname);
+		localStorage.setItem('user-email', user.email);
+		localStorage.setItem('user-profile-picture', user.profilePicture);
+	}
+
 	clientConnection(email, hashedPassword) {
 		var component = this;
 
@@ -117,7 +140,6 @@ class LoginForm extends React.Component {
 
 		fetch('http://localhost:8080/login', {
 			method: 'POST',
-			//mode: 'cors',
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
@@ -147,15 +169,6 @@ class LoginForm extends React.Component {
 
 				localStorage.setItem('token', token);
 				socket.emit('login', token);
-
-				socket.on('login-response', function(user) {
-					
-				});
-
-				var redirect = component.props.location.query.redirect;
-				var nextPage = (redirect) ? redirect : '/app';
-				console.log(nextPage);
-				browserHistory.push(nextPage);
 			} else {
 				component.setState({
 					error: {
@@ -176,44 +189,6 @@ class LoginForm extends React.Component {
 				}
 			});
 		});
-		
-		/*
-		localStorage.setItem("token", email);
-		socket.emit('login', email);
-
-		var redirect = component.props.location.query.redirect;
-		var nextPage = (redirect) ? redirect : '/app';
-		console.log(nextPage);
-		browserHistory.push(nextPage);
-		*/
-		
-
-		/*
-		socket.emit('login', {'email': email, 'password': hashedPassword});
-
-		socket.on('login-response', function(data) {
-
-			// If the user is successfully authenticated
-			if(data.isAuthenticated) {
-				// Clean error message
-				component.handleClosingAlert();
-
-				// Clean the localStorage and save the user and the token in it
-				localStorage.clear();
-				localStorage.setItem("user", data.user);
-				localStorage.setItem("token", data.token);
-
-				// Find the next page to redirect to
-				var redirect = component.props.location.query.redirect;
-				var nextPage = (redirect) ? redirect : '/app';
-
-				browserHistory.push(nextPage);
-			} else {
-				// Show the error message
-				component.handleShowingAlert(data.message.toString());
-			}
-		});
-		*/
 	}
 }
 

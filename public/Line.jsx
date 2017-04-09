@@ -9,6 +9,7 @@ class Line extends React.Component {
 		super(props);
 
 		this.state = {
+			user: null,
 			line: props.line,
 			points: [],
 			newPoint: "",
@@ -24,6 +25,7 @@ class Line extends React.Component {
 		this.getAllPoints = this.getAllPoints.bind(this);
 		this.saveNewPoint = this.saveNewPoint.bind(this);
 		this.scrollToBottom = this.scrollToBottom.bind(this);
+		this.getUserFromStorage = this.getUserFromStorage.bind(this);
 	}
     
     // <input type="text" id="new-point" value={this.state.newpoint} onChange={this.handlePointChanges} />
@@ -55,28 +57,18 @@ class Line extends React.Component {
 
 	componentWillMount() {
 
-		// Get the current user from the token
-		//var token = localStorage.getItem('token');
+		var component = this;
 
 		this.setState({
-			user: {
-				id: 1,
-				firstname: "Toto",
-				lastname: 'Lasticot',
-				email: "toto@toto.fr",
-				profilePicture: "/uploads/sc2.jpg"
-			}
+			user: component.getUserFromStorage()
 		});
 
 		// Get all points of this line from DB
 		this.getAllPoints();
 
-		var component = this;
-
 		// Define events function from SocketIO
 		socket.on('new-point', function(point) {
 			point.created = new Date(point.created);
-			point.user = component.state.user;
 			var points = component.state.points;
 			points.push(point);
 			component.setState({
@@ -122,6 +114,16 @@ class Line extends React.Component {
 	/************************************************
 	*					FUNCTIONS 					*
 	*************************************************/
+
+	getUserFromStorage() {
+		return {
+			id: localStorage.getItem('user-id'),
+			firstname: localStorage.getItem('user-firstname'),
+			lastname: localStorage.getItem('user-lastname'),
+			email: localStorage.getItem('user-email'),
+			profilePicture: localStorage.getItem('user-profile-picture')
+		}
+	}
 
 	getAllPoints() {
 		var component = this;

@@ -136,8 +136,9 @@ class CircleForm extends React.Component {
 	        console.log(event.success);
 	        console.log(event.file);
 
-	        // If the files were uploaded successfuly, save the circle in the DataBase
+	        // If the files were uploaded successfuly, save the circle in the DB
 	        if(event.success) {
+	        	// Do nothing, the server send another event with the final path of the uploaded files
 	        	component.createCircle();
 	        } else {
 	        	alert("Une erreur est survenue lors de l'envoi des images...");
@@ -159,8 +160,6 @@ class CircleForm extends React.Component {
 
 	createCircle() {
 		var component = this;
-
-		console.log(component.state.moderators);
 
 		fetch('http://localhost:8080/circles', {
 			method: 'POST',

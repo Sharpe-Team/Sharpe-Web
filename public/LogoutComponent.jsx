@@ -14,9 +14,13 @@ class LogoutComponent extends React.Component {
 
 		// Remove the token in DB
 		if(localStorage.getItem('token') != null) {
+			
+			localStorage.clear();
+			socket.emit('logout');
+			browserHistory.push('/');
+			/*
 			fetch('http://localhost:8080/removeToken?token=' + localStorage.getItem('token'), {
 				method: 'GET',
-				mode: 'cors'
 			})
 			.then(function(response) {
 				return response.json();
@@ -31,6 +35,7 @@ class LogoutComponent extends React.Component {
 				socket.emit('logout');
 				browserHistory.push('/');
 			});
+			*/
 		}
 	}
 

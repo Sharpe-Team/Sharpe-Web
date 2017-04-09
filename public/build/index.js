@@ -25417,6 +25417,18 @@ function requireAuth(Component) {
 		}, {
 			key: 'componentWillMount',
 			value: function componentWillMount() {
+				var component = this;
+
+				// Define SocketIO events
+				socket.on('verify-token-failure', function () {
+					localStorage.clear();
+					component.redirectToLogin();
+				});
+
+				socket.on('verify-token-success', function () {
+					component.setState({ isAuthorized: true });
+				});
+
 				this.checkAuth();
 			}
 		}, {
@@ -25425,31 +25437,7 @@ function requireAuth(Component) {
 				console.log(localStorage.getItem("token"));
 
 				if (localStorage.getItem("token") != null) {
-					var token = localStorage.getItem("token");
-
-					// Check validity of the token. If valid, authorize access to the route
-					/*
-     fetch('http://localhost:8080/checkTokenValidity?token=' + token, {
-     	method: 'GET',
-     	mode: 'cors'
-     })
-     .then(function(response) {
-     	return response.json();
-     })
-     .then(function(response) {
-     	// Store the new token with TTL refreshed
-     	if(response.status == 200) {
-     		localStorage.setItem('token', response.token);
-     		this.state.setState({isAuthorized: true});
-     	}
-     })
-     .catch(function(error) {
-     	this.redirectToLogin();
-     });
-     */
-
-					localStorage.setItem('token', token);
-					this.setState({ isAuthorized: true });
+					socket.emit('verify-token', localStorage.getItem("token"));
 				} else {
 					this.redirectToLogin();
 				}
@@ -26458,6 +26446,9 @@ var LoginForm = function (_React$Component) {
 					var token = authorizationHeader.split(" ")[1];
 
 					localStorage.setItem('token', token);
+					socket.emit('login', token);
+
+					socket.on('login-response', function (user) {});
 
 					var redirect = component.props.location.query.redirect;
 					var nextPage = redirect ? redirect : '/app';
@@ -26567,20 +26558,28 @@ var LogoutComponent = function (_React$Component) {
 
 			// Remove the token in DB
 			if (localStorage.getItem('token') != null) {
-				fetch('http://localhost:8080/removeToken?token=' + localStorage.getItem('token'), {
-					method: 'GET',
-					mode: 'cors'
-				}).then(function (response) {
-					return response.json();
-				}).then(function (response) {
-					localStorage.clear();
-					socket.emit('logout');
-					_reactRouter.browserHistory.push('/');
-				}).catch(function (error) {
-					localStorage.clear();
-					socket.emit('logout');
-					_reactRouter.browserHistory.push('/');
-				});
+
+				localStorage.clear();
+				socket.emit('logout');
+				_reactRouter.browserHistory.push('/');
+				/*
+    fetch('http://localhost:8080/removeToken?token=' + localStorage.getItem('token'), {
+    	method: 'GET',
+    })
+    .then(function(response) {
+    	return response.json();
+    })
+    .then(function(response) {
+    	localStorage.clear();
+    	socket.emit('logout');
+    	browserHistory.push('/');
+    })
+    .catch(function(error) {
+    	localStorage.clear();
+    	socket.emit('logout');
+    	browserHistory.push('/');
+    });
+    */
 			}
 		}
 	}, {

@@ -19,6 +19,8 @@ var socketIOFileUpload = require('socketio-file-upload');
 
 var rootPathView = __dirname + '/public';
 const UPLOAD_DIRECTORY = __dirname + '/public/uploads';
+const SECRET_KEY = "ThisIsASecret";
+const ALGORITHM = 'HS512';
 
 /**
  * Gestion des requêtes HTTP des utilisateurs en leur renvoyant les fichiers du dossier 'public'
@@ -88,26 +90,19 @@ app.get('/toto', function(req, res) {
 });
 */
 
-var connectedUsers = [];
+var connectedUsersMap = new Map();
 
-function findUserByToken(token) {
-	var result = connectedUsers.findIndex(function(element) {
-		return element.token == token;
-	});
-
-	return result;
-}
-
-function removeUser(loggedUser) {
-	var userIndex = findUserByToken(loggedUser.token);
-	if(userIndex > -1) {
-		connectedUsers.splice(userIndex, 1);
+/**
+ *	Verify the validity of the token.
+ *	Return the decoded token if it is valid, return null otherwise.
+ */
+function getDecodedToken(token) {
+	try {
+		return nJwt.verify(token, SECRET_KEY, ALGORITHM);
+	} catch(e) {
+		console.log(e);
+		return null;
 	}
-}
-
-function getUserInfoFromToken(token) {
-
-	return null;
 }
 
 // Gestion des sockets avec les clients
@@ -126,31 +121,31 @@ io.sockets.on('connection', function (socket) {
 
 	// Make an instance of SocketIOFileUpload and listen on this socket:
     var uploader = new socketIOFileUpload();
-    uploader.dir = "./uploads";
+    uploader.dir = UPLOAD_DIRECTORY;
     uploader.listen(socket);
 
     socket.on('login', function(token) {
-    	if(token != null) {
-    		var userIndex = findUserByToken(token);
+    	var decodedToken;
 
-    		if(userIndex > -1) {
+    	if(token && (decodedToken = getDecodedToken(token))) {
+    		if(connectedUsersMap.has(token)) {
     			// The current socket is the new socket of a previous connected user
     			// Assign to this new socket the previous data of the user
-    			loggedUser = connectedUsers[userIndex];
+    			loggedUser = connectedUsersMap.get(token);
     			loggedUser.disconnected = false;
     		} else {
     			// Add a new user in the list of connected users
 		    	loggedUser = {
 					token: token,
-					user: getUserInfoFromToken(token),
+					user: decodedToken.body.user,
 					disconnected: false
 				};
-				connectedUsers.push(loggedUser);
+				connectedUsersMap.set(token, loggedUser);
     		}
     	} else {
     		console.log("Unregistered user connected...");
     	}
-		console.log(connectedUsers);
+		console.log(connectedUsersMap.size);
     });
 
     socket.on('disconnect', function() {
@@ -159,19 +154,31 @@ io.sockets.on('connection', function (socket) {
     	// The user get 10 seconds to reconnect
     	setTimeout(function() {
     		if(loggedUser.disconnected) {
-    			removeUser(loggedUser);
+    			connectedUsersMap.delete(loggedUser.token);
     		}
     	}, 10000);
     });
 
     socket.on('logout', function() {
-		removeUser(loggedUser);
+		connectedUsersMap.delete(loggedUser.token);
     });
 
 	socket.on('new-point', function(point) {
 		// Emit the new point to all connected users
 		io.emit('new-point', point);
 	});
+
+	socket.on('verify-token', function(token) {
+		var decodedToken = getDecodedToken(token);
+		if(decodedToken) {
+			socket.emit('verify-token-success', decodedToken.body.user);
+		} else {
+			socket.emit('verify-token-failure');
+		}
+	});
+
+
+	/****************** SOCKET_IO_FILE_UPLOAD ******************/
 
     // Do something when a file is saved:
     uploader.on("saved", function(event) {

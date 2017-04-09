@@ -7,7 +7,9 @@ class UserForm extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {};
+		this.state = {
+            percent: 25
+        };
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handlePasswordAgainChange = this.handlePasswordAgainChange.bind(this);
@@ -87,6 +89,7 @@ class UserForm extends React.Component {
 									<div className="column medium-7">
 										<label htmlFor="profile-picture" className="button">Photo de profil</label>
 										<input type="file" id="profile-picture" name="profilePicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
+                                        <progress max="100" value={this.state.percent}></progress>
 									</div>
 								</div>
 
@@ -141,7 +144,7 @@ class UserForm extends React.Component {
 		// Do something on upload progress:
 	    siofu.addEventListener("progress", function(event) {
 	        var percent = event.bytesLoaded / event.file.size * 100;
-	        console.log("File is", percent.toFixed(2), "percent loaded");
+	        component.setState({percent: percent});
 	    });
 
 	    // Do something when a file is uploaded:

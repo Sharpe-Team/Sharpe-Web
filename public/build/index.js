@@ -27441,7 +27441,9 @@ var UserForm = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (UserForm.__proto__ || Object.getPrototypeOf(UserForm)).call(this, props));
 
-		_this.state = {};
+		_this.state = {
+			percent: 25
+		};
 
 		_this.handleChange = _this.handleChange.bind(_this);
 		_this.handlePasswordAgainChange = _this.handlePasswordAgainChange.bind(_this);
@@ -27598,7 +27600,8 @@ var UserForm = function (_React$Component) {
 											{ htmlFor: 'profile-picture', className: 'button' },
 											'Photo de profil'
 										),
-										_react2.default.createElement('input', { type: 'file', id: 'profile-picture', name: 'profilePicture', className: 'show-for-sr', accept: 'image/*', onChange: this.handleFileUpload })
+										_react2.default.createElement('input', { type: 'file', id: 'profile-picture', name: 'profilePicture', className: 'show-for-sr', accept: 'image/*', onChange: this.handleFileUpload }),
+										_react2.default.createElement('progress', { max: '100', value: this.state.percent })
 									)
 								),
 								_react2.default.createElement(
@@ -27662,7 +27665,7 @@ var UserForm = function (_React$Component) {
 			// Do something on upload progress:
 			siofu.addEventListener("progress", function (event) {
 				var percent = event.bytesLoaded / event.file.size * 100;
-				console.log("File is", percent.toFixed(2), "percent loaded");
+				component.setState({ percent: percent });
 			});
 
 			// Do something when a file is uploaded:

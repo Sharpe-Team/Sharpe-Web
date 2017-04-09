@@ -22,7 +22,7 @@ class UserForm extends React.Component {
 	render() {
 		return (
 			<div className="user-form-root">
-				<Link className="medium-6" to="/app"><img className="home-button" src="/resource/home.png"></img></Link>
+				<Link to="/app"><img className="home-button" src="/resource/home.png"></img></Link>
 
 				<form onSubmit={this.handleSubmit}>
 					<div className="expanded row align-center">
@@ -30,7 +30,7 @@ class UserForm extends React.Component {
                             <h2 className="form-title">Création d'un nouvel utilisateur</h2>
 							<fieldset className="fieldset form-fieldset">
 								<div className="row">
-									<div data-tooltip aria-haspopup="true" class="has-tip" title="Le prénom doit commencer par une majuscule et suivi de lettres minuscules" className="column medium-4">
+									<div data-tooltip aria-haspopup="true" title="Le prénom doit commencer par une majuscule et suivi de lettres minuscules" className="column medium-4">
 										<label htmlFor="user-firstname" className="text-right middle">Prénom</label>
 									</div>
                                     <div className="colum medium-1"></div>
@@ -40,7 +40,7 @@ class UserForm extends React.Component {
 								</div>
 
 								<div className="row">
-									<div data-tooltip aria-haspopup="true" class="has-tip" title="Le nom doit commencer par une majuscule et suivi de lettres minuscules. Le nom peut comporter plusieurs mots." className="column medium-4">
+									<div data-tooltip aria-haspopup="true" title="Le nom doit commencer par une majuscule et suivi de lettres minuscules. Le nom peut comporter plusieurs mots." className="column medium-4">
 										<label htmlFor="user-lastname" className="text-right middle">Nom</label>
 									</div>
                                     <div className="colum medium-1"></div>
@@ -50,7 +50,7 @@ class UserForm extends React.Component {
 								</div>
 
 								<div className="row">
-									<div data-tooltip aria-haspopup="true" class="has-tip" title="L'adresse email doit respecter les normes usuelles." className="column medium-4">
+									<div data-tooltip aria-haspopup="true" title="L'adresse email doit respecter les normes usuelles." className="column medium-4">
 										<label htmlFor="user-email" className="text-right middle">Email</label>
 									</div>
                                     <div className="colum medium-1"></div>
@@ -60,7 +60,7 @@ class UserForm extends React.Component {
 								</div>
 
 								<div className="row">
-									<div data-tooltip aria-haspopup="true" class="has-tip" title="Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et/ou un caractère spécial. Il doit contenir au moins 8 caractères." className="column medium-4">
+									<div data-tooltip aria-haspopup="true" title="Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et/ou un caractère spécial. Il doit contenir au moins 8 caractères." className="column medium-4">
 										<label htmlFor="user-password" className="text-right middle">Mot de passe</label>
 									</div>
                                     <div className="colum medium-1"></div>
@@ -70,7 +70,7 @@ class UserForm extends React.Component {
 								</div>
 
 								<div className="row">
-									<div data-tooltip aria-haspopup="true" class="has-tip" title="Saisissez à nouveau le mot de passe" className="column medium-4">
+									<div data-tooltip aria-haspopup="true" title="Saisissez à nouveau le mot de passe" className="column medium-4">
 										<label htmlFor="user-password-again" className="text-right middle">Mot de passe (vérification)</label>
 									</div>
                                     <div className="colum medium-1"></div>

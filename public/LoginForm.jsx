@@ -24,16 +24,15 @@ class LoginForm extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<p>Login form</p>
-				<Link to="/app">Home</Link>
-
+			<div className="login-form-root">
+                
+                <img className="expanded row align-center logo" src="/resource/logo.png"/>
+                
 				<form onSubmit={this.handleSubmit}>
 					<div className="expanded row align-center">
-						<div className="column medium-3">
-							<fieldset className="fieldset">
-								<legend>Connexion</legend>
-
+						<div className="column medium-4">
+							<fieldset className="fieldset form-fieldset">
+								
 								{this.state.error.showError &&
 									<div id="error-message" className="alert callout">
 										<p>{this.state.error.message}</p>

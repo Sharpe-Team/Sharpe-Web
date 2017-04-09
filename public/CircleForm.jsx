@@ -23,7 +23,7 @@ class CircleForm extends React.Component {
 	render() {
 		return (
 			<div className="circle-form-root">
-                <Link className="medium-6" to="/app"><img className="home-button" src="/resource/home.png"></img></Link>
+                <Link to="/app"><img className="home-button" src="/resource/home.png"></img></Link>
 
 				<form onSubmit={this.handleSubmit}>
 					<div className="expanded row align-center">
@@ -55,13 +55,13 @@ class CircleForm extends React.Component {
 									</div>
                                     <div className="colum medium-1"></div>
 									<div className="column medium-7">
-										<label htmlFor="banner-picture" className="button">Photo de la bannière</label>
+										<label htmlFor="banner-picture" className="button">Bannière</label>
 										<input type="file" id="banner-picture" name="bannerPicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
 									</div>
 								</div>
 								<div className="row">
 									<div data-tooltip aria-haspopup="true" class="has-tip" title="Vous pouvez sélectionner plusieurs modérateurs. Vous pouvez taper les premières lettres du modérateur pour le retrouver plus facilement." className="column medium-4 form-label">
-										<label htmlFor="moderators" className="text-right middle">Liste des modérateurs </label>
+										<label htmlFor="moderators" className="text-right middle">Liste des modérateurs</label>
 									</div>
                                     <div className="colum medium-1"></div>
 									<div className="column medium-7">

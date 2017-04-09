@@ -5817,7 +5817,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 var _prodInvariant = __webpack_require__(5);
 
-var DOMProperty = __webpack_require__(21);
+var DOMProperty = __webpack_require__(22);
 var ReactDOMComponentFlags = __webpack_require__(141);
 
 var invariant = __webpack_require__(2);
@@ -7215,6 +7215,168 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+exports.__esModule = true;
+exports.createMemoryHistory = exports.hashHistory = exports.browserHistory = exports.applyRouterMiddleware = exports.formatPattern = exports.useRouterHistory = exports.match = exports.routerShape = exports.locationShape = exports.PropTypes = exports.RoutingContext = exports.RouterContext = exports.createRoutes = exports.useRoutes = exports.RouteContext = exports.Lifecycle = exports.History = exports.Route = exports.Redirect = exports.IndexRoute = exports.IndexRedirect = exports.withRouter = exports.IndexLink = exports.Link = exports.Router = undefined;
+
+var _RouteUtils = __webpack_require__(23);
+
+Object.defineProperty(exports, 'createRoutes', {
+  enumerable: true,
+  get: function get() {
+    return _RouteUtils.createRoutes;
+  }
+});
+
+var _PropTypes2 = __webpack_require__(96);
+
+Object.defineProperty(exports, 'locationShape', {
+  enumerable: true,
+  get: function get() {
+    return _PropTypes2.locationShape;
+  }
+});
+Object.defineProperty(exports, 'routerShape', {
+  enumerable: true,
+  get: function get() {
+    return _PropTypes2.routerShape;
+  }
+});
+
+var _PatternUtils = __webpack_require__(37);
+
+Object.defineProperty(exports, 'formatPattern', {
+  enumerable: true,
+  get: function get() {
+    return _PatternUtils.formatPattern;
+  }
+});
+
+var _Router2 = __webpack_require__(350);
+
+var _Router3 = _interopRequireDefault(_Router2);
+
+var _Link2 = __webpack_require__(159);
+
+var _Link3 = _interopRequireDefault(_Link2);
+
+var _IndexLink2 = __webpack_require__(344);
+
+var _IndexLink3 = _interopRequireDefault(_IndexLink2);
+
+var _withRouter2 = __webpack_require__(363);
+
+var _withRouter3 = _interopRequireDefault(_withRouter2);
+
+var _IndexRedirect2 = __webpack_require__(345);
+
+var _IndexRedirect3 = _interopRequireDefault(_IndexRedirect2);
+
+var _IndexRoute2 = __webpack_require__(346);
+
+var _IndexRoute3 = _interopRequireDefault(_IndexRoute2);
+
+var _Redirect2 = __webpack_require__(160);
+
+var _Redirect3 = _interopRequireDefault(_Redirect2);
+
+var _Route2 = __webpack_require__(348);
+
+var _Route3 = _interopRequireDefault(_Route2);
+
+var _History2 = __webpack_require__(343);
+
+var _History3 = _interopRequireDefault(_History2);
+
+var _Lifecycle2 = __webpack_require__(347);
+
+var _Lifecycle3 = _interopRequireDefault(_Lifecycle2);
+
+var _RouteContext2 = __webpack_require__(349);
+
+var _RouteContext3 = _interopRequireDefault(_RouteContext2);
+
+var _useRoutes2 = __webpack_require__(362);
+
+var _useRoutes3 = _interopRequireDefault(_useRoutes2);
+
+var _RouterContext2 = __webpack_require__(65);
+
+var _RouterContext3 = _interopRequireDefault(_RouterContext2);
+
+var _RoutingContext2 = __webpack_require__(351);
+
+var _RoutingContext3 = _interopRequireDefault(_RoutingContext2);
+
+var _PropTypes3 = _interopRequireDefault(_PropTypes2);
+
+var _match2 = __webpack_require__(360);
+
+var _match3 = _interopRequireDefault(_match2);
+
+var _useRouterHistory2 = __webpack_require__(165);
+
+var _useRouterHistory3 = _interopRequireDefault(_useRouterHistory2);
+
+var _applyRouterMiddleware2 = __webpack_require__(353);
+
+var _applyRouterMiddleware3 = _interopRequireDefault(_applyRouterMiddleware2);
+
+var _browserHistory2 = __webpack_require__(354);
+
+var _browserHistory3 = _interopRequireDefault(_browserHistory2);
+
+var _hashHistory2 = __webpack_require__(358);
+
+var _hashHistory3 = _interopRequireDefault(_hashHistory2);
+
+var _createMemoryHistory2 = __webpack_require__(162);
+
+var _createMemoryHistory3 = _interopRequireDefault(_createMemoryHistory2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.Router = _Router3.default; /* components */
+
+exports.Link = _Link3.default;
+exports.IndexLink = _IndexLink3.default;
+exports.withRouter = _withRouter3.default;
+
+/* components (configuration) */
+
+exports.IndexRedirect = _IndexRedirect3.default;
+exports.IndexRoute = _IndexRoute3.default;
+exports.Redirect = _Redirect3.default;
+exports.Route = _Route3.default;
+
+/* mixins */
+
+exports.History = _History3.default;
+exports.Lifecycle = _Lifecycle3.default;
+exports.RouteContext = _RouteContext3.default;
+
+/* utils */
+
+exports.useRoutes = _useRoutes3.default;
+exports.RouterContext = _RouterContext3.default;
+exports.RoutingContext = _RoutingContext3.default;
+exports.PropTypes = _PropTypes3.default;
+exports.match = _match3.default;
+exports.useRouterHistory = _useRouterHistory3.default;
+exports.applyRouterMiddleware = _applyRouterMiddleware3.default;
+
+/* histories */
+
+exports.browserHistory = _browserHistory3.default;
+exports.hashHistory = _hashHistory3.default;
+exports.createMemoryHistory = _createMemoryHistory3.default;
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -7427,7 +7589,7 @@ module.exports = DOMProperty;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7524,168 +7686,6 @@ function createRoutes(routes) {
 
   return routes;
 }
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-exports.createMemoryHistory = exports.hashHistory = exports.browserHistory = exports.applyRouterMiddleware = exports.formatPattern = exports.useRouterHistory = exports.match = exports.routerShape = exports.locationShape = exports.PropTypes = exports.RoutingContext = exports.RouterContext = exports.createRoutes = exports.useRoutes = exports.RouteContext = exports.Lifecycle = exports.History = exports.Route = exports.Redirect = exports.IndexRoute = exports.IndexRedirect = exports.withRouter = exports.IndexLink = exports.Link = exports.Router = undefined;
-
-var _RouteUtils = __webpack_require__(22);
-
-Object.defineProperty(exports, 'createRoutes', {
-  enumerable: true,
-  get: function get() {
-    return _RouteUtils.createRoutes;
-  }
-});
-
-var _PropTypes2 = __webpack_require__(96);
-
-Object.defineProperty(exports, 'locationShape', {
-  enumerable: true,
-  get: function get() {
-    return _PropTypes2.locationShape;
-  }
-});
-Object.defineProperty(exports, 'routerShape', {
-  enumerable: true,
-  get: function get() {
-    return _PropTypes2.routerShape;
-  }
-});
-
-var _PatternUtils = __webpack_require__(37);
-
-Object.defineProperty(exports, 'formatPattern', {
-  enumerable: true,
-  get: function get() {
-    return _PatternUtils.formatPattern;
-  }
-});
-
-var _Router2 = __webpack_require__(350);
-
-var _Router3 = _interopRequireDefault(_Router2);
-
-var _Link2 = __webpack_require__(159);
-
-var _Link3 = _interopRequireDefault(_Link2);
-
-var _IndexLink2 = __webpack_require__(344);
-
-var _IndexLink3 = _interopRequireDefault(_IndexLink2);
-
-var _withRouter2 = __webpack_require__(363);
-
-var _withRouter3 = _interopRequireDefault(_withRouter2);
-
-var _IndexRedirect2 = __webpack_require__(345);
-
-var _IndexRedirect3 = _interopRequireDefault(_IndexRedirect2);
-
-var _IndexRoute2 = __webpack_require__(346);
-
-var _IndexRoute3 = _interopRequireDefault(_IndexRoute2);
-
-var _Redirect2 = __webpack_require__(160);
-
-var _Redirect3 = _interopRequireDefault(_Redirect2);
-
-var _Route2 = __webpack_require__(348);
-
-var _Route3 = _interopRequireDefault(_Route2);
-
-var _History2 = __webpack_require__(343);
-
-var _History3 = _interopRequireDefault(_History2);
-
-var _Lifecycle2 = __webpack_require__(347);
-
-var _Lifecycle3 = _interopRequireDefault(_Lifecycle2);
-
-var _RouteContext2 = __webpack_require__(349);
-
-var _RouteContext3 = _interopRequireDefault(_RouteContext2);
-
-var _useRoutes2 = __webpack_require__(362);
-
-var _useRoutes3 = _interopRequireDefault(_useRoutes2);
-
-var _RouterContext2 = __webpack_require__(65);
-
-var _RouterContext3 = _interopRequireDefault(_RouterContext2);
-
-var _RoutingContext2 = __webpack_require__(351);
-
-var _RoutingContext3 = _interopRequireDefault(_RoutingContext2);
-
-var _PropTypes3 = _interopRequireDefault(_PropTypes2);
-
-var _match2 = __webpack_require__(360);
-
-var _match3 = _interopRequireDefault(_match2);
-
-var _useRouterHistory2 = __webpack_require__(165);
-
-var _useRouterHistory3 = _interopRequireDefault(_useRouterHistory2);
-
-var _applyRouterMiddleware2 = __webpack_require__(353);
-
-var _applyRouterMiddleware3 = _interopRequireDefault(_applyRouterMiddleware2);
-
-var _browserHistory2 = __webpack_require__(354);
-
-var _browserHistory3 = _interopRequireDefault(_browserHistory2);
-
-var _hashHistory2 = __webpack_require__(358);
-
-var _hashHistory3 = _interopRequireDefault(_hashHistory2);
-
-var _createMemoryHistory2 = __webpack_require__(162);
-
-var _createMemoryHistory3 = _interopRequireDefault(_createMemoryHistory2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.Router = _Router3.default; /* components */
-
-exports.Link = _Link3.default;
-exports.IndexLink = _IndexLink3.default;
-exports.withRouter = _withRouter3.default;
-
-/* components (configuration) */
-
-exports.IndexRedirect = _IndexRedirect3.default;
-exports.IndexRoute = _IndexRoute3.default;
-exports.Redirect = _Redirect3.default;
-exports.Route = _Route3.default;
-
-/* mixins */
-
-exports.History = _History3.default;
-exports.Lifecycle = _Lifecycle3.default;
-exports.RouteContext = _RouteContext3.default;
-
-/* utils */
-
-exports.useRoutes = _useRoutes3.default;
-exports.RouterContext = _RouterContext3.default;
-exports.RoutingContext = _RoutingContext3.default;
-exports.PropTypes = _PropTypes3.default;
-exports.match = _match3.default;
-exports.useRouterHistory = _useRouterHistory3.default;
-exports.applyRouterMiddleware = _applyRouterMiddleware3.default;
-
-/* histories */
-
-exports.browserHistory = _browserHistory3.default;
-exports.hashHistory = _hashHistory3.default;
-exports.createMemoryHistory = _createMemoryHistory3.default;
 
 /***/ }),
 /* 24 */
@@ -12057,7 +12057,7 @@ var _getRouteParams = __webpack_require__(357);
 
 var _getRouteParams2 = _interopRequireDefault(_getRouteParams);
 
-var _RouteUtils = __webpack_require__(22);
+var _RouteUtils = __webpack_require__(23);
 
 var _routerWarning = __webpack_require__(11);
 
@@ -20347,7 +20347,7 @@ module.exports = PooledClass.addPoolingTo(CallbackQueue);
 
 
 
-var DOMProperty = __webpack_require__(21);
+var DOMProperty = __webpack_require__(22);
 var ReactDOMComponentTree = __webpack_require__(9);
 var ReactInstrumentation = __webpack_require__(15);
 
@@ -21087,7 +21087,7 @@ module.exports = ReactInputSelection;
 var _prodInvariant = __webpack_require__(5);
 
 var DOMLazyTree = __webpack_require__(35);
-var DOMProperty = __webpack_require__(21);
+var DOMProperty = __webpack_require__(22);
 var React = __webpack_require__(38);
 var ReactBrowserEventEmitter = __webpack_require__(60);
 var ReactCurrentOwner = __webpack_require__(19);
@@ -22514,7 +22514,7 @@ var _invariant = __webpack_require__(12);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _RouteUtils = __webpack_require__(22);
+var _RouteUtils = __webpack_require__(23);
 
 var _PatternUtils = __webpack_require__(37);
 
@@ -25726,7 +25726,7 @@ var _react = __webpack_require__(6);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(23);
+var _reactRouter = __webpack_require__(21);
 
 var _Circle = __webpack_require__(187);
 
@@ -25804,7 +25804,7 @@ var _react = __webpack_require__(6);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(23);
+var _reactRouter = __webpack_require__(21);
 
 var _AuthenticationComponent = __webpack_require__(186);
 
@@ -25889,7 +25889,7 @@ var _react = __webpack_require__(6);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(23);
+var _reactRouter = __webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26154,7 +26154,7 @@ var _react = __webpack_require__(6);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(23);
+var _reactRouter = __webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26197,7 +26197,7 @@ var CircleForm = function (_React$Component) {
 				{ className: 'circle-form-root' },
 				_react2.default.createElement(
 					_reactRouter.Link,
-					{ className: 'medium-6', to: '/app' },
+					{ to: '/app' },
 					_react2.default.createElement('img', { className: 'home-button', src: '/resource/home.png' })
 				),
 				_react2.default.createElement(
@@ -26279,7 +26279,7 @@ var CircleForm = function (_React$Component) {
 										_react2.default.createElement(
 											'label',
 											{ htmlFor: 'banner-picture', className: 'button' },
-											'Photo de la banni\xE8re'
+											'Banni\xE8re'
 										),
 										_react2.default.createElement('input', { type: 'file', id: 'banner-picture', name: 'bannerPicture', className: 'show-for-sr', accept: 'image/*', onChange: this.handleFileUpload })
 									)
@@ -26293,7 +26293,7 @@ var CircleForm = function (_React$Component) {
 										_react2.default.createElement(
 											'label',
 											{ htmlFor: 'moderators', className: 'text-right middle' },
-											'Liste des mod\xE9rateurs '
+											'Liste des mod\xE9rateurs'
 										)
 									),
 									_react2.default.createElement('div', { className: 'colum medium-1' }),
@@ -26732,7 +26732,7 @@ var _react = __webpack_require__(6);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(23);
+var _reactRouter = __webpack_require__(21);
 
 var _passwordHash = __webpack_require__(131);
 
@@ -26777,17 +26777,8 @@ var LoginForm = function (_React$Component) {
 		value: function render() {
 			return _react2.default.createElement(
 				'div',
-				null,
-				_react2.default.createElement(
-					'p',
-					null,
-					'Login form'
-				),
-				_react2.default.createElement(
-					_reactRouter.Link,
-					{ to: '/app' },
-					'Home'
-				),
+				{ className: 'login-form-root' },
+				_react2.default.createElement('img', { className: 'expanded row align-center logo', src: '/resource/logo.png' }),
 				_react2.default.createElement(
 					'form',
 					{ onSubmit: this.handleSubmit },
@@ -26796,15 +26787,10 @@ var LoginForm = function (_React$Component) {
 						{ className: 'expanded row align-center' },
 						_react2.default.createElement(
 							'div',
-							{ className: 'column medium-3' },
+							{ className: 'column medium-4' },
 							_react2.default.createElement(
 								'fieldset',
-								{ className: 'fieldset' },
-								_react2.default.createElement(
-									'legend',
-									null,
-									'Connexion'
-								),
+								{ className: 'fieldset form-fieldset' },
 								this.state.error.showError && _react2.default.createElement(
 									'div',
 									{ id: 'error-message', className: 'alert callout' },
@@ -27042,7 +27028,7 @@ var _react = __webpack_require__(6);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(23);
+var _reactRouter = __webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27121,6 +27107,8 @@ var _react = __webpack_require__(6);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouter = __webpack_require__(21);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27156,40 +27144,47 @@ var Navigator = function (_React$Component) {
     }
 
     _createClass(Navigator, [{
-        key: "render",
+        key: 'render',
         value: function render() {
             return _react2.default.createElement(
-                "div",
-                { id: "left-column", className: "column medium-2" },
+                'div',
+                { id: 'left-column', className: 'column medium-2' },
                 _react2.default.createElement(
-                    "div",
-                    { id: "search", className: "row" },
-                    _react2.default.createElement("input", { type: "text", id: "search-text", className: "column medium-10" }),
+                    'div',
+                    { id: 'search', className: 'row' },
+                    _react2.default.createElement('div', { className: 'medium-2' }),
                     _react2.default.createElement(
-                        "button",
-                        { type: "button", id: "search-button", className: "column medium-2 button" },
-                        "Go!"
-                    )
+                        _reactRouter.Link,
+                        { className: 'medium-3', to: '/userform' },
+                        _react2.default.createElement('img', { className: 'user-form-button', src: '/resource/user.png' })
+                    ),
+                    _react2.default.createElement('div', { className: 'medium-2' }),
+                    _react2.default.createElement(
+                        _reactRouter.Link,
+                        { className: 'medium-3', to: '/circleform' },
+                        _react2.default.createElement('img', { className: 'circle-form-button', src: '/resource/circle.png' })
+                    ),
+                    _react2.default.createElement('div', { className: 'medium-2' })
                 ),
                 _react2.default.createElement(
-                    "ul",
-                    { className: "navigationList", style: { height: "40%" } },
+                    'ul',
+                    { className: 'navigationList', style: { height: "40%" } },
                     this.state.circles.map(function (circle) {
                         return _react2.default.createElement(
-                            "div",
-                            { key: circle.id, onClick: this.props.updateSelectedCircle.bind(this, circle), className: "row circleListItem" },
+                            'div',
+                            { key: circle.id, onClick: this.props.updateSelectedCircle.bind(this, circle), className: 'row circleListItem' },
                             circle.name
                         );
                     }, this)
                 ),
-                _react2.default.createElement("hr", null),
+                _react2.default.createElement('hr', null),
                 _react2.default.createElement(
-                    "ul",
-                    { className: "navigationList", style: { height: "40%" } },
+                    'ul',
+                    { className: 'navigationList', style: { height: "40%" } },
                     this.state.users.map(function (user) {
                         return _react2.default.createElement(
-                            "div",
-                            { key: user.id, className: "row circleListItem" },
+                            'div',
+                            { key: user.id, className: 'row circleListItem' },
                             user.name
                         );
                     })
@@ -27197,12 +27192,12 @@ var Navigator = function (_React$Component) {
             );
         }
     }, {
-        key: "componentWillMount",
+        key: 'componentWillMount',
         value: function componentWillMount() {
             this.getAllCircles();
         }
     }, {
-        key: "getAllCircles",
+        key: 'getAllCircles',
         value: function getAllCircles() {
             var component = this;
 
@@ -27247,7 +27242,7 @@ var _react = __webpack_require__(6);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(23);
+var _reactRouter = __webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27422,7 +27417,7 @@ var _react = __webpack_require__(6);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(23);
+var _reactRouter = __webpack_require__(21);
 
 var _passwordHash = __webpack_require__(131);
 
@@ -27467,7 +27462,7 @@ var UserForm = function (_React$Component) {
 				{ className: 'user-form-root' },
 				_react2.default.createElement(
 					_reactRouter.Link,
-					{ className: 'medium-6', to: '/app' },
+					{ to: '/app' },
 					_react2.default.createElement('img', { className: 'home-button', src: '/resource/home.png' })
 				),
 				_react2.default.createElement(
@@ -27492,7 +27487,7 @@ var UserForm = function (_React$Component) {
 									{ className: 'row' },
 									_react2.default.createElement(
 										'div',
-										{ 'data-tooltip': true, 'aria-haspopup': 'true', 'class': 'has-tip', title: 'Le pr\xE9nom doit commencer par une majuscule et suivi de lettres minuscules', className: 'column medium-4' },
+										{ 'data-tooltip': true, 'aria-haspopup': 'true', title: 'Le pr\xE9nom doit commencer par une majuscule et suivi de lettres minuscules', className: 'column medium-4' },
 										_react2.default.createElement(
 											'label',
 											{ htmlFor: 'user-firstname', className: 'text-right middle' },
@@ -27511,7 +27506,7 @@ var UserForm = function (_React$Component) {
 									{ className: 'row' },
 									_react2.default.createElement(
 										'div',
-										{ 'data-tooltip': true, 'aria-haspopup': 'true', 'class': 'has-tip', title: 'Le nom doit commencer par une majuscule et suivi de lettres minuscules. Le nom peut comporter plusieurs mots.', className: 'column medium-4' },
+										{ 'data-tooltip': true, 'aria-haspopup': 'true', title: 'Le nom doit commencer par une majuscule et suivi de lettres minuscules. Le nom peut comporter plusieurs mots.', className: 'column medium-4' },
 										_react2.default.createElement(
 											'label',
 											{ htmlFor: 'user-lastname', className: 'text-right middle' },
@@ -27530,7 +27525,7 @@ var UserForm = function (_React$Component) {
 									{ className: 'row' },
 									_react2.default.createElement(
 										'div',
-										{ 'data-tooltip': true, 'aria-haspopup': 'true', 'class': 'has-tip', title: 'L\'adresse email doit respecter les normes usuelles.', className: 'column medium-4' },
+										{ 'data-tooltip': true, 'aria-haspopup': 'true', title: 'L\'adresse email doit respecter les normes usuelles.', className: 'column medium-4' },
 										_react2.default.createElement(
 											'label',
 											{ htmlFor: 'user-email', className: 'text-right middle' },
@@ -27549,7 +27544,7 @@ var UserForm = function (_React$Component) {
 									{ className: 'row' },
 									_react2.default.createElement(
 										'div',
-										{ 'data-tooltip': true, 'aria-haspopup': 'true', 'class': 'has-tip', title: 'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et/ou un caract\xE8re sp\xE9cial. Il doit contenir au moins 8 caract\xE8res.', className: 'column medium-4' },
+										{ 'data-tooltip': true, 'aria-haspopup': 'true', title: 'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et/ou un caract\xE8re sp\xE9cial. Il doit contenir au moins 8 caract\xE8res.', className: 'column medium-4' },
 										_react2.default.createElement(
 											'label',
 											{ htmlFor: 'user-password', className: 'text-right middle' },
@@ -27568,7 +27563,7 @@ var UserForm = function (_React$Component) {
 									{ className: 'row' },
 									_react2.default.createElement(
 										'div',
-										{ 'data-tooltip': true, 'aria-haspopup': 'true', 'class': 'has-tip', title: 'Saisissez \xE0 nouveau le mot de passe', className: 'column medium-4' },
+										{ 'data-tooltip': true, 'aria-haspopup': 'true', title: 'Saisissez \xE0 nouveau le mot de passe', className: 'column medium-4' },
 										_react2.default.createElement(
 											'label',
 											{ htmlFor: 'user-password-again', className: 'text-right middle' },
@@ -38802,7 +38797,7 @@ module.exports = FallbackCompositionState;
 
 
 
-var DOMProperty = __webpack_require__(21);
+var DOMProperty = __webpack_require__(22);
 
 var MUST_USE_PROPERTY = DOMProperty.injection.MUST_USE_PROPERTY;
 var HAS_BOOLEAN_VALUE = DOMProperty.injection.HAS_BOOLEAN_VALUE;
@@ -40272,7 +40267,7 @@ var AutoFocusUtils = __webpack_require__(274);
 var CSSPropertyOperations = __webpack_require__(276);
 var DOMLazyTree = __webpack_require__(35);
 var DOMNamespaces = __webpack_require__(81);
-var DOMProperty = __webpack_require__(21);
+var DOMProperty = __webpack_require__(22);
 var DOMPropertyOperations = __webpack_require__(140);
 var EventPluginHub = __webpack_require__(46);
 var EventPluginRegistry = __webpack_require__(59);
@@ -41728,7 +41723,7 @@ module.exports = ReactDOMInput;
 
 
 
-var DOMProperty = __webpack_require__(21);
+var DOMProperty = __webpack_require__(22);
 var ReactComponentTreeHook = __webpack_require__(14);
 
 var warning = __webpack_require__(3);
@@ -42700,7 +42695,7 @@ module.exports = {
 
 
 
-var DOMProperty = __webpack_require__(21);
+var DOMProperty = __webpack_require__(22);
 var EventPluginRegistry = __webpack_require__(59);
 var ReactComponentTreeHook = __webpack_require__(14);
 
@@ -43609,7 +43604,7 @@ module.exports = ReactHostOperationHistoryHook;
 
 
 
-var DOMProperty = __webpack_require__(21);
+var DOMProperty = __webpack_require__(22);
 var EventPluginHub = __webpack_require__(46);
 var EventPluginUtils = __webpack_require__(82);
 var ReactComponentEnvironment = __webpack_require__(85);
@@ -47011,7 +47006,7 @@ var _invariant = __webpack_require__(12);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _RouteUtils = __webpack_require__(22);
+var _RouteUtils = __webpack_require__(23);
 
 var _InternalPropTypes = __webpack_require__(28);
 
@@ -47149,7 +47144,7 @@ var _invariant = __webpack_require__(12);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _RouteUtils = __webpack_require__(22);
+var _RouteUtils = __webpack_require__(23);
 
 var _InternalPropTypes = __webpack_require__(28);
 
@@ -47285,7 +47280,7 @@ var _RouterContext = __webpack_require__(65);
 
 var _RouterContext2 = _interopRequireDefault(_RouterContext);
 
-var _RouteUtils = __webpack_require__(22);
+var _RouteUtils = __webpack_require__(23);
 
 var _RouterUtils = __webpack_require__(161);
 
@@ -48103,7 +48098,7 @@ var _createTransitionManager = __webpack_require__(97);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
-var _RouteUtils = __webpack_require__(22);
+var _RouteUtils = __webpack_require__(23);
 
 var _RouterUtils = __webpack_require__(161);
 
@@ -48195,7 +48190,7 @@ var _routerWarning = __webpack_require__(11);
 
 var _routerWarning2 = _interopRequireDefault(_routerWarning);
 
-var _RouteUtils = __webpack_require__(22);
+var _RouteUtils = __webpack_require__(23);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

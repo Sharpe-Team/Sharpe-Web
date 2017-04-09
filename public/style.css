@@ -151,6 +151,12 @@ input, button {
 	font-size: 0.9em;
 }
 
+.login-form-root {
+    background: url("resource/background-login.jpg");
+    background-size: cover;
+    height: 100%;
+}
+
 .user-form-root {
     background: url("resource/background-user.jpg");
     background-size: cover;
@@ -176,4 +182,18 @@ input, button {
     height: 50px;
     margin-top: 10px;
     margin-left: 10px;
+}
+
+.user-form-button {
+    width: 100%;
+}
+
+.circle-form-button {
+    width: 100%;
+}
+
+.logo {
+    height: 200px;
+    padding-top: 50px;
+    padding-bottom: 50px;
 }

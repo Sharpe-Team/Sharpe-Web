@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link, browserHistory} from 'react-router';
 
 class Navigator extends React.Component {
     
@@ -30,8 +31,11 @@ class Navigator extends React.Component {
         return (
             <div id="left-column" className="column medium-2">
                 <div id="search" className="row">
-                    <input type="text" id="search-text" className="column medium-10" />
-                    <button type="button" id="search-button" className="column medium-2 button">Go!</button>
+                    <div className="medium-2"></div>
+                    <Link className="medium-3" to="/userform"><img className="user-form-button" src="/resource/user.png"></img></Link>
+                    <div className="medium-2"></div>
+                    <Link className="medium-3" to="/circleform"><img className="circle-form-button" src="/resource/circle.png"></img></Link>
+                    <div className="medium-2"></div>
                 </div>
                 <ul className="navigationList" style={{height: "40%"}}>
                     {

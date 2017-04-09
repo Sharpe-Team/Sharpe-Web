@@ -8,7 +8,7 @@ class UserForm extends React.Component {
 		super(props);
 
 		this.state = {
-            percent: 25
+            percent: 0
         };
 
 		this.handleChange = this.handleChange.bind(this);
@@ -87,9 +87,14 @@ class UserForm extends React.Component {
 									</div>
                                     <div className="colum medium-1"></div>
 									<div className="column medium-7">
-										<label htmlFor="profile-picture" className="button">Photo de profil</label>
-										<input type="file" id="profile-picture" name="profilePicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
-                                        <progress max="100" value={this.state.percent}></progress>
+                                        <div className="row">
+                                            <label htmlFor="profile-picture" className="button">Photo de profil</label>
+                                            <input type="file" id="profile-picture" name="profilePicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
+                                            <div className="medium-1"></div>
+                                            <progress className="medium-centered" max="100" value={this.state.percent}></progress>
+                                            <div className="medium-1"></div>
+                                            <div>{this.state.percent}%</div>
+                                        </div>
 									</div>
 								</div>
 

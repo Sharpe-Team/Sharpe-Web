@@ -150,3 +150,30 @@ input, button {
 	margin-bottom: 0px;
 	font-size: 0.9em;
 }
+
+.user-form-root {
+    background: url("resource/background-user.jpg");
+    background-size: cover;
+    height: 100%;
+}
+
+.circle-form-root {
+    background: url("resource/background-circle.jpg");
+    background-size: cover;
+    height: 100%;
+}
+
+.form-fieldset {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.form-title {
+    color: white;
+    text-align: center
+}
+
+.home-button {
+    height: 50px;
+    margin-top: 10px;
+    margin-left: 10px;
+}

@@ -25416,8 +25416,8 @@ function requireAuth(Component) {
 				return this.state.isAuthorized ? _react2.default.createElement(Component, this.props) : null;
 			}
 		}, {
-			key: 'componentWillMount',
-			value: function componentWillMount() {
+			key: 'componentDidMount',
+			value: function componentDidMount() {
 				var component = this;
 
 				// Define SocketIO events
@@ -25436,7 +25436,7 @@ function requireAuth(Component) {
 		}, {
 			key: 'checkAuth',
 			value: function checkAuth() {
-				console.log(localStorage.getItem("token"));
+				//console.log(localStorage.getItem("token"));
 
 				if (localStorage.getItem("token") != null) {
 					socket.emit('verify-token', localStorage.getItem("token"));
@@ -25588,7 +25588,7 @@ var Circle = function (_React$Component) {
 					_react2.default.createElement(
 						'div',
 						{ id: 'banner', className: 'column medium-6' },
-						this.state.circle.bannerPictureUrl && _react2.default.createElement('img', { className: 'bannerPicture', src: this.state.circle.bannerPictureUrl })
+						this.state.circle.bannerPictureUrl && _react2.default.createElement('img', { className: 'bannerPicture', src: 'uploads/' + this.state.circle.bannerPictureUrl })
 					)
 				),
 				_react2.default.createElement(
@@ -25668,7 +25668,8 @@ var CircleForm = function (_React$Component) {
 
 		_this.state = {
 			circleName: "",
-			users: []
+			users: [],
+			lastModifiedPicture: undefined
 		};
 
 		_this.handleChange = _this.handleChange.bind(_this);
@@ -25678,6 +25679,7 @@ var CircleForm = function (_React$Component) {
 
 		_this.getAllUsers = _this.getAllUsers.bind(_this);
 		_this.createCircle = _this.createCircle.bind(_this);
+		_this.saveFinalPathOfLastModifiedPicture = _this.saveFinalPathOfLastModifiedPicture.bind(_this);
 		return _this;
 	}
 
@@ -25781,7 +25783,7 @@ var CircleForm = function (_React$Component) {
 									{ className: 'row' },
 									_react2.default.createElement(
 										'div',
-										{ 'data-tooltip': true, 'aria-haspopup': 'true', 'class': 'has-tip', title: 'Vous pouvez s\xE9lectionner plusieurs mod\xE9rateurs. Vous pouvez taper les premi\xE8res lettres du mod\xE9rateur pour le retrouver plus facilement.', className: 'column medium-4 form-label' },
+										_defineProperty({ 'data-tooltip': true, 'aria-haspopup': 'true', className: 'has-tip', title: 'Vous pouvez s\xE9lectionner plusieurs mod\xE9rateurs. Vous pouvez taper les premi\xE8res lettres du mod\xE9rateur pour le retrouver plus facilement.' }, 'className', 'column medium-4 form-label'),
 										_react2.default.createElement(
 											'label',
 											{ htmlFor: 'moderators', className: 'text-right middle' },
@@ -25830,13 +25832,49 @@ var CircleForm = function (_React$Component) {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 
-			//siofu.listenOnSubmit(document.getElementById("submit-btn"), document.getElementById("profile-picture"));
-			//siofu.listenOnSubmit(document.getElementById("submit-btn"), document.getElementById("banner-picture"));
+			var component = this;
+
+			siofu.listenOnInput(document.getElementById("profile-picture"));
+			siofu.listenOnInput(document.getElementById("banner-picture"));
+
+			siofu.addEventListener("load", function (event) {
+				// Save the name given by the server to the current picture
+				component.state[component.state.lastModifiedPicture] = event.name;
+			});
+
+			// Do something on upload progress:
+			siofu.addEventListener("progress", function (event) {
+				var percent = event.bytesLoaded / event.file.size * 100;
+				//console.log("File is", percent.toFixed(2), "percent loaded");
+			});
+
+			// Do something when a file is uploaded:
+			siofu.addEventListener("complete", function (event) {
+				if (event.success) {
+					// Save the final path of the latest modified picture
+					component.saveFinalPathOfLastModifiedPicture(event.file);
+				} else {
+					component.setState(_defineProperty({}, component.state.lastModifiedPicture, undefined));
+					alert("Une erreur est survenue lors de l'envoi des images...");
+				}
+			});
 		}
 	}, {
 		key: 'componentWillMount',
 		value: function componentWillMount() {
+
 			this.getAllUsers();
+		}
+	}, {
+		key: 'saveFinalPathOfLastModifiedPicture',
+		value: function saveFinalPathOfLastModifiedPicture(file) {
+
+			var finalName = this.state[this.state.lastModifiedPicture];
+			var currentName = file.name;
+			var extension = currentName.substring(currentName.indexOf("."));
+			var finalPath = finalName + extension;
+
+			this.setState(_defineProperty({}, this.state.lastModifiedPicture, finalPath));
 		}
 	}, {
 		key: 'handleChange',
@@ -25860,49 +25898,16 @@ var CircleForm = function (_React$Component) {
 	}, {
 		key: 'handleFileUpload',
 		value: function handleFileUpload(event) {
-			var file = event.target.files[0];
-			console.log(file);
-			this.setState(_defineProperty({}, event.target.name, file));
+			this.setState({
+				lastModifiedPicture: event.target.name
+			});
 		}
 	}, {
 		key: 'handleSubmit',
 		value: function handleSubmit(event) {
 			event.preventDefault();
-			var component = this;
 
-			var files = [];
-
-			// Do something on upload progress:
-			siofu.addEventListener("progress", function (event) {
-				var percent = event.bytesLoaded / event.file.size * 100;
-				console.log("File is", percent.toFixed(2), "percent loaded");
-			});
-
-			// Do something when a file is uploaded:
-			siofu.addEventListener("complete", function (event) {
-				console.log(event.success);
-				console.log(event.file);
-
-				// If the files were uploaded successfuly, save the circle in the DB
-				if (event.success) {
-					// Do nothing, the server send another event with the final path of the uploaded files
-					component.createCircle();
-				} else {
-					alert("Une erreur est survenue lors de l'envoi des images...");
-				}
-			});
-
-			if (this.state.profilePicture instanceof File) {
-				files.push(this.state.profilePicture);
-			}
-			if (this.state.bannerPicture instanceof File) {
-				files.push(this.state.bannerPicture);
-			}
-			if (files.length > 0) {
-				siofu.submitFiles(files);
-			} else {
-				this.createCircle();
-			}
+			this.createCircle();
 		}
 	}, {
 		key: 'createCircle',
@@ -25919,7 +25924,7 @@ var CircleForm = function (_React$Component) {
 				body: JSON.stringify({
 					name: component.state.circleName,
 					//moderators: component.state.moderators,
-					pictureUrl: component.state.profilePicture.name,
+					pictureUrl: component.state.profilePicture,
 					bannerPictureUrl: component.state.bannerPicture
 				})
 			}).then(function (response) {
@@ -26375,7 +26380,7 @@ var LoginForm = function (_React$Component) {
 			var component = this;
 
 			socket.on('login-response', function (user) {
-				storeUserInStorage(user);
+				component.storeUserInStorage(user);
 				component.goToNextPage();
 			});
 		}
@@ -27184,7 +27189,7 @@ var UserForm = function (_React$Component) {
 		value: function createUser() {
 			var component = this;
 
-			var hashedPassword = _passwordHash2.default.generate(component.state.userPassword);
+			//var hashedPassword = passwordHash.generate(component.state.userPassword);
 
 			fetch('http://localhost:8080/users/subscribe', {
 				method: 'POST',

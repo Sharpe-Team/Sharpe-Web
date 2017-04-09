@@ -20,7 +20,7 @@ function requireAuth(Component) {
 			return this.state.isAuthorized ? <Component { ...this.props } /> : null;
 		}
 
-		componentWillMount() {
+		componentDidMount() {
 			var component = this;
 
 			// Define SocketIO events
@@ -38,7 +38,7 @@ function requireAuth(Component) {
 		}
 
 		checkAuth() {
-			console.log(localStorage.getItem("token"));
+			//console.log(localStorage.getItem("token"));
 
 			if(localStorage.getItem("token") != null) {
 				socket.emit('verify-token', localStorage.getItem("token"));

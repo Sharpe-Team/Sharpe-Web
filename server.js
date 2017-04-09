@@ -187,8 +187,8 @@ io.sockets.on('connection', function (socket) {
 
     // Do something when a file is saved:
     uploader.on("saved", function(event) {
-        console.log(event.file);
-        socket.emit('complete-upload', event.file);
+        console.log(event);
+        //socket.emit('complete-upload', event);
     });
 
     // Error handler:

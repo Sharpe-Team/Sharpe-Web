@@ -59,7 +59,7 @@ class Circle extends React.Component {
 					</div>
 					<div id="banner" className="column medium-6">
 						{ this.state.circle.bannerPictureUrl &&
-							<img className="bannerPicture" src={this.state.circle.bannerPictureUrl}/>
+							<img className="bannerPicture" src={'uploads/' + this.state.circle.bannerPictureUrl}/>
 						}
 					</div>
 				</div>

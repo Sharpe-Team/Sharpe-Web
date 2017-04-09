@@ -173,7 +173,7 @@ class UserForm extends React.Component {
 	createUser() {
 		var component = this;
 
-		var hashedPassword = passwordHash.generate(component.state.userPassword);
+		//var hashedPassword = passwordHash.generate(component.state.userPassword);
 
 		fetch('http://localhost:8080/users/subscribe', {
 			method: 'POST',

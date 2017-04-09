@@ -7,7 +7,6 @@ class Circle extends React.Component {
 		super(props);
 
 		this.state = {
-			circle: props.circle,
 			navbarHeight: 100,
 			lines: [],
 			selectedLine:  null
@@ -18,17 +17,18 @@ class Circle extends React.Component {
 
 	componentWillMount() {
 		
+		console.log("Circle - Will Mount - All lines of circle : " + this.props.circle.id);
 		this.getAllLines();
 	}
 
 	componentWillReceiveProps(nextProps) {
-		this.setState({circle: nextProps.circle});
 
-		this.getAllLines();
+		console.log("Circle - NextProps - All lines of circle : " + nextProps.circle.id);
+		this.getAllLines(nextProps.circle.id);
 	}
 
 	render() {
-
+		console.log("render in circle");
 		var line;
 		if(this.state.selectedLine) {
 			line = (<Line line={this.state.selectedLine} style={{height: "100%"}}/>);
@@ -47,24 +47,24 @@ class Circle extends React.Component {
 						<div className="row">
 							<div className="column medium-3" style={{height: "100%"}}>
 								<div className="circularImageContainer">
-									{ this.state.circle.pictureUrl &&
-										<img className="profilePicture" src={'uploads/' + this.state.circle.pictureUrl}/>
+									{ this.props.circle.pictureUrl &&
+										<img className="profilePicture" src={'uploads/' + this.props.circle.pictureUrl}/>
 									}
 								</div>
 							</div>
 							<div className="column medium-9" style={{height: "100%"}}>
-								<h2 className="circleTitle">{this.state.circle.name}</h2>
+								<h2 className="circleTitle">{this.props.circle.name}</h2>
 							</div>
 						</div>
 					</div>
 					<div id="banner" className="column medium-6">
-						{ this.state.circle.bannerPictureUrl &&
-							<img className="bannerPicture" src={'uploads/' + this.state.circle.bannerPictureUrl}/>
+						{ this.props.circle.bannerPictureUrl &&
+							<img className="bannerPicture" src={'uploads/' + this.props.circle.bannerPictureUrl}/>
 						}
 					</div>
 				</div>
 				<div className="row" style={{height: "calc(100% - " + this.state.navbarHeight + "px"}}>
-					{ line }
+					{line}
 					<div id="cubes" className="column medium-3">
 					</div>
 				</div>
@@ -72,10 +72,14 @@ class Circle extends React.Component {
 		);
 	}
 
-	getAllLines() {
+	getAllLines(idCircle) {
 		var component = this;
 
-		fetch('http://localhost:8080/lines?idCircle=' + this.state.circle.id, {
+		if(!idCircle) {
+			idCircle = this.props.circle.id;
+		}
+
+		fetch('http://localhost:8080/lines?idCircle=' + idCircle, {
 			method: 'GET',
 			headers: {
 				'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -85,11 +89,10 @@ class Circle extends React.Component {
 			return response.json();
 		})
 		.then(function(lines) {
-			component.setState({lines: lines});
-
-			if(lines.length > 0) {
-				component.setState({selectedLine: lines[0]});
-			}
+			component.setState({
+				lines: lines,
+				selectedLine: (lines.length > 0) ? lines[0] : null
+			});
 		})
 		.catch(function(error) {
 			console.log(error);

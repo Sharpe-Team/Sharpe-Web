@@ -11,7 +11,8 @@ class LoginForm extends React.Component {
 			error: {
 				showError: false,
 				message: ""
-			}
+			},
+            displayLoading: "none"
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -27,6 +28,20 @@ class LoginForm extends React.Component {
 	render() {
 		return (
 			<div className="login-form-root">
+                
+                <div className="loading" style={{display: this.state.displayLoading}}>
+                    <div className="row spinner">
+                        <div className="medium-1 rect1"></div>
+                        <span className="medium-1"></span> 
+                        <div className="medium-1 rect2"></div>
+                        <span className="medium-1"></span>   
+                        <div className="medium-1 rect3"></div>
+                        <span className="medium-1"></span> 
+                        <div className="medium-1 rect4"></div>
+                        <span className="medium-1"></span> 
+                        <div className="medium-1 rect5"></div>
+                    </div>
+                </div>
                 
                 <img className="expanded row align-center logo" src="/resource/logo.png"/>
                 
@@ -83,7 +98,7 @@ class LoginForm extends React.Component {
 		var component = this;
 
 		socket.on('login-response', function(user) {
-			storeUserInStorage(user);
+			component.storeUserInStorage(user);
 			component.goToNextPage();
 		});
 	}
@@ -93,6 +108,13 @@ class LoginForm extends React.Component {
 	}
 
 	handleSubmit(event) {
+        this.setState({displayLoading: "block"});
+        this.setState({
+			error: {
+				showError: false
+			}
+		});
+        
 		event.preventDefault();
 
 		var hashedPassword = this.state.userPassword; //passwordHash.generate(this.state.userPassword);
@@ -149,11 +171,7 @@ class LoginForm extends React.Component {
 			})
 		})
 		.then(function(response) {
-			if(response.status == 200) {
-				return response;
-			} else {
-				return response.json();
-			}
+			return (response.status == 200) ? response : response.json();
 		})
 		.then(function(response) {
 			if(response.status == 200) {
@@ -169,6 +187,7 @@ class LoginForm extends React.Component {
 				localStorage.setItem('token', token);
 				socket.emit('login', token);
 			} else {
+                component.setState({displayLoading: "none"});
 				component.setState({
 					error: {
 						showError: true,
@@ -178,6 +197,7 @@ class LoginForm extends React.Component {
 			}
 		})
 		.catch(function(error) {
+            component.setState({displayLoading: "none"});
 			console.log(error);
 			console.log(error.status, error.error, error.message);
 

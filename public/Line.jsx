@@ -92,7 +92,7 @@ class Line extends React.Component {
 		
 		console.log("Line - next Props - All points of line " + nextProps.line.id);
 
-		//this.getAllPoints(nextProps.line.id);
+		this.getAllPoints(nextProps.line.id);
 	}
 
 	/************************************************
@@ -139,6 +139,8 @@ class Line extends React.Component {
 			} else {
 				idLine = this.props.line.id;
 			}
+		} else if(idLine && idLine == this.props.line.id) {
+			return;
 		}
 
 		fetch('http://localhost:8080/points?idLine=' + idLine, {

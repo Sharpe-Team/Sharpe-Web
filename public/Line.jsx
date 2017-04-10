@@ -10,7 +10,6 @@ class Line extends React.Component {
 
 		this.state = {
 			user: null,
-			line: props.line,
 			points: [],
 			newPoint: "",
 			newPointHeight: 50,
@@ -56,15 +55,7 @@ class Line extends React.Component {
 	}
 
 	componentWillMount() {
-
 		var component = this;
-
-		this.setState({
-			user: component.getUserFromStorage()
-		});
-
-		// Get all points of this line from DB
-		this.getAllPoints();
 
 		// Define events function from SocketIO
 		socket.on('new-point', function(point) {
@@ -76,10 +67,17 @@ class Line extends React.Component {
 				pointAdded: true
 			});
 		});
+
+		this.setState({
+			user: this.getUserFromStorage()
+		});
+
+		// Get all points of this line from DB
+		console.log("init !");
+		this.getAllPoints();
 	}
 
 	componentDidMount() {
-
 		this.scrollToBottom();
 	}
 
@@ -88,6 +86,13 @@ class Line extends React.Component {
 			this.scrollToBottom();
 			this.setState({pointAdded: false});
 		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		
+		console.log("Line - next Props - All points of line " + nextProps.line.id);
+
+		//this.getAllPoints(nextProps.line.id);
 	}
 
 	/************************************************
@@ -125,10 +130,18 @@ class Line extends React.Component {
 		}
 	}
 
-	getAllPoints() {
+	getAllPoints(idLine) {
 		var component = this;
 
-		fetch('http://localhost:8080/points?idLine=' + this.state.line.id, {
+		if(!idLine) {
+			if(!this.props.line) {
+				this.setState({points: points});
+			} else {
+				idLine = this.props.line.id;
+			}
+		}
+
+		fetch('http://localhost:8080/points?idLine=' + idLine, {
 			method: 'GET',
 			headers: {
 				'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -160,7 +173,7 @@ class Line extends React.Component {
 				'Authorization': 'Bearer ' + localStorage.getItem('token')
 			},
 			body: JSON.stringify({
-				idLine: component.state.line.id,
+				idLine: component.props.line.id,
 				idUser: component.state.user.id,
 				content: text,
 				created: new Date()

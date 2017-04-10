@@ -8,7 +8,8 @@ class CircleForm extends React.Component {
 
 		this.state = {
 			circleName: "",
-			users: []
+			users: [],
+			lastModifiedPicture: undefined
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -18,6 +19,7 @@ class CircleForm extends React.Component {
 
 		this.getAllUsers = this.getAllUsers.bind(this);
 		this.createCircle = this.createCircle.bind(this);
+		this.saveFinalPathOfLastModifiedPicture = this.saveFinalPathOfLastModifiedPicture.bind(this);
 	}
 
 	render() {
@@ -90,12 +92,51 @@ class CircleForm extends React.Component {
 
 	componentDidMount() {
 
-	    //siofu.listenOnSubmit(document.getElementById("submit-btn"), document.getElementById("profile-picture"));
-	    //siofu.listenOnSubmit(document.getElementById("submit-btn"), document.getElementById("banner-picture"));
+		var component = this;
+
+		siofu.listenOnInput(document.getElementById("profile-picture"));
+	    siofu.listenOnInput(document.getElementById("banner-picture"));
+
+	    siofu.addEventListener("load", function(event) {
+	    	// Save the name given by the server to the current picture
+	    	component.state[component.state.lastModifiedPicture] = event.name;
+	    });
+
+		// Do something on upload progress:
+		siofu.addEventListener("progress", function(event) {
+		    var percent = event.bytesLoaded / event.file.size * 100;
+		    //console.log("File is", percent.toFixed(2), "percent loaded");
+		});
+
+		// Do something when a file is uploaded:
+		siofu.addEventListener("complete", function(event) {
+			if(event.success) {
+				// Save the final path of the latest modified picture
+				component.saveFinalPathOfLastModifiedPicture(event.file);
+			} else {
+				component.setState({
+					[component.state.lastModifiedPicture]: undefined
+				});
+				alert("Une erreur est survenue lors de l'envoi des images...");
+			}
+		});
 	}
 
 	componentWillMount() {
+
 		this.getAllUsers();
+	}
+
+	saveFinalPathOfLastModifiedPicture(file) {
+
+		var finalName = this.state[this.state.lastModifiedPicture];
+		var currentName = file.name;
+		var extension = currentName.substring(currentName.indexOf("."));
+		var finalPath = finalName + extension;
+
+		this.setState({
+			[this.state.lastModifiedPicture]: finalPath
+		});
 	}
 
 	handleChange(event) {
@@ -116,48 +157,15 @@ class CircleForm extends React.Component {
 	}
 
 	handleFileUpload(event) {
-		const file = event.target.files[0];
-		console.log(file);
-		this.setState({[event.target.name]: file});
+		this.setState({
+			lastModifiedPicture: event.target.name
+		});
 	}
 
 	handleSubmit(event) {
 		event.preventDefault();
-		var component = this;
 
-		var files = [];
-
-		// Do something on upload progress:
-	    siofu.addEventListener("progress", function(event) {
-	        var percent = event.bytesLoaded / event.file.size * 100;
-	        console.log("File is", percent.toFixed(2), "percent loaded");
-	    });
-
-	    // Do something when a file is uploaded:
-	    siofu.addEventListener("complete", function(event) {
-	        console.log(event.success);
-	        console.log(event.file);
-
-	        // If the files were uploaded successfuly, save the circle in the DB
-	        if(event.success) {
-	        	// Do nothing, the server send another event with the final path of the uploaded files
-	        	component.createCircle();
-	        } else {
-	        	alert("Une erreur est survenue lors de l'envoi des images...");
-	        }
-	    });
-
-	    if(this.state.profilePicture instanceof File) {
-	    	files.push(this.state.profilePicture);
-	    }
-	    if(this.state.bannerPicture instanceof File) {
-	    	files.push(this.state.bannerPicture);
-	    }
-	    if(files.length > 0) {
-			siofu.submitFiles(files);
-	    } else {
-	    	this.createCircle();
-	    }
+		this.createCircle();
 	}
 
 	createCircle() {

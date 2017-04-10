@@ -26288,7 +26288,7 @@ var CircleForm = function (_React$Component) {
 									{ className: 'row' },
 									_react2.default.createElement(
 										'div',
-										{ 'data-tooltip': true, 'aria-haspopup': 'true', 'class': 'has-tip', title: 'Vous pouvez s\xE9lectionner plusieurs mod\xE9rateurs. Vous pouvez taper les premi\xE8res lettres du mod\xE9rateur pour le retrouver plus facilement.', className: 'column medium-4 form-label' },
+										_defineProperty({ 'data-tooltip': true, 'aria-haspopup': 'true', className: 'has-tip', title: 'Vous pouvez s\xE9lectionner plusieurs mod\xE9rateurs. Vous pouvez taper les premi\xE8res lettres du mod\xE9rateur pour le retrouver plus facilement.' }, 'className', 'column medium-4 form-label'),
 										_react2.default.createElement(
 											'label',
 											{ htmlFor: 'moderators', className: 'text-right middle' },
@@ -26426,7 +26426,7 @@ var CircleForm = function (_React$Component) {
 				body: JSON.stringify({
 					name: component.state.circleName,
 					//moderators: component.state.moderators,
-					pictureUrl: component.state.profilePicture.name,
+					pictureUrl: component.state.profilePicture,
 					bannerPictureUrl: component.state.bannerPicture
 				})
 			}).then(function (response) {
@@ -26979,7 +26979,6 @@ var LoginForm = function (_React$Component) {
 					password: hashedPassword
 				})
 			}).then(function (response) {
-				component.setState({ displayLoading: "none" });
 				return response.status == 200 ? response : response.json();
 			}).then(function (response) {
 				if (response.status == 200) {
@@ -26995,6 +26994,7 @@ var LoginForm = function (_React$Component) {
 					localStorage.setItem('token', token);
 					socket.emit('login', token);
 				} else {
+					component.setState({ displayLoading: "none" });
 					component.setState({
 						error: {
 							showError: true,
@@ -27003,6 +27003,7 @@ var LoginForm = function (_React$Component) {
 					});
 				}
 			}).catch(function (error) {
+				component.setState({ displayLoading: "none" });
 				console.log(error);
 				console.log(error.status, error.error, error.message);
 

@@ -59,13 +59,18 @@ class Line extends React.Component {
 
 		// Define events function from SocketIO
 		socket.on('new-point', function(point) {
-			point.created = new Date(point.created);
-			var points = component.state.points;
-			points.push(point);
-			component.setState({
-				points: points,
-				pointAdded: true
-			});
+			// If the user is on the line where it is the new point, we display it
+			if(point.idLine == component.props.line.id) {
+				point.created = new Date(point.created);
+				var points = component.state.points;
+				points.push(point);
+				component.setState({
+					points: points,
+					pointAdded: true
+				});
+			} else {
+				
+			}
 		});
 
 		this.setState({

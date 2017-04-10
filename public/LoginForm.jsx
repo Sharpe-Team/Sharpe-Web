@@ -98,6 +98,7 @@ class LoginForm extends React.Component {
 		var component = this;
 
 		socket.on('login-response', function(user) {
+            console.log("in loginform : " + user);
 			component.storeUserInStorage(user);
 			component.goToNextPage();
 		});

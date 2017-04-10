@@ -67,13 +67,15 @@ class Line extends React.Component {
 				pointAdded: true
 			});
 		});
-
+        
+        var user = this.getUserFromStorage();
+        user.id = parseInt(user.id);
+        
 		this.setState({
-			user: this.getUserFromStorage()
+			user: user
 		});
 
 		// Get all points of this line from DB
-		console.log("init !");
 		this.getAllPoints();
 	}
 
@@ -89,9 +91,6 @@ class Line extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		
-		console.log("Line - next Props - All points of line " + nextProps.line.id);
-
 		this.getAllPoints(nextProps.line.id);
 	}
 
@@ -185,8 +184,12 @@ class Line extends React.Component {
 			return response.json();
 		})
 		.then(function(point) {
-			// Send the new point to the connected users
-			socket.emit('new-point', point);
+            if(point) {
+                // Send the new point to the connected users
+                socket.emit('new-point', point);
+            } else {
+                alert("Une erreur est apparue lors de l'ajout du point...");
+            }
 		})
 		.catch(function(error) {
 			console.log(error);

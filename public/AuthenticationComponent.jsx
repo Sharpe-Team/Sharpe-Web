@@ -20,19 +20,7 @@ function requireAuth(Component) {
 			return this.state.isAuthorized ? <Component { ...this.props } /> : null;
 		}
 
-		componentDidMount() {
-			var component = this;
-
-			// Define SocketIO events
-			socket.on('verify-token-failure', function() {
-				localStorage.clear();
-				component.redirectToLogin();
-			});
-
-			socket.on('verify-token-success', function(user) {
-				component.storeUserInStorage(user);
-				component.setState({isAuthorized: true});
-			});
+		componentWillMount() {
 
 			this.checkAuth();
 		}
@@ -42,6 +30,20 @@ function requireAuth(Component) {
 
 			if(localStorage.getItem("token") != null) {
 				socket.emit('verify-token', localStorage.getItem("token"));
+                
+                var component = this;
+
+                // Define SocketIO events
+                socket.on('verify-token-failure', function() {
+                    localStorage.clear();
+                    component.redirectToLogin();
+                });
+
+                socket.on('verify-token-success', function(user) {
+                    //component.storeUserInStorage(user);
+                    console.log("in AuthenticationComponent : " + user);
+                    component.setState({isAuthorized: true});
+                });
 			} else {
 				this.redirectToLogin();
 			}

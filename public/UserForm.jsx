@@ -184,15 +184,15 @@ class UserForm extends React.Component {
 			method: 'POST',
 			mode: 'cors',
 			headers: {
-				'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb2NvQGFzdGljb3QuZnIiLCJleHAiOjE0OTE3MzY1NzJ9.i8bmwwMrWpz_X1ft7ymAvHacyp3RdZQ0T5M50MT3tU10Q9f-4Ci68JOllhjWMrrIgjvAMq6rN9wNCErVANEhvA',
 				'Accept': 'application/json',
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
 			},
 			body: JSON.stringify({
 				firstname: component.state.userFirstname,
 				lastname: component.state.userLastname,
 				email: component.state.userEmail,
-				password: hashedPassword,
+				password: component.state.userPassword,
 				profilePicture: component.state.profilePicture
 			})
 		})

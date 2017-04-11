@@ -26237,7 +26237,8 @@ var CircleForm = function (_React$Component) {
 		_this.state = {
 			circleName: "",
 			users: [],
-			lastModifiedPicture: undefined
+			lastModifiedPicture: undefined,
+			displayLoading: "none"
 		};
 
 		_this.handleChange = _this.handleChange.bind(_this);
@@ -26257,6 +26258,7 @@ var CircleForm = function (_React$Component) {
 			return _react2.default.createElement(
 				'div',
 				{ className: 'circle-form-root' },
+				_react2.default.createElement(Loading, { style: this.state.displayLoading }),
 				_react2.default.createElement(
 					_reactRouter.Link,
 					{ to: '/app' },
@@ -26473,6 +26475,8 @@ var CircleForm = function (_React$Component) {
 	}, {
 		key: 'handleSubmit',
 		value: function handleSubmit(event) {
+			this.setState({ displayLoading: "block" });
+
 			event.preventDefault();
 
 			this.createCircle();
@@ -26507,10 +26511,12 @@ var CircleForm = function (_React$Component) {
 					// redirect to main file 'App'
 					_reactRouter.browserHistory.push('/app');
 				} else {
+					this.setState({ displayLoading: "none" });
 					console.log(error);
 					alert("Une erreur est survenue lors de la création du nouveau cercle !");
 				}
 			}).catch(function (error) {
+				this.setState({ displayLoading: "none" });
 				console.log(error);
 				alert("Une erreur est survenue lors de la création du nouveau cercle !");
 			});

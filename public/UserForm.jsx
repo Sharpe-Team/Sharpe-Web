@@ -43,7 +43,7 @@ class UserForm extends React.Component {
 									</div>
                                     <div className="colum medium-1"></div>
 									<div className="column medium-7">
-										<input type="text" id="user-firstname" name="userFirstname" onChange={this.handleChange} maxLength="30" pattern="^[A-Z][a-z]{1,30}$" aria-describedby="firstname-help" required/>
+										<input type="text" id="user-firstname" name="userFirstname" onChange={this.handleChange} maxLength="30" pattern="^([a-zA-Z\u00C0-\u00FF]+['-]?[a-zA-Z\u00C0-\u00FF]+){1,30}$" aria-describedby="firstname-help" required/>
 									</div>
 								</div>
 
@@ -53,7 +53,7 @@ class UserForm extends React.Component {
 									</div>
                                     <div className="colum medium-1"></div>
 									<div className="column medium-7">
-										<input type="text" id="user-lastname" name="userLastname" onChange={this.handleChange} maxLength="30" pattern="^([A-Z][a-z]{1,30})( [A-Z][a-z]{1,30})*$" aria-describedby="lastname-help" required/>
+										<input type="text" id="user-lastname" name="userLastname" onChange={this.handleChange} maxLength="30" pattern="^([a-zA-Z\u00C0-\u00FF]+['-]?[a-zA-Z\u00C0-\u00FF]+){1,30}$" aria-describedby="lastname-help" required/>
 									</div>
 								</div>
 

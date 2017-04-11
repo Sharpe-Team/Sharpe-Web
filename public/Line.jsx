@@ -69,7 +69,7 @@ class Line extends React.Component {
 					pointAdded: true
 				});
 			} else {
-				// Increase the number of unread messages on the circle of the line
+				// Increase the number of unread points on the circle of the line
 			}
 		});
         

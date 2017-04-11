@@ -13,6 +13,7 @@ class App extends React.Component {
 		};
 
 		this.updateSelectedCircle = this.updateSelectedCircle.bind(this);
+		this.updateUnreadPoints = this.updateUnreadPoints.bind(this);
 	}
 
 	render() {
@@ -31,8 +32,13 @@ class App extends React.Component {
 
 	updateSelectedCircle(circle) {
 		if(!this.state.selectedCircle || this.state.selectedCircle.id != circle.id) {
+			circle.nbUnreadPoints = 0;
 			this.setState({selectedCircle: circle});
 		}
+	}
+
+	updateUnreadPoints(idCircle) {
+
 	}
 }
 

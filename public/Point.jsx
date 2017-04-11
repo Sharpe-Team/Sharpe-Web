@@ -17,7 +17,7 @@ class Point extends React.Component {
         if(!pictureUrl) {
             pictureUrl = "/resource/unknown-person.png";
         } else {
-            pictureUrl = "uploads/" + pictureUrl;
+            pictureUrl = "/uploads/" + pictureUrl;
         }
 		return (
 			<li>

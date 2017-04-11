@@ -26670,7 +26670,8 @@ var Navigator = function (_React$Component) {
 
         _this.state = {
             circles: [],
-            users: []
+            users: [],
+            nbUnreadPoints: 0
         };
 
         _this.getAllCircles = _this.getAllCircles.bind(_this);
@@ -26718,13 +26719,25 @@ var Navigator = function (_React$Component) {
                                     'b',
                                     null,
                                     circle.name
+                                ),
+                                '\xA0',
+                                circle.nbUnreadPoints > 0 && _react2.default.createElement(
+                                    'span',
+                                    { 'class': 'badge primary' },
+                                    circle.nbUnreadPoints
                                 )
                             );
                         }
                         return _react2.default.createElement(
                             'div',
                             { key: circle.id, onClick: this.props.updateSelectedCircle.bind(this, circle), className: 'row circleListItem' },
-                            circle.name
+                            circle.name,
+                            '\xA0',
+                            circle.nbUnreadPoints > 0 && _react2.default.createElement(
+                                'span',
+                                { 'class': 'badge primary' },
+                                circle.nbUnreadPoints
+                            )
                         );
                     }, this)
                 ),
@@ -26777,6 +26790,15 @@ var Navigator = function (_React$Component) {
             });
         }
     }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            if (nextProps.nbUnreadPoints) {
+                this.setState({
+                    nbUnreadPoints: nextProps.nbUnreadPoints
+                });
+            }
+        }
+    }, {
         key: 'getAllCircles',
         value: function getAllCircles() {
             var component = this;
@@ -26789,6 +26811,10 @@ var Navigator = function (_React$Component) {
             }).then(function (response) {
                 return response.json();
             }).then(function (circles) {
+                for (var i = 0; i < circles.length; i++) {
+                    circles[i]['nbUnreadPoints'] = 0;
+                }
+
                 component.setState({ circles: circles });
 
                 if (circles.length > 0) {
@@ -26923,7 +26949,7 @@ var Point = function (_React$Component) {
             if (!pictureUrl) {
                 pictureUrl = "/resource/unknown-person.png";
             } else {
-                pictureUrl = "uploads/" + pictureUrl;
+                pictureUrl = "/uploads/" + pictureUrl;
             }
             return _react2.default.createElement(
                 'li',

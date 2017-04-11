@@ -2,18 +2,19 @@ import React from 'react';
 import {Link, browserHistory} from 'react-router';
 
 class Navigator extends React.Component {
-    
-    constructor(props) {
-		super(props);
+
+	constructor(props) {
+        super(props);
 
         this.state = {
             circles: [],
-            users: []
+            users: [],
+            nbUnreadPoints: 0
         }
 
         this.getAllCircles = this.getAllCircles.bind(this);
     }
-    
+
     render() {
         return (
             <div id="left-column" className="column medium-2">
@@ -27,24 +28,36 @@ class Navigator extends React.Component {
                     <div className="medium-1"></div>
                 </div>
                 <ul className="navigationList" style={{height: "40%"}}>
-                    {
-                        this.state.circles.map(function(circle) {
-                            if(this.props.selectedCircle && this.props.selectedCircle.id == circle.id){
-                                return <div key={circle.id} onClick={this.props.updateSelectedCircle.bind(this, circle)} className="row circleListItem"><b>{circle.name}</b></div>
-                            }
-                            return <div key={circle.id} onClick={this.props.updateSelectedCircle.bind(this, circle)} className="row circleListItem">{circle.name}</div>
-                        }, this)
-                    }
+                { 
+                    this.state.circles.map(function(circle) {
+                        if(this.props.selectedCircle && this.props.selectedCircle.id == circle.id) {
+                            return (
+                                <div key={circle.id} onClick={this.props.updateSelectedCircle.bind(this, circle)} className="row circleListItem">
+                                    <b>{circle.name}</b>
+                                </div>
+                            )
+                        }
+                        return (
+                            <div key={circle.id} onClick={this.props.updateSelectedCircle.bind(this, circle)} className="row circleListItem">
+                                {circle.name}
+                                &nbsp;
+                                { circle.nbUnreadPoints > 0 &&
+                               		<span class="badge primary">{circle.nbUnreadPoints}</span>
+                               	}
+                            </div>
+                        )
+                    }, this)
+                }
                 </ul>
                 <hr></hr>
                 <ul className="navigationList" style={{height: "40%"}}>
-                    {
-                        this.state.users.map(function(user) {
-                            return <div key={user.id} className="row circleListItem">{user.firstname}&nbsp;{user.lastname}</div>
-                        })
-                    }
+                {
+                    this.state.users.map(function(user) {
+                        return <div key={user.id} className="row circleListItem">{user.firstname}&nbsp;{user.lastname}</div>
+                    })
+                }
                 </ul>
-			</div>
+            </div>
         );
     }
 
@@ -56,53 +69,64 @@ class Navigator extends React.Component {
         socket.emit('get-connected-users');
 
         socket.on('get-connected-users-response', function(users) {
-            component.setState({
-                users: users
-            });
+        	component.setState({
+        		users: users
+        	});
         });
 
         socket.on('new-connected-user', function(user) {
-            var users = component.state.users;
-            users.push(user);
-            component.setState({
-                users: users
-            });
+	        var users = component.state.users;
+	        users.push(user);
+	        component.setState({
+	        	users: users
+	        });
         });
 
         socket.on('disconnected-user', function(user) {
-            var updatedUsers = component.state.users.filter(function(element) {
-                return element.id != user.id;
-            });
-            component.setState({
-                users: updatedUsers
-            });
+        	var updatedUsers = component.state.users.filter(function(element) {
+        		return element.id != user.id;
+        	});
+        	component.setState({
+        		users: updatedUsers
+        	});
         })
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if(nextProps.nbUnreadPoints) {
+			this.setState({
+				nbUnreadPoints: nextProps.nbUnreadPoints
+			});
+		}
+	}
+
+	getAllCircles() {
+		var component = this;
+
+		fetch('http://localhost:8080/circles', {
+			method: 'GET',
+			headers: {
+				'Authorization': 'Bearer ' + localStorage.getItem('token')
+			}
+		})
+		.then(function(response) {
+			return response.json();
+		})
+		.then(function(circles) {
+			for(var i=0; i<circles.length; i++) {
+				circles[i]['nbUnreadPoints'] = 0;
+			}
+
+			component.setState({circles: circles});
+
+			if(circles.length > 0) {
+				component.props.updateSelectedCircle(circles[0]);
+			}
+		})
+		.catch(function(error) {
+			console.log(error);
+		});
     }
-
-    getAllCircles() {
-        var component = this;
-
-        fetch('http://localhost:8080/circles', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        })
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(circles) {
-            component.setState({circles: circles});
-
-            if(circles.length > 0) {
-                component.props.updateSelectedCircle(circles[0]);
-            }
-        })
-        .catch(function(error) {
-            console.log(error);
-        });
-    }
-    
 }
 
 export default Navigator;

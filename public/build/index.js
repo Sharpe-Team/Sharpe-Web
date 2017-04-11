@@ -25259,7 +25259,7 @@ var App = function (_React$Component) {
 			return _react2.default.createElement(
 				'div',
 				{ id: 'div-app', className: 'expanded row' },
-				_react2.default.createElement(_Navigator2.default, { updateSelectedCircle: this.updateSelectedCircle }),
+				_react2.default.createElement(_Navigator2.default, { updateSelectedCircle: this.updateSelectedCircle, selectedCircle: this.state.selectedCircle }),
 				this.state.selectedCircle && _react2.default.createElement(_Circle2.default, { circle: this.state.selectedCircle })
 			);
 		}
@@ -26712,6 +26712,17 @@ var Navigator = function (_React$Component) {
                     'ul',
                     { className: 'navigationList', style: { height: "40%" } },
                     this.state.circles.map(function (circle) {
+                        if (this.props.selectedCircle && this.props.selectedCircle.id == circle.id) {
+                            return _react2.default.createElement(
+                                'div',
+                                { key: circle.id, onClick: this.props.updateSelectedCircle.bind(this, circle), className: 'row circleListItem' },
+                                _react2.default.createElement(
+                                    'b',
+                                    null,
+                                    circle.name
+                                )
+                            );
+                        }
                         return _react2.default.createElement(
                             'div',
                             { key: circle.id, onClick: this.props.updateSelectedCircle.bind(this, circle), className: 'row circleListItem' },

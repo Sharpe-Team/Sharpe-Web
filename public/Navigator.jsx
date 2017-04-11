@@ -29,6 +29,9 @@ class Navigator extends React.Component {
                 <ul className="navigationList" style={{height: "40%"}}>
                     {
                         this.state.circles.map(function(circle) {
+                            if(this.props.selectedCircle && this.props.selectedCircle.id == circle.id){
+                                return <div key={circle.id} onClick={this.props.updateSelectedCircle.bind(this, circle)} className="row circleListItem"><b>{circle.name}</b></div>
+                            }
                             return <div key={circle.id} onClick={this.props.updateSelectedCircle.bind(this, circle)} className="row circleListItem">{circle.name}</div>
                         }, this)
                     }

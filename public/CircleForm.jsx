@@ -9,7 +9,8 @@ class CircleForm extends React.Component {
 		this.state = {
 			circleName: "",
 			users: [],
-			lastModifiedPicture: undefined
+			lastModifiedPicture: undefined,
+            displayLoading: "none"
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -25,6 +26,9 @@ class CircleForm extends React.Component {
 	render() {
 		return (
 			<div className="circle-form-root">
+                
+                <Loading style={this.state.displayLoading}/>
+                
                 <Link to="/app"><img className="home-button" src="/resource/home.png"></img></Link>
 
 				<form onSubmit={this.handleSubmit}>
@@ -163,6 +167,8 @@ class CircleForm extends React.Component {
 	}
 
 	handleSubmit(event) {
+        this.setState({displayLoading: "block"});
+        
 		event.preventDefault();
 
 		this.createCircle();
@@ -198,11 +204,13 @@ class CircleForm extends React.Component {
 				// redirect to main file 'App'
 				browserHistory.push('/app');
 			} else {
+                this.setState({displayLoading: "none"});
 				console.log(error);
 				alert("Une erreur est survenue lors de la création du nouveau cercle !");
 			}
 		})
 		.catch(function(error) {
+            this.setState({displayLoading: "none"});
 			console.log(error);
 			alert("Une erreur est survenue lors de la création du nouveau cercle !");
 		});

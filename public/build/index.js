@@ -25768,7 +25768,7 @@ var App = function (_React$Component) {
 			return _react2.default.createElement(
 				'div',
 				{ id: 'div-app', className: 'expanded row' },
-				_react2.default.createElement(_Navigator2.default, { updateSelectedCircle: this.updateSelectedCircle }),
+				_react2.default.createElement(_Navigator2.default, { updateSelectedCircle: this.updateSelectedCircle, selectedCircle: this.state.selectedCircle }),
 				this.state.selectedCircle && _react2.default.createElement(_Circle2.default, { circle: this.state.selectedCircle })
 			);
 		}
@@ -26594,13 +26594,16 @@ var Line = function (_React$Component) {
 
 			// Define events function from SocketIO
 			socket.on('new-point', function (point) {
-				point.created = new Date(point.created);
-				var points = component.state.points;
-				points.push(point);
-				component.setState({
-					points: points,
-					pointAdded: true
-				});
+				// If the user is on the line where it is the new point, we display it
+				if (point.idLine == component.props.line.id) {
+					point.created = new Date(point.created);
+					var points = component.state.points;
+					points.push(point);
+					component.setState({
+						points: points,
+						pointAdded: true
+					});
+				} else {}
 			});
 
 			var user = this.getUserFromStorage();
@@ -26611,7 +26614,6 @@ var Line = function (_React$Component) {
 			});
 
 			// Get all points of this line from DB
-			console.log("init ! ", user, user.id);
 			this.getAllPoints();
 		}
 	}, {
@@ -26630,9 +26632,6 @@ var Line = function (_React$Component) {
 	}, {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
-
-			console.log("Line - next Props - All points of line " + nextProps.line.id);
-
 			this.getAllPoints(nextProps.line.id);
 		}
 
@@ -27231,6 +27230,17 @@ var Navigator = function (_React$Component) {
                     'ul',
                     { className: 'navigationList', style: { height: "40%" } },
                     this.state.circles.map(function (circle) {
+                        if (this.props.selectedCircle && this.props.selectedCircle.id == circle.id) {
+                            return _react2.default.createElement(
+                                'div',
+                                { key: circle.id, onClick: this.props.updateSelectedCircle.bind(this, circle), className: 'row circleListItem' },
+                                _react2.default.createElement(
+                                    'b',
+                                    null,
+                                    circle.name
+                                )
+                            );
+                        }
                         return _react2.default.createElement(
                             'div',
                             { key: circle.id, onClick: this.props.updateSelectedCircle.bind(this, circle), className: 'row circleListItem' },

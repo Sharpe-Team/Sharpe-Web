@@ -159,7 +159,7 @@ io.sockets.on('connection', function (socket) {
 
     	// The user get 10 seconds to reconnect
     	setTimeout(function() {
-    		if(loggedUser.disconnected) {
+    		if(loggedUser.disconnected && loggedUser.user) {
 				socket.broadcast.emit('disconnected-user', loggedUser.user);
     			connectedUsersMap.delete(loggedUser.token);
     		}

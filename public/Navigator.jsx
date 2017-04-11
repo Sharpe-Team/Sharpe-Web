@@ -8,20 +8,7 @@ class Navigator extends React.Component {
 
         this.state = {
             circles: [],
-            users: [
-                {
-                    id: 1,
-                    name: "User 1"
-                },
-                {
-                    id: 2,
-                    name: "User 2"
-                },
-                {
-                    id: 3,
-                    name: "User 3"
-                }
-            ]
+            users: []
         }
 
         this.getAllCircles = this.getAllCircles.bind(this);
@@ -47,10 +34,10 @@ class Navigator extends React.Component {
                     }
                 </ul>
                 <hr></hr>
-                <ul className="navigationList" style={{height: "40%"}}> 
+                <ul className="navigationList" style={{height: "40%"}}>
                     {
-                        this.state.users.map(function(user){
-                            return <div key={user.id} className="row circleListItem">{user.name}</div>
+                        this.state.users.map(function(user) {
+                            return <div key={user.id} className="row circleListItem">{user.firstname}&nbsp;{user.lastname}</div>
                         })
                     }
                 </ul>
@@ -59,7 +46,34 @@ class Navigator extends React.Component {
     }
 
     componentWillMount() {
+        var component = this;
+
         this.getAllCircles();
+
+        socket.emit('get-connected-users');
+
+        socket.on('get-connected-users-response', function(users) {
+            component.setState({
+                users: users
+            });
+        });
+
+        socket.on('new-connected-user', function(user) {
+            var users = component.state.users;
+            users.push(user);
+            component.setState({
+                users: users
+            });
+        });
+
+        socket.on('disconnected-user', function(user) {
+            var updatedUsers = component.state.users.filter(function(element) {
+                return element.id != user.id;
+            });
+            component.setState({
+                users: updatedUsers
+            });
+        })
     }
 
     getAllCircles() {

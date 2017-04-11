@@ -16,8 +16,6 @@ class App extends React.Component {
 	}
 
 	render() {
-		console.log("Selected circle : " + this.state.selectedCircle);
-
 		return (
 			<div id="div-app" className="expanded row">
 				<Navigator updateSelectedCircle={this.updateSelectedCircle} />

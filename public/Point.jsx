@@ -6,7 +6,7 @@ class Point extends React.Component {
 		super(props);
 	}
     
-    renderDate(date){
+    renderDate(date) {
         var minutes = date.getMinutes();
         minutes = minutes < 10 ? '0'+minutes : minutes;
         return date.getHours()+":"+minutes;
@@ -21,7 +21,7 @@ class Point extends React.Component {
 			<li>
                 <div className="row align-middle">
                     <div className="imageLine column medium-1">
-                        <img className="userPicture" src={pictureUrl} />
+                        <img className="userPicture" src={'uploads/' + pictureUrl} />
                     </div>
                     <div className="column medium-11">
                         <div className="row">

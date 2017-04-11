@@ -17,6 +17,7 @@ class UserForm extends React.Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 
 		this.createUser = this.createUser.bind(this);
+		this.saveFinalPathOfProfilePicture = this.saveFinalPathOfProfilePicture.bind(this);
 
 		this.checkForm = this.checkForm.bind(this);
 	}
@@ -112,7 +113,44 @@ class UserForm extends React.Component {
 	}
 
 	componentDidMount() {
+		var component = this;
 
+		siofu.listenOnInput(document.getElementById("profile-picture"));
+
+	    siofu.addEventListener("load", function(event) {
+	    	// Save the name given by the server to the current picture
+	    	component.state.profilePicture = event.name;
+	    });
+
+		// Do something on upload progress:
+		siofu.addEventListener("progress", function(event) {
+	        var percent = event.bytesLoaded / event.file.size * 100;
+	        component.setState({percent: percent});
+		});
+
+		// Do something when a file is uploaded:
+		siofu.addEventListener("complete", function(event) {
+			if(event.success) {
+				// Save the final path of the latest modified picture
+				component.saveFinalPathOfProfilePicture(event.file);
+			} else {
+				component.setState({
+					profilePicture: undefined
+				});
+				alert("Une erreur est survenue lors de l'envoi des images...");
+			}
+		});
+	}
+
+	saveFinalPathOfProfilePicture(file) {
+		var finalName = this.state.profilePicture;
+		var currentName = file.name;
+		var extension = currentName.substring(currentName.indexOf("."));
+		var finalPath = finalName + extension;
+
+		this.setState({
+			profilePicture: finalPath
+		});
 	}
 
 	handleChange(event) {
@@ -139,40 +177,8 @@ class UserForm extends React.Component {
 		if(!this.checkForm()) {
 			return;
 		}
-
-		var component = this;
-
-		var socket = io.connect();
-		var siofu = new SocketIOFileUpload(socket);
-		var files = [];
-
-		// Do something on upload progress:
-	    siofu.addEventListener("progress", function(event) {
-	        var percent = event.bytesLoaded / event.file.size * 100;
-	        component.setState({percent: percent});
-	    });
-
-	    // Do something when a file is uploaded:
-	    siofu.addEventListener("complete", function(event) {
-	        console.log(event.success);
-	        console.log(event.file);
-
-	        // If the files were uploaded successfuly, save the user in the DataBase
-	        if(event.success) {
-	        	component.createUser();
-	        } else {
-	        	alert("Une erreur est apparue lors de l'envoi des images...");
-	        }
-	    });
-
-	    if(this.state.profilePicture instanceof File) {
-	    	files.push(this.state.profilePicture);
-	    }
-	    if(files.length > 0) {
-			siofu.submitFiles(files);
-	    } else {
-	    	this.createUser();
-	    }
+		
+	    this.createUser();
 	}
 
 	createUser() {

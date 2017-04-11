@@ -15,13 +15,15 @@ class Point extends React.Component {
 	render() {
         var pictureUrl = (this.props.point.user.profilePicture);
         if(!pictureUrl) {
-            pictureUrl = "/resource/toto.jpg";
+            pictureUrl = "/resource/unknown-person.png";
+        } else {
+            pictureUrl = "uploads/" + pictureUrl;
         }
 		return (
 			<li>
                 <div className="row align-middle">
                     <div className="imageLine column medium-1">
-                        <img className="userPicture" src={'uploads/' + pictureUrl} />
+                        <img className="userPicture" src={pictureUrl} />
                     </div>
                     <div className="column medium-11">
                         <div className="row">

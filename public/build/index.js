@@ -26425,7 +26425,6 @@ var LoginForm = function (_React$Component) {
 			var component = this;
 
 			socket.on('login-response', function (user) {
-				console.log("in loginform : " + user);
 				component.storeUserInStorage(user);
 				component.goToNextPage();
 			});
@@ -26475,7 +26474,6 @@ var LoginForm = function (_React$Component) {
 		value: function goToNextPage() {
 			var redirect = this.props.location.query.redirect;
 			var nextPage = redirect ? redirect : '/app';
-			console.log(nextPage);
 			_reactRouter.browserHistory.push(nextPage);
 		}
 	}, {
@@ -26923,7 +26921,9 @@ var Point = function (_React$Component) {
         value: function render() {
             var pictureUrl = this.props.point.user.profilePicture;
             if (!pictureUrl) {
-                pictureUrl = "/resource/toto.jpg";
+                pictureUrl = "/resource/unknown-person.png";
+            } else {
+                pictureUrl = "uploads/" + pictureUrl;
             }
             return _react2.default.createElement(
                 'li',
@@ -26934,7 +26934,7 @@ var Point = function (_React$Component) {
                     _react2.default.createElement(
                         'div',
                         { className: 'imageLine column medium-1' },
-                        _react2.default.createElement('img', { className: 'userPicture', src: 'uploads/' + pictureUrl })
+                        _react2.default.createElement('img', { className: 'userPicture', src: pictureUrl })
                     ),
                     _react2.default.createElement(
                         'div',

@@ -41,7 +41,6 @@ function requireAuth(Component) {
 
                 socket.on('verify-token-success', function(user) {
                     //component.storeUserInStorage(user);
-                    console.log("in AuthenticationComponent : " + user);
                     component.setState({isAuthorized: true});
                 });
 			} else {

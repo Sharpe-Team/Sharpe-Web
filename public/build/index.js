@@ -25825,8 +25825,6 @@ var App = function (_React$Component) {
 	_createClass(App, [{
 		key: 'render',
 		value: function render() {
-			console.log("Selected circle : " + this.state.selectedCircle);
-
 			return _react2.default.createElement(
 				'div',
 				{ id: 'div-app', className: 'expanded row' },
@@ -26010,7 +26008,6 @@ function requireAuth(Component) {
 
 					socket.on('verify-token-success', function (user) {
 						//component.storeUserInStorage(user);
-						console.log("in AuthenticationComponent : " + user);
 						component.setState({ isAuthorized: true });
 					});
 				} else {
@@ -26096,21 +26093,16 @@ var Circle = function (_React$Component) {
 	_createClass(Circle, [{
 		key: 'componentWillMount',
 		value: function componentWillMount() {
-
-			console.log("Circle - Will Mount - All lines of circle : " + this.props.circle.id);
 			this.getAllLines();
 		}
 	}, {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
-
-			console.log("Circle - NextProps - All lines of circle : " + nextProps.circle.id);
 			this.getAllLines(nextProps.circle.id);
 		}
 	}, {
 		key: 'render',
 		value: function render() {
-			console.log("render in circle");
 			var line;
 			if (this.state.selectedLine) {
 				line = _react2.default.createElement(_Line2.default, { line: this.state.selectedLine, style: { height: "100%" } });
@@ -26665,7 +26657,9 @@ var Line = function (_React$Component) {
 						points: points,
 						pointAdded: true
 					});
-				} else {}
+				} else {
+					// Increase the number of unread messages on the circle of the line
+				}
 			});
 
 			var user = this.getUserFromStorage();
@@ -26759,11 +26753,15 @@ var Line = function (_React$Component) {
 			}).then(function (response) {
 				return response.json();
 			}).then(function (points) {
-				for (var i = 0; i < points.length; i++) {
-					points[i].created = new Date(points[i].created);
-					points[i].updated = new Date(points[i].updated);
+				if (points) {
+					for (var i = 0; i < points.length; i++) {
+						points[i].created = new Date(points[i].created);
+						points[i].updated = new Date(points[i].updated);
+					}
+					component.setState({ points: points });
+
+					component.scrollToBottom();
 				}
-				component.setState({ points: points });
 			}).catch(function (error) {
 				console.log(error);
 			});
@@ -26984,7 +26982,6 @@ var LoginForm = function (_React$Component) {
 			var component = this;
 
 			socket.on('login-response', function (user) {
-				console.log("in loginform : " + user);
 				component.storeUserInStorage(user);
 				component.goToNextPage();
 			});
@@ -27034,7 +27031,6 @@ var LoginForm = function (_React$Component) {
 		value: function goToNextPage() {
 			var redirect = this.props.location.query.redirect;
 			var nextPage = redirect ? redirect : '/app';
-			console.log(nextPage);
 			_reactRouter.browserHistory.push(nextPage);
 		}
 	}, {
@@ -27231,16 +27227,7 @@ var Navigator = function (_React$Component) {
 
         _this.state = {
             circles: [],
-            users: [{
-                id: 1,
-                name: "User 1"
-            }, {
-                id: 2,
-                name: "User 2"
-            }, {
-                id: 3,
-                name: "User 3"
-            }]
+            users: []
         };
 
         _this.getAllCircles = _this.getAllCircles.bind(_this);
@@ -27306,7 +27293,9 @@ var Navigator = function (_React$Component) {
                         return _react2.default.createElement(
                             'div',
                             { key: user.id, className: 'row circleListItem' },
-                            user.name
+                            user.firstname,
+                            '\xA0',
+                            user.lastname
                         );
                     })
                 )
@@ -27315,7 +27304,34 @@ var Navigator = function (_React$Component) {
     }, {
         key: 'componentWillMount',
         value: function componentWillMount() {
+            var component = this;
+
             this.getAllCircles();
+
+            socket.emit('get-connected-users');
+
+            socket.on('get-connected-users-response', function (users) {
+                component.setState({
+                    users: users
+                });
+            });
+
+            socket.on('new-connected-user', function (user) {
+                var users = component.state.users;
+                users.push(user);
+                component.setState({
+                    users: users
+                });
+            });
+
+            socket.on('disconnected-user', function (user) {
+                var updatedUsers = component.state.users.filter(function (element) {
+                    return element.id != user.id;
+                });
+                component.setState({
+                    users: updatedUsers
+                });
+            });
         }
     }, {
         key: 'getAllCircles',
@@ -27462,7 +27478,9 @@ var Point = function (_React$Component) {
         value: function render() {
             var pictureUrl = this.props.point.user.profilePicture;
             if (!pictureUrl) {
-                pictureUrl = "/resource/toto.jpg";
+                pictureUrl = "/resource/unknown-person.png";
+            } else {
+                pictureUrl = "uploads/" + pictureUrl;
             }
             return _react2.default.createElement(
                 'li',
@@ -27577,6 +27595,7 @@ var UserForm = function (_React$Component) {
 		_this.handleSubmit = _this.handleSubmit.bind(_this);
 
 		_this.createUser = _this.createUser.bind(_this);
+		_this.saveFinalPathOfProfilePicture = _this.saveFinalPathOfProfilePicture.bind(_this);
 
 		_this.checkForm = _this.checkForm.bind(_this);
 		return _this;
@@ -27764,7 +27783,47 @@ var UserForm = function (_React$Component) {
 		}
 	}, {
 		key: 'componentDidMount',
-		value: function componentDidMount() {}
+		value: function componentDidMount() {
+			var component = this;
+
+			siofu.listenOnInput(document.getElementById("profile-picture"));
+
+			siofu.addEventListener("load", function (event) {
+				// Save the name given by the server to the current picture
+				component.state.profilePicture = event.name;
+			});
+
+			// Do something on upload progress:
+			siofu.addEventListener("progress", function (event) {
+				var percent = event.bytesLoaded / event.file.size * 100;
+				component.setState({ percent: percent });
+			});
+
+			// Do something when a file is uploaded:
+			siofu.addEventListener("complete", function (event) {
+				if (event.success) {
+					// Save the final path of the latest modified picture
+					component.saveFinalPathOfProfilePicture(event.file);
+				} else {
+					component.setState({
+						profilePicture: undefined
+					});
+					alert("Une erreur est survenue lors de l'envoi des images...");
+				}
+			});
+		}
+	}, {
+		key: 'saveFinalPathOfProfilePicture',
+		value: function saveFinalPathOfProfilePicture(file) {
+			var finalName = this.state.profilePicture;
+			var currentName = file.name;
+			var extension = currentName.substring(currentName.indexOf("."));
+			var finalPath = finalName + extension;
+
+			this.setState({
+				profilePicture: finalPath
+			});
+		}
 	}, {
 		key: 'handleChange',
 		value: function handleChange(event) {
@@ -27797,39 +27856,7 @@ var UserForm = function (_React$Component) {
 				return;
 			}
 
-			var component = this;
-
-			var socket = io.connect();
-			var siofu = new SocketIOFileUpload(socket);
-			var files = [];
-
-			// Do something on upload progress:
-			siofu.addEventListener("progress", function (event) {
-				var percent = event.bytesLoaded / event.file.size * 100;
-				component.setState({ percent: percent });
-			});
-
-			// Do something when a file is uploaded:
-			siofu.addEventListener("complete", function (event) {
-				console.log(event.success);
-				console.log(event.file);
-
-				// If the files were uploaded successfuly, save the user in the DataBase
-				if (event.success) {
-					component.createUser();
-				} else {
-					alert("Une erreur est apparue lors de l'envoi des images...");
-				}
-			});
-
-			if (this.state.profilePicture instanceof File) {
-				files.push(this.state.profilePicture);
-			}
-			if (files.length > 0) {
-				siofu.submitFiles(files);
-			} else {
-				this.createUser();
-			}
+			this.createUser();
 		}
 	}, {
 		key: 'createUser',

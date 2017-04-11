@@ -6,7 +6,7 @@ class Point extends React.Component {
 		super(props);
 	}
     
-    renderDate(date){
+    renderDate(date) {
         var minutes = date.getMinutes();
         minutes = minutes < 10 ? '0'+minutes : minutes;
         return date.getHours()+":"+minutes;
@@ -15,7 +15,9 @@ class Point extends React.Component {
 	render() {
         var pictureUrl = (this.props.point.user.profilePicture);
         if(!pictureUrl) {
-            pictureUrl = "/resource/toto.jpg";
+            pictureUrl = "/resource/unknown-person.png";
+        } else {
+            pictureUrl = "uploads/" + pictureUrl;
         }
 		return (
 			<li>

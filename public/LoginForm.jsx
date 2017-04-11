@@ -87,7 +87,6 @@ class LoginForm extends React.Component {
 		var component = this;
 
 		socket.on('login-response', function(user) {
-            console.log("in loginform : " + user);
 			component.storeUserInStorage(user);
 			component.goToNextPage();
 		});
@@ -132,7 +131,6 @@ class LoginForm extends React.Component {
 	goToNextPage() {
 		var redirect = this.props.location.query.redirect;
 		var nextPage = (redirect) ? redirect : '/app';
-		console.log(nextPage);
 		browserHistory.push(nextPage);
 	}
 

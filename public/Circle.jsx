@@ -16,19 +16,14 @@ class Circle extends React.Component {
 	}
 
 	componentWillMount() {
-		
-		console.log("Circle - Will Mount - All lines of circle : " + this.props.circle.id);
 		this.getAllLines();
 	}
 
 	componentWillReceiveProps(nextProps) {
-
-		console.log("Circle - NextProps - All lines of circle : " + nextProps.circle.id);
 		this.getAllLines(nextProps.circle.id);
 	}
 
 	render() {
-		console.log("render in circle");
 		var line;
 		if(this.state.selectedLine) {
 			line = (<Line line={this.state.selectedLine} style={{height: "100%"}}/>);

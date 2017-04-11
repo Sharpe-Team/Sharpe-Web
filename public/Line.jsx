@@ -69,7 +69,7 @@ class Line extends React.Component {
 					pointAdded: true
 				});
 			} else {
-				
+				// Increase the number of unread messages on the circle of the line
 			}
 		});
         
@@ -157,11 +157,15 @@ class Line extends React.Component {
 			return response.json();
 		})
 		.then(function(points) {
-			for(var i=0; i<points.length; i++) {
-				points[i].created = new Date(points[i].created);
-				points[i].updated = new Date(points[i].updated);
+			if(points) {
+				for(var i=0; i<points.length; i++) {
+					points[i].created = new Date(points[i].created);
+					points[i].updated = new Date(points[i].updated);
+				}
+				component.setState({points: points});
+
+				component.scrollToBottom();
 			}
-			component.setState({points: points});
 		})
 		.catch(function(error) {
 			console.log(error);

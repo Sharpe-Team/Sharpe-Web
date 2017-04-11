@@ -143,7 +143,11 @@ io.sockets.on('connection', function (socket) {
 				connectedUsersMap.set(token, loggedUser);
     		}
 
+    		// Send info user to client
     		socket.emit('login-response', loggedUser.user);
+
+    		// Send info user to all clients except current client
+    		socket.broadcast.emit('new-connected-user', loggedUser.user);
     	} else {
     		console.log("Unregistered user connected...");
     	}
@@ -155,13 +159,15 @@ io.sockets.on('connection', function (socket) {
 
     	// The user get 10 seconds to reconnect
     	setTimeout(function() {
-    		if(loggedUser.disconnected) {
+    		if(loggedUser.disconnected && loggedUser.user) {
+				socket.broadcast.emit('disconnected-user', loggedUser.user);
     			connectedUsersMap.delete(loggedUser.token);
     		}
     	}, 10000);
     });
 
     socket.on('logout', function() {
+		socket.broadcast.emit('disconnected-user', loggedUser.user);
 		connectedUsersMap.delete(loggedUser.token);
     });
 
@@ -181,6 +187,15 @@ io.sockets.on('connection', function (socket) {
 			socket.emit('verify-token-failure');
 		}
 	});
+
+	socket.on('get-connected-users', function() {
+		var listUsers = new Array();
+		for(var [key, value] of connectedUsersMap) {
+			listUsers.push(value.user);
+		}
+
+		socket.emit('get-connected-users-response', listUsers);
+	})
 
 
 	/****************** SOCKET_IO_FILE_UPLOAD ******************/

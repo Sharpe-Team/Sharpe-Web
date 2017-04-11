@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link, browserHistory} from 'react-router';
 import passwordHash from 'password-hash';
+import Loading from './Loading.jsx';
 
 class UserForm extends React.Component {
 
@@ -8,7 +9,8 @@ class UserForm extends React.Component {
 		super(props);
 
 		this.state = {
-            percent: 0
+            percent: 0,
+            displayLoading: "none"
         };
 
 		this.handleChange = this.handleChange.bind(this);
@@ -24,6 +26,9 @@ class UserForm extends React.Component {
 	render() {
 		return (
 			<div className="user-form-root">
+                
+                <Loading style={this.state.displayLoading}/>
+                
 				<Link to="/app"><img className="home-button" src="/resource/home.png"></img></Link>
 
 				<form onSubmit={this.handleSubmit}>
@@ -134,6 +139,8 @@ class UserForm extends React.Component {
 	}
 
 	handleSubmit(event) {
+        this.setState({displayLoading: "block"});
+        
 		event.preventDefault();
 
 		if(!this.checkForm()) {
@@ -204,11 +211,13 @@ class UserForm extends React.Component {
 				alert("L'utilisateur a été ajouté avec succès !");
 				browserHistory.push('/app');
 			} else {
+                this.setState({displayLoading: "none"});
 				console.log(error);
 				alert("Une erreur est survenue lors de la création du nouvel utilisateur !");
 			}
 		})
 		.catch(function(error) {
+            this.setState({displayLoading: "none"});
 			console.log(error);
 			alert("Une erreur est survenue lors de la création du nouvel utilisateur !");
 		});

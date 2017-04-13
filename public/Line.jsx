@@ -69,7 +69,8 @@ class Line extends React.Component {
 					pointAdded: true
 				});
 			} else {
-				// Increase the number of unread points on the circle of the line
+				// Increase the number of unread points on the circle of the line$
+				component.props.updateUnreadPoints(component.props.line.idCircle);
 			}
 		});
         
@@ -139,7 +140,7 @@ class Line extends React.Component {
 
 		if(!idLine) {
 			if(!this.props.line) {
-				this.setState({points: points});
+				this.setState({points: []});
 			} else {
 				idLine = this.props.line.id;
 			}

@@ -25250,17 +25250,22 @@ var App = function (_React$Component) {
 		};
 
 		_this.updateSelectedCircle = _this.updateSelectedCircle.bind(_this);
+		_this.updateUnreadPoints = _this.updateUnreadPoints.bind(_this);
 		return _this;
 	}
 
 	_createClass(App, [{
 		key: 'render',
 		value: function render() {
+			var _this2 = this;
+
 			return _react2.default.createElement(
 				'div',
 				{ id: 'div-app', className: 'expanded row' },
-				_react2.default.createElement(_Navigator2.default, { updateSelectedCircle: this.updateSelectedCircle, selectedCircle: this.state.selectedCircle }),
-				this.state.selectedCircle && _react2.default.createElement(_Circle2.default, { circle: this.state.selectedCircle })
+				_react2.default.createElement(_Navigator2.default, { updateSelectedCircle: this.updateSelectedCircle, ref: function ref(instance) {
+						_this2.navigatorRef = instance;
+					} }),
+				this.state.selectedCircle && _react2.default.createElement(_Circle2.default, { circle: this.state.selectedCircle, updateUnreadPoints: this.updateUnreadPoints })
 			);
 		}
 	}, {
@@ -25270,8 +25275,15 @@ var App = function (_React$Component) {
 		key: 'updateSelectedCircle',
 		value: function updateSelectedCircle(circle) {
 			if (!this.state.selectedCircle || this.state.selectedCircle.id != circle.id) {
+				circle.nbUnreadPoints = 0;
 				this.setState({ selectedCircle: circle });
 			}
+		}
+	}, {
+		key: 'updateUnreadPoints',
+		value: function updateUnreadPoints(idCircle) {
+			console.log("UPDATE BADGE : " + parseInt(idCircle));
+			this.navigatorRef.updateUnreadPointsBadge(idCircle);
 		}
 	}]);
 
@@ -25536,7 +25548,7 @@ var Circle = function (_React$Component) {
 		value: function render() {
 			var line;
 			if (this.state.selectedLine) {
-				line = _react2.default.createElement(_Line2.default, { line: this.state.selectedLine, style: { height: "100%" } });
+				line = _react2.default.createElement(_Line2.default, { line: this.state.selectedLine, updateUnreadPoints: this.props.updateUnreadPoints, style: { height: "100%" } });
 			} else {
 				line = _react2.default.createElement(
 					'div',
@@ -26089,7 +26101,8 @@ var Line = function (_React$Component) {
 						pointAdded: true
 					});
 				} else {
-					// Increase the number of unread messages on the circle of the line
+					// Increase the number of unread points on the circle of the line$
+					component.props.updateUnreadPoints(component.props.line.idCircle);
 				}
 			});
 
@@ -26168,7 +26181,7 @@ var Line = function (_React$Component) {
 
 			if (!idLine) {
 				if (!this.props.line) {
-					this.setState({ points: points });
+					this.setState({ points: [] });
 				} else {
 					idLine = this.props.line.id;
 				}
@@ -26641,7 +26654,7 @@ exports.default = LogoutComponent;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+	value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -26661,172 +26674,203 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Navigator = function (_React$Component) {
-    _inherits(Navigator, _React$Component);
+	_inherits(Navigator, _React$Component);
 
-    function Navigator(props) {
-        _classCallCheck(this, Navigator);
+	function Navigator(props) {
+		_classCallCheck(this, Navigator);
 
-        var _this = _possibleConstructorReturn(this, (Navigator.__proto__ || Object.getPrototypeOf(Navigator)).call(this, props));
+		var _this = _possibleConstructorReturn(this, (Navigator.__proto__ || Object.getPrototypeOf(Navigator)).call(this, props));
 
-        _this.state = {
-            circles: [],
-            users: [],
-            nbUnreadPoints: 0
-        };
+		_this.state = {
+			circles: [],
+			users: [],
+			selectedCircle: null
+		};
 
-        _this.getAllCircles = _this.getAllCircles.bind(_this);
-        return _this;
-    }
+		_this.getAllCircles = _this.getAllCircles.bind(_this);
+		_this.updateUnreadPointsBadge = _this.updateUnreadPointsBadge.bind(_this);
+		_this.selectCircle = _this.selectCircle.bind(_this);
+		return _this;
+	}
 
-    _createClass(Navigator, [{
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'div',
-                { id: 'left-column', className: 'column medium-2' },
-                _react2.default.createElement(
-                    'div',
-                    { id: 'search', className: 'row' },
-                    _react2.default.createElement('div', { className: 'medium-1' }),
-                    _react2.default.createElement(
-                        _reactRouter.Link,
-                        { className: 'medium-2', to: '/userform' },
-                        _react2.default.createElement('img', { className: 'user-form-button', src: '/resource/user.png' })
-                    ),
-                    _react2.default.createElement('div', { className: 'medium-2' }),
-                    _react2.default.createElement(
-                        _reactRouter.Link,
-                        { className: 'medium-2', to: '/circleform' },
-                        _react2.default.createElement('img', { className: 'circle-form-button', src: '/resource/circle.png' })
-                    ),
-                    _react2.default.createElement('div', { className: 'medium-2' }),
-                    _react2.default.createElement(
-                        _reactRouter.Link,
-                        { className: 'medium-2', to: '/logout' },
-                        _react2.default.createElement('img', { className: 'logout-form-button', src: '/resource/logout.png' })
-                    ),
-                    _react2.default.createElement('div', { className: 'medium-1' })
-                ),
-                _react2.default.createElement(
-                    'ul',
-                    { className: 'navigationList', style: { height: "40%" } },
-                    this.state.circles.map(function (circle) {
-                        if (this.props.selectedCircle && this.props.selectedCircle.id == circle.id) {
-                            return _react2.default.createElement(
-                                'div',
-                                { key: circle.id, onClick: this.props.updateSelectedCircle.bind(this, circle), className: 'row circleListItem' },
-                                _react2.default.createElement(
-                                    'b',
-                                    null,
-                                    circle.name
-                                ),
-                                '\xA0',
-                                circle.nbUnreadPoints > 0 && _react2.default.createElement(
-                                    'span',
-                                    { 'class': 'badge primary' },
-                                    circle.nbUnreadPoints
-                                )
-                            );
-                        }
-                        return _react2.default.createElement(
-                            'div',
-                            { key: circle.id, onClick: this.props.updateSelectedCircle.bind(this, circle), className: 'row circleListItem' },
-                            circle.name,
-                            '\xA0',
-                            circle.nbUnreadPoints > 0 && _react2.default.createElement(
-                                'span',
-                                { 'class': 'badge primary' },
-                                circle.nbUnreadPoints
-                            )
-                        );
-                    }, this)
-                ),
-                _react2.default.createElement('hr', null),
-                _react2.default.createElement(
-                    'ul',
-                    { className: 'navigationList', style: { height: "40%" } },
-                    this.state.users.map(function (user) {
-                        return _react2.default.createElement(
-                            'div',
-                            { key: user.id, className: 'row circleListItem' },
-                            user.firstname,
-                            '\xA0',
-                            user.lastname
-                        );
-                    })
-                )
-            );
-        }
-    }, {
-        key: 'componentWillMount',
-        value: function componentWillMount() {
-            var component = this;
+	_createClass(Navigator, [{
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'div',
+				{ id: 'left-column', className: 'column medium-2' },
+				_react2.default.createElement(
+					'div',
+					{ id: 'search', className: 'row' },
+					_react2.default.createElement('div', { className: 'medium-1' }),
+					_react2.default.createElement(
+						_reactRouter.Link,
+						{ className: 'medium-2', to: '/userform' },
+						_react2.default.createElement('img', { className: 'user-form-button', src: '/resource/user.png' })
+					),
+					_react2.default.createElement('div', { className: 'medium-2' }),
+					_react2.default.createElement(
+						_reactRouter.Link,
+						{ className: 'medium-2', to: '/circleform' },
+						_react2.default.createElement('img', { className: 'circle-form-button', src: '/resource/circle.png' })
+					),
+					_react2.default.createElement('div', { className: 'medium-2' }),
+					_react2.default.createElement(
+						_reactRouter.Link,
+						{ className: 'medium-2', to: '/logout' },
+						_react2.default.createElement('img', { className: 'logout-form-button', src: '/resource/logout.png' })
+					),
+					_react2.default.createElement('div', { className: 'medium-1' })
+				),
+				_react2.default.createElement(
+					'ul',
+					{ className: 'navigationList', style: { height: "40%" } },
+					this.state.circles.map(function (circle) {
+						if (this.state.selectedCircle && this.state.selectedCircle.id == circle.id) {
+							return _react2.default.createElement(
+								'div',
+								{ key: circle.id, onClick: this.selectCircle.bind(this, circle), className: 'row circleListItem' },
+								_react2.default.createElement(
+									'b',
+									null,
+									circle.name
+								),
+								'\xA0',
+								circle.nbUnreadPoints > 0 && _react2.default.createElement(
+									'span',
+									{ className: 'badge primary' },
+									circle.nbUnreadPoints
+								)
+							);
+						}
+						return _react2.default.createElement(
+							'div',
+							{ key: circle.id, onClick: this.selectCircle.bind(this, circle), className: 'row circleListItem' },
+							circle.name,
+							'\xA0',
+							circle.nbUnreadPoints > 0 && _react2.default.createElement(
+								'span',
+								{ className: 'badge primary' },
+								circle.nbUnreadPoints
+							)
+						);
+					}, this)
+				),
+				_react2.default.createElement('hr', null),
+				_react2.default.createElement(
+					'ul',
+					{ className: 'navigationList', style: { height: "40%" } },
+					this.state.users.map(function (user) {
+						return _react2.default.createElement(
+							'div',
+							{ key: user.id, className: 'row circleListItem' },
+							user.firstname,
+							'\xA0',
+							user.lastname
+						);
+					})
+				)
+			);
+		}
+	}, {
+		key: 'componentWillMount',
+		value: function componentWillMount() {
+			var component = this;
 
-            this.getAllCircles();
+			this.getAllCircles();
 
-            socket.emit('get-connected-users');
+			socket.emit('get-connected-users');
 
-            socket.on('get-connected-users-response', function (users) {
-                component.setState({
-                    users: users
-                });
-            });
+			socket.on('get-connected-users-response', function (users) {
+				component.setState({
+					users: users
+				});
+			});
 
-            socket.on('new-connected-user', function (user) {
-                var users = component.state.users;
-                users.push(user);
-                component.setState({
-                    users: users
-                });
-            });
+			socket.on('new-connected-user', function (user) {
+				var users = component.state.users;
+				users.push(user);
+				component.setState({
+					users: users
+				});
+			});
 
-            socket.on('disconnected-user', function (user) {
-                var updatedUsers = component.state.users.filter(function (element) {
-                    return element.id != user.id;
-                });
-                component.setState({
-                    users: updatedUsers
-                });
-            });
-        }
-    }, {
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {
-            if (nextProps.nbUnreadPoints) {
-                this.setState({
-                    nbUnreadPoints: nextProps.nbUnreadPoints
-                });
-            }
-        }
-    }, {
-        key: 'getAllCircles',
-        value: function getAllCircles() {
-            var component = this;
+			socket.on('disconnected-user', function (user) {
+				var updatedUsers = component.state.users.filter(function (element) {
+					return element.id != user.id;
+				});
+				component.setState({
+					users: updatedUsers
+				});
+			});
+		}
+	}, {
+		key: 'getAllCircles',
+		value: function getAllCircles() {
+			var component = this;
 
-            fetch('http://localhost:8080/circles', {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
-            }).then(function (response) {
-                return response.json();
-            }).then(function (circles) {
-                for (var i = 0; i < circles.length; i++) {
-                    circles[i]['nbUnreadPoints'] = 0;
-                }
+			fetch('http://localhost:8080/circles', {
+				method: 'GET',
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('token')
+				}
+			}).then(function (response) {
+				return response.json();
+			}).then(function (circles) {
+				var selectedCircle = circles.length > 0 ? circles[0] : null;
 
-                component.setState({ circles: circles });
+				for (var i = 0; i < circles.length; i++) {
+					circles[i]['nbUnreadPoints'] = 0;
+				}
 
-                if (circles.length > 0) {
-                    component.props.updateSelectedCircle(circles[0]);
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
-        }
-    }]);
+				component.setState({
+					circles: circles,
+					selectedCircle: selectedCircle
+				});
 
-    return Navigator;
+				component.props.updateSelectedCircle(selectedCircle);
+			}).catch(function (error) {
+				console.log(error);
+			});
+		}
+	}, {
+		key: 'selectCircle',
+		value: function selectCircle(circle) {
+			// Find the circle that needs to be updated in the list of circles
+			var indexCircle = this.state.circles.findIndex(function (element) {
+				return element.id == circle.id;
+			});
+
+			// Set to 0 the number of unread points to this circle
+			var circles = this.state.circles;
+			circles[indexCircle].nbUnreadPoints = 0;
+
+			this.setState({
+				circles: circles,
+				selectedCircle: circles[indexCircle]
+			});
+
+			this.props.updateSelectedCircle(circles[indexCircle]);
+		}
+	}, {
+		key: 'updateUnreadPointsBadge',
+		value: function updateUnreadPointsBadge(idCircle) {
+			console.log("In Navigator : " + idCircle);
+			// Find the circle that need to be updated in the list of circles
+			var indexCircle = this.state.circles.findIndex(function (element) {
+				return element.id == idCircle;
+			});
+
+			var circles = this.state.circles;
+			circles[indexCircle].nbUnreadPoints++;
+
+			this.setState({
+				circles: circles
+			});
+		}
+	}]);
+
+	return Navigator;
 }(_react2.default.Component);
 
 exports.default = Navigator;
@@ -26956,7 +27000,7 @@ var Point = function (_React$Component) {
                 null,
                 _react2.default.createElement(
                     'div',
-                    { className: 'row align-middle' },
+                    { className: 'row align-top' },
                     _react2.default.createElement(
                         'div',
                         { className: 'imageLine column medium-1' },

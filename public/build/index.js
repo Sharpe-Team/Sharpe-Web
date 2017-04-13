@@ -26767,7 +26767,7 @@ var Navigator = function (_React$Component) {
 						if (this.state.selectedCircle && this.state.selectedCircle.id == circle.id) {
 							return _react2.default.createElement(
 								'div',
-								{ key: circle.id, onClick: this.selectCircle.bind(this, circle), className: 'row circleListItem' },
+								{ key: circle.id, onClick: this.selectCircle.bind(this, circle), className: 'circleListItem' },
 								_react2.default.createElement(
 									'b',
 									null,
@@ -26776,19 +26776,19 @@ var Navigator = function (_React$Component) {
 								'\xA0',
 								circle.nbUnreadPoints > 0 && _react2.default.createElement(
 									'span',
-									{ className: 'badge primary' },
+									{ className: 'badge warning' },
 									circle.nbUnreadPoints
 								)
 							);
 						}
 						return _react2.default.createElement(
 							'div',
-							{ key: circle.id, onClick: this.selectCircle.bind(this, circle), className: 'row circleListItem' },
+							{ key: circle.id, onClick: this.selectCircle.bind(this, circle), className: 'circleListItem', 'aria-describedby': "badge_" + circle.id },
 							circle.name,
 							'\xA0',
 							circle.nbUnreadPoints > 0 && _react2.default.createElement(
 								'span',
-								{ className: 'badge primary' },
+								{ id: "badge_" + circle.id, className: 'badge warning' },
 								circle.nbUnreadPoints
 							)
 						);

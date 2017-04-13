@@ -34,21 +34,21 @@ class Navigator extends React.Component {
 					this.state.circles.map(function(circle) {
 						if(this.state.selectedCircle && this.state.selectedCircle.id == circle.id) {
 							return (
-								<div key={circle.id} onClick={this.selectCircle.bind(this, circle)} className="row circleListItem">
+								<div key={circle.id} onClick={this.selectCircle.bind(this, circle)} className="circleListItem">
 									<b>{circle.name}</b>
 									&nbsp;
 									{ circle.nbUnreadPoints > 0 &&
-										<span className="badge primary">{circle.nbUnreadPoints}</span>
+										<span className="badge warning">{circle.nbUnreadPoints}</span>
 									}
 								</div>
 							)
 						}
 						return (
-							<div key={circle.id} onClick={this.selectCircle.bind(this, circle)} className="row circleListItem">
+							<div key={circle.id} onClick={this.selectCircle.bind(this, circle)} className="circleListItem" aria-describedby={"badge_" + circle.id}>
 								{circle.name}
 								&nbsp;
 								{ circle.nbUnreadPoints > 0 &&
-									<span className="badge primary">{circle.nbUnreadPoints}</span>
+									<span id={"badge_" + circle.id} className="badge warning">{circle.nbUnreadPoints}</span>
 								}
 							</div>
 						)

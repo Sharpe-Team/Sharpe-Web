@@ -147,10 +147,12 @@ class Navigator extends React.Component {
 		this.props.updateSelectedCircle(circles[indexCircle]);
 	}
 
-	updateUnreadPointsBadge(idCircle) {
+	updateUnreadPointsBadge(idLine) {
 		// Find the circle that need to be updated in the list of circles
-		var indexCircle = this.state.circles.findIndex(function(element) {
-			return element.id == idCircle;
+		var indexCircle = this.state.circles.findIndex(function(circle) {
+			return circle.lines.find(function(line) {
+				return line.id == idLine;
+			});
 		});
 
 		var circles = this.state.circles;

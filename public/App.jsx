@@ -37,8 +37,8 @@ class App extends React.Component {
 		}
 	}
 
-	updateUnreadPoints(idCircle) {
-		this.navigatorRef.updateUnreadPointsBadge(idCircle);
+	updateUnreadPoints(idLine) {
+		this.navigatorRef.updateUnreadPointsBadge(idLine);
 	}
 }
 

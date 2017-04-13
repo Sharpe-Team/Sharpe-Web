@@ -25343,8 +25343,8 @@ var App = function (_React$Component) {
 		}
 	}, {
 		key: 'updateUnreadPoints',
-		value: function updateUnreadPoints(idCircle) {
-			this.navigatorRef.updateUnreadPointsBadge(idCircle);
+		value: function updateUnreadPoints(idLine) {
+			this.navigatorRef.updateUnreadPointsBadge(idLine);
 		}
 	}]);
 
@@ -25594,20 +25594,15 @@ var Circle = function (_React$Component) {
 			navbarHeight: 100,
 			selectedLine: selectedLine
 		};
-
-		//this.getAllLines = this.getAllLines.bind(this);
 		return _this;
 	}
 
 	_createClass(Circle, [{
 		key: 'componentWillMount',
-		value: function componentWillMount() {
-			//this.getAllLines();
-		}
+		value: function componentWillMount() {}
 	}, {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
-			//this.getAllLines(nextProps.circle.id);
 			var selectedLine = null;
 
 			if (nextProps.circle && nextProps.circle.lines && nextProps.circle.lines.length > 0) {
@@ -25681,32 +25676,6 @@ var Circle = function (_React$Component) {
 					_react2.default.createElement('div', { id: 'cubes', className: 'column medium-3' })
 				)
 			);
-		}
-	}, {
-		key: 'getAllLines',
-		value: function getAllLines(idCircle) {
-			var component = this;
-
-			if (!idCircle) {
-				idCircle = this.props.circle.id;
-			}
-
-			fetch('http://localhost:8080/lines?idCircle=' + idCircle, {
-				method: 'GET',
-				headers: {
-					'Authorization': 'Bearer ' + localStorage.getItem('token')
-				}
-			}).then(function (response) {
-				return response.json();
-			}).then(function (lines) {
-				component.setState({
-					lines: lines,
-					selectedLine: lines.length > 0 ? lines[0] : null
-				});
-			}).catch(function (error) {
-				console.log(error);
-				component.setState({ selectedLine: null });
-			});
 		}
 	}]);
 
@@ -26183,7 +26152,7 @@ var Line = function (_React$Component) {
 					});
 				} else {
 					// Increase the number of unread points on the circle of the line$
-					component.props.updateUnreadPoints(component.props.line.idCircle);
+					component.props.updateUnreadPoints(point.idLine);
 				}
 			});
 
@@ -26923,10 +26892,12 @@ var Navigator = function (_React$Component) {
 		}
 	}, {
 		key: 'updateUnreadPointsBadge',
-		value: function updateUnreadPointsBadge(idCircle) {
+		value: function updateUnreadPointsBadge(idLine) {
 			// Find the circle that need to be updated in the list of circles
-			var indexCircle = this.state.circles.findIndex(function (element) {
-				return element.id == idCircle;
+			var indexCircle = this.state.circles.findIndex(function (circle) {
+				return circle.lines.find(function (line) {
+					return line.id == idLine;
+				});
 			});
 
 			var circles = this.state.circles;

@@ -70,7 +70,7 @@ class Line extends React.Component {
 				});
 			} else {
 				// Increase the number of unread points on the circle of the line$
-				component.props.updateUnreadPoints(component.props.line.idCircle);
+				component.props.updateUnreadPoints(point.idLine);
 			}
 		});
         

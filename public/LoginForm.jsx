@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link, browserHistory} from 'react-router';
 import passwordHash from 'password-hash';
+import Loading from './Loading.jsx';
 
 class LoginForm extends React.Component {
 
@@ -29,19 +30,7 @@ class LoginForm extends React.Component {
 		return (
 			<div className="login-form-root">
                 
-                <div className="loading" style={{display: this.state.displayLoading}}>
-                    <div className="row spinner">
-                        <div className="medium-1 rect1"></div>
-                        <span className="medium-1"></span> 
-                        <div className="medium-1 rect2"></div>
-                        <span className="medium-1"></span>   
-                        <div className="medium-1 rect3"></div>
-                        <span className="medium-1"></span> 
-                        <div className="medium-1 rect4"></div>
-                        <span className="medium-1"></span> 
-                        <div className="medium-1 rect5"></div>
-                    </div>
-                </div>
+                <Loading style={this.state.displayLoading}/>
                 
                 <img className="expanded row align-center logo" src="/resource/logo.png"/>
                 

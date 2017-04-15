@@ -1,5 +1,6 @@
 import React from 'react';
 import Point from './Point.jsx';
+import API_URL from './conf.jsx';
 //import MyEditor from './MyEditor.jsx';
 //import {Editor, EditorState} from 'draft-js';
 
@@ -148,7 +149,7 @@ class Line extends React.Component {
 			return;
 		}
 
-		fetch('http://localhost:8080/points?idLine=' + idLine, {
+		fetch(API_URL + 'points?idLine=' + idLine, {
 			method: 'GET',
 			headers: {
 				'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -176,7 +177,7 @@ class Line extends React.Component {
 	saveNewPoint(text) {
 		var component = this;
 
-		fetch('http://localhost:8080/points', {
+		fetch(API_URL + 'points', {
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',

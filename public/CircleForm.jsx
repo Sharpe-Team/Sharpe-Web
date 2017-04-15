@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link, browserHistory} from 'react-router';
+import {API_URL} from './conf.jsx';
 
 class CircleForm extends React.Component {
 
@@ -177,7 +178,7 @@ class CircleForm extends React.Component {
 	createCircle() {
 		var component = this;
 
-		fetch('http://localhost:8080/circles', {
+		fetch(API_URL + 'circles', {
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',
@@ -219,7 +220,7 @@ class CircleForm extends React.Component {
 	getAllUsers() {
 		var component = this;
 
-		fetch('http://localhost:8080/users', {
+		fetch(API_URL + 'users', {
 			method: 'GET',
 			headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')

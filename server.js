@@ -223,5 +223,5 @@ fs.mkdir(UPLOAD_DIRECTORY, 0777, function(err) {
 */
 http.listen(3000, function () {
 	console.log('Server is listening on *:3000');
-	notifier.notify('Le serveur a démarré et écoute sur le port 3000...');
+	//notifier.notify('Le serveur a démarré et écoute sur le port 3000...');
 });

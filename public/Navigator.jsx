@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link, browserHistory} from 'react-router';
+import API_URL from './conf.jsx';
 
 class Navigator extends React.Component {
 
@@ -101,7 +102,7 @@ class Navigator extends React.Component {
 	getAllCircles() {
 		var component = this;
 
-		fetch('http://localhost:8080/circles', {
+		fetch(API_URL + 'circles', {
 			method: 'GET',
 			headers: {
 				'Authorization': 'Bearer ' + localStorage.getItem('token')

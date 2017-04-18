@@ -2,7 +2,8 @@ import React from 'react';
 import {Link, browserHistory} from 'react-router';
 import passwordHash from 'password-hash';
 import Loading from './Loading.jsx';
-import API_URL from './conf.jsx';
+import ErrorComponent from './ErrorComponent.jsx';
+import { API_URL, hideError, handleAPIResult, displayLoading } from './Common.jsx';
 
 class UserForm extends React.Component {
 
@@ -11,7 +12,11 @@ class UserForm extends React.Component {
 
 		this.state = {
             percent: 0,
-            displayLoading: "none"
+            error: {
+				showError: false,
+				message: ""
+			},
+            displayLoading: false
         };
 
 		this.handleChange = this.handleChange.bind(this);
@@ -28,8 +33,9 @@ class UserForm extends React.Component {
 	render() {
 		return (
 			<div className="user-form-root">
-                
-                <Loading style={this.state.displayLoading}/>
+                {this.state.displayLoading && 
+                	<Loading />
+                }
                 
 				<Link to="/app"><img className="home-button" src="/resource/home.png"></img></Link>
 
@@ -37,6 +43,10 @@ class UserForm extends React.Component {
 					<div className="expanded row align-center">
 						<div className="column medium-6">
                             <h2 className="form-title">Création d'un nouvel utilisateur</h2>
+                            {this.state.error.showError &&
+								<ErrorComponent message={this.state.error.message} hideError={hideError.bind(this, this)} />
+							}
+
 							<fieldset className="fieldset form-fieldset">
 								<div className="row">
 									<div data-tooltip aria-haspopup="true" title="Le prénom doit commencer par une majuscule et suivi de lettres minuscules" className="column medium-4">
@@ -178,8 +188,6 @@ class UserForm extends React.Component {
 	}
 
 	handleSubmit(event) {
-        this.setState({displayLoading: "block"});
-        
 		event.preventDefault();
 
 		if(!this.checkForm()) {
@@ -194,6 +202,7 @@ class UserForm extends React.Component {
 
 		//var hashedPassword = passwordHash.generate(component.state.userPassword);
 
+        displayLoading(this);
 		fetch(API_URL + 'users/subscribe', {
 			method: 'POST',
 			mode: 'cors',
@@ -215,18 +224,16 @@ class UserForm extends React.Component {
 		})
 		.then(function(response) {
 			if(response.status == 201) {
+				handleAPIResult(component, false, "");
 				alert("L'utilisateur a été ajouté avec succès !");
 				browserHistory.push('/app');
 			} else {
-                this.setState({displayLoading: "none"});
-				console.log(error);
-				alert("Une erreur est survenue lors de la création du nouvel utilisateur !");
+				handleAPIResult(component, true, "Une erreur est survenue lors de la création du nouvel utilisateur !");
 			}
 		})
 		.catch(function(error) {
-            this.setState({displayLoading: "none"});
 			console.log(error);
-			alert("Une erreur est survenue lors de la création du nouvel utilisateur !");
+			handleAPIResult(component, true, "Une erreur est survenue lors de la création du nouvel utilisateur !");
 		});
 	}
 

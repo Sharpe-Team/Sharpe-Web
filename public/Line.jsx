@@ -1,6 +1,8 @@
 import React from 'react';
 import Point from './Point.jsx';
-import API_URL from './conf.jsx';
+import { API_URL, hideError, handleAPIResult, displayLoading } from './Common.jsx';
+import Loading from './Loading.jsx';
+import ErrorComponent from './ErrorComponent.jsx';
 //import MyEditor from './MyEditor.jsx';
 //import {Editor, EditorState} from 'draft-js';
 
@@ -14,7 +16,12 @@ class Line extends React.Component {
 			points: [],
 			newPoint: "",
 			newPointHeight: 50,
-			pointAdded: true
+			pointAdded: true,
+			error: {
+				showError: false,
+				message: ""
+			},
+            displayLoading: false
 		};
 
 		// Register handler functions
@@ -28,11 +35,15 @@ class Line extends React.Component {
 		this.getUserFromStorage = this.getUserFromStorage.bind(this);
 	}
     
-    // <input type="text" id="new-point" value={this.state.newpoint} onChange={this.handlePointChanges} />
-
-	render() {
+    render() {
 		return (
 			<div id="div-line" className="column">
+				{this.state.displayLoading && 
+                	<Loading />
+                }
+				{this.state.error.showError &&
+					<ErrorComponent message={this.state.error.message} hideError={hideError.bind(this, this)} />
+				}
 				<ul id="points" style={{height: "calc(100% - " + this.state.newPointHeight + "px"}}>
 					{
 						this.state.points.map(function(point) {
@@ -149,6 +160,7 @@ class Line extends React.Component {
 			return;
 		}
 
+        //displayLoading(this);
 		fetch(API_URL + 'points?idLine=' + idLine, {
 			method: 'GET',
 			headers: {
@@ -160,6 +172,7 @@ class Line extends React.Component {
 		})
 		.then(function(points) {
 			if(points) {
+            	handleAPIResult(component, false, "");
 				for(var i=0; i<points.length; i++) {
 					points[i].created = new Date(points[i].created);
 					points[i].updated = new Date(points[i].updated);
@@ -167,16 +180,20 @@ class Line extends React.Component {
 				component.setState({points: points});
 
 				component.scrollToBottom();
+			} else {
+            	handleAPIResult(component, true, "Une erreur est apparue lors de l'ajout du point...");
 			}
 		})
 		.catch(function(error) {
 			console.log(error);
+        	handleAPIResult(component, true, "Une erreur est apparue lors de la récupération des points...");
 		});
 	}
 
 	saveNewPoint(text) {
 		var component = this;
 
+        //displayLoading(this);
 		fetch(API_URL + 'points', {
 			method: 'POST',
 			headers: {
@@ -196,14 +213,16 @@ class Line extends React.Component {
 		})
 		.then(function(point) {
             if(point) {
+            	handleAPIResult(component, false, "");
                 // Send the new point to the connected users
                 socket.emit('new-point', point);
             } else {
-                alert("Une erreur est apparue lors de l'ajout du point...");
+            	handleAPIResult(component, true, "Une erreur est apparue lors de l'ajout du point...");
             }
 		})
 		.catch(function(error) {
 			console.log(error);
+        	handleAPIResult(component, true, "Une erreur est apparue lors de l'ajout du point...");
 		});
 	}
 

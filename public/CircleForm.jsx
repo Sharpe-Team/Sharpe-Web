@@ -1,6 +1,8 @@
 import React from 'react';
 import {Link, browserHistory} from 'react-router';
-import {API_URL} from './conf.jsx';
+import { API_URL, hideError, handleAPIResult, displayLoading } from './Common.jsx';
+import Loading from './Loading.jsx';
+import ErrorComponent from './ErrorComponent.jsx';
 
 class CircleForm extends React.Component {
 
@@ -11,7 +13,11 @@ class CircleForm extends React.Component {
 			circleName: "",
 			users: [],
 			lastModifiedPicture: undefined,
-            displayLoading: "none"
+            error: {
+				showError: false,
+				message: ""
+			},
+            displayLoading: false
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -27,8 +33,9 @@ class CircleForm extends React.Component {
 	render() {
 		return (
 			<div className="circle-form-root">
-                
-                <Loading style={this.state.displayLoading}/>
+				{this.state.displayLoading && 
+                	<Loading />
+                }
                 
                 <Link to="/app"><img className="home-button" src="/resource/home.png"></img></Link>
 
@@ -36,6 +43,10 @@ class CircleForm extends React.Component {
 					<div className="expanded row align-center">
 						<div className="column medium-6">
                             <h2 className="form-title">Ajout d'un nouveau cercle</h2>
+                            {this.state.error.showError &&
+								<ErrorComponent message={this.state.error.message} hideError={hideError.bind(this, this)} />
+							}
+
 							<fieldset className="fieldset form-fieldset">
 								<div className="row">
 									<div className="column medium-4">
@@ -168,8 +179,6 @@ class CircleForm extends React.Component {
 	}
 
 	handleSubmit(event) {
-        this.setState({displayLoading: "block"});
-        
 		event.preventDefault();
 
 		this.createCircle();
@@ -178,6 +187,7 @@ class CircleForm extends React.Component {
 	createCircle() {
 		var component = this;
 
+        displayLoading(this);
 		fetch(API_URL + 'circles', {
 			method: 'POST',
 			headers: {
@@ -201,19 +211,17 @@ class CircleForm extends React.Component {
 		})
 		.then(function(response) {
 			if(response.status == 201) {
+            	handleAPIResult(component, false, "");
 				alert("Le cercle a bien été ajouté !");
 				// redirect to main file 'App'
 				browserHistory.push('/app');
 			} else {
-                this.setState({displayLoading: "none"});
-				console.log(error);
-				alert("Une erreur est survenue lors de la création du nouveau cercle !");
+				handleAPIResult(component, true, "Une erreur est survenue lors de la création du nouveau cercle !");
 			}
 		})
 		.catch(function(error) {
-            this.setState({displayLoading: "none"});
 			console.log(error);
-			alert("Une erreur est survenue lors de la création du nouveau cercle !");
+			handleAPIResult(component, true, "Une erreur est survenue lors de la création du nouveau cercle !");
 		});
 	}
 
@@ -230,10 +238,16 @@ class CircleForm extends React.Component {
 			return response.json();
 		})
 		.then(function(users) {
-			component.setState({users: users});
+			if(users) {
+            	handleAPIResult(component, false, "");
+				component.setState({users: users});
+			} else {
+				handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des utilisateurs !");
+			}
 		})
 		.catch(function(error) {
 			console.log(error);
+			handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des utilisateurs !");
 		});
 	}
 }

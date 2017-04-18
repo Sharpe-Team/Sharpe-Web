@@ -2,7 +2,8 @@ import React from 'react';
 import {Link, browserHistory} from 'react-router';
 import passwordHash from 'password-hash';
 import Loading from './Loading.jsx';
-import API_URL from './conf.jsx';
+import ErrorComponent from './ErrorComponent.jsx';
+import { API_URL, hideError, handleAPIResult, displayLoading } from './Common.jsx';
 
 class LoginForm extends React.Component {
 
@@ -14,15 +15,13 @@ class LoginForm extends React.Component {
 				showError: false,
 				message: ""
 			},
-            displayLoading: "none"
+            displayLoading: false
 		};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 
 		this.clientConnection = this.clientConnection.bind(this);
-		this.handleClosingAlert = this.handleClosingAlert.bind(this);
-		this.handleShowingAlert = this.handleShowingAlert.bind(this);
 		this.goToNextPage = this.goToNextPage.bind(this);
 		this.storeUserInStorage = this.storeUserInStorage.bind(this);
 	}
@@ -30,8 +29,9 @@ class LoginForm extends React.Component {
 	render() {
 		return (
 			<div className="login-form-root">
-                
-                <Loading style={this.state.displayLoading}/>
+                {this.state.displayLoading && 
+                	<Loading />
+                }
                 
                 <img className="expanded row align-center logo" src="/resource/logo.png"/>
                 
@@ -39,14 +39,8 @@ class LoginForm extends React.Component {
 					<div className="expanded row align-center">
 						<div className="column medium-4">
 							<fieldset className="fieldset form-fieldset">
-								
 								{this.state.error.showError &&
-									<div id="error-message" className="alert callout">
-										<p>{this.state.error.message}</p>
-										<button className="close-button" aria-label="Dismiss alert" type="button" onClick={this.handleClosingAlert}>
-											<span aria-hidden="true">&times;</span>
-										</button>
-									</div>
+									<ErrorComponent message={this.state.error.message} hideError={hideError.bind(this, this)} />
 								}
 
 								<div className="row">
@@ -98,35 +92,11 @@ class LoginForm extends React.Component {
 	}
 
 	handleSubmit(event) {
-        this.setState({displayLoading: "block"});
-        this.setState({
-			error: {
-				showError: false
-			}
-		});
-        
 		event.preventDefault();
 
 		var hashedPassword = this.state.userPassword; //passwordHash.generate(this.state.userPassword);
 
 		this.clientConnection(this.state.userEmail, hashedPassword);
-	}
-
-	handleClosingAlert() {
-		this.setState({
-			error: {
-				showError: false
-			}
-		});
-	}
-
-	handleShowingAlert(message) {
-		this.setState({
-			error: {
-				showError: true,
-				message: message
-			}
-		});
 	}
 
 	goToNextPage() {
@@ -146,8 +116,7 @@ class LoginForm extends React.Component {
 	clientConnection(email, hashedPassword) {
 		var component = this;
 
-		console.log(email, hashedPassword);
-
+        displayLoading(this);
 		fetch(API_URL + 'login', {
 			method: 'POST',
 			headers: {
@@ -164,11 +133,7 @@ class LoginForm extends React.Component {
 		})
 		.then(function(response) {
 			if(response.status == 200) {
-				component.setState({
-					error: {
-						showError: false,
-					}
-				});
+				handleAPIResult(component, false, "");
 
 				var authorizationHeader = response.headers.get('Authorization');
 				var token = authorizationHeader.split(" ")[1];
@@ -176,26 +141,12 @@ class LoginForm extends React.Component {
 				localStorage.setItem('token', token);
 				socket.emit('login', token);
 			} else {
-                component.setState({displayLoading: "none"});
-				component.setState({
-					error: {
-						showError: true,
-						message: response.message
-					}
-				});
+				handleAPIResult(component, true, response.message);
 			}
 		})
 		.catch(function(error) {
-            component.setState({displayLoading: "none"});
 			console.log(error);
-			console.log(error.status, error.error, error.message);
-
-			component.setState({
-				error: {
-					showError: true,
-					message: error.toString()
-				}
-			});
+			handleAPIResult(component, true, "Une erreur est survenue lors de l'authentification...");
 		});
 	}
 }

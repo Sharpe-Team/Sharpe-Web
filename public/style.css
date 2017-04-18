@@ -256,3 +256,23 @@ input, button {
     width: 100%;
     background-color: #A12C26; 
 }
+
+.upload-row {
+    margin-bottom: 16px;
+}
+
+.upload-row label {
+    margin: 0px;
+}
+
+.upload-row div.progress-div {
+    padding-left: 10px;
+    padding-right: 10px;
+    line-height: 1.0;
+}
+
+.upload-row div.progress-div progress {
+    width: 100%;
+    vertical-align: bottom;
+}
+

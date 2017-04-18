@@ -104,13 +104,15 @@ class UserForm extends React.Component {
 									</div>
                                     <div className="colum medium-1"></div>
 									<div className="column medium-7">
-                                        <div className="row">
-                                            <label htmlFor="profile-picture" className="button">Photo de profil</label>
-                                            <input type="file" id="profile-picture" name="profilePicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
-                                            <div className="medium-1"></div>
-                                            <progress className="medium-centered" max="100" value={this.state.percent}></progress>
-                                            <div className="medium-1"></div>
-                                            <div>{this.state.percent}%</div>
+                                        <div className="row align-middle upload-row">
+                                        	<div className="column shrink">
+                                            	<label htmlFor="profile-picture" className="button">Photo de profil</label>
+                                            	<input type="file" id="profile-picture" name="profilePicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
+                                            </div>
+                                            <div className="column progress-div">
+                                           		<progress max="100" value={this.state.percent}></progress>
+                                           	</div>
+                                            <div className="column shrink">{this.state.percent}%</div>
                                         </div>
 									</div>
 								</div>

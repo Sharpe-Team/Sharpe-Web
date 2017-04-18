@@ -27435,19 +27435,25 @@ var UserForm = function (_React$Component) {
 										{ className: 'column medium-7' },
 										_react2.default.createElement(
 											'div',
-											{ className: 'row' },
-											_react2.default.createElement(
-												'label',
-												{ htmlFor: 'profile-picture', className: 'button' },
-												'Photo de profil'
-											),
-											_react2.default.createElement('input', { type: 'file', id: 'profile-picture', name: 'profilePicture', className: 'show-for-sr', accept: 'image/*', onChange: this.handleFileUpload }),
-											_react2.default.createElement('div', { className: 'medium-1' }),
-											_react2.default.createElement('progress', { className: 'medium-centered', max: '100', value: this.state.percent }),
-											_react2.default.createElement('div', { className: 'medium-1' }),
+											{ className: 'row align-middle upload-row' },
 											_react2.default.createElement(
 												'div',
-												null,
+												{ className: 'column shrink' },
+												_react2.default.createElement(
+													'label',
+													{ htmlFor: 'profile-picture', className: 'button' },
+													'Photo de profil'
+												),
+												_react2.default.createElement('input', { type: 'file', id: 'profile-picture', name: 'profilePicture', className: 'show-for-sr', accept: 'image/*', onChange: this.handleFileUpload })
+											),
+											_react2.default.createElement(
+												'div',
+												{ className: 'column progress-div' },
+												_react2.default.createElement('progress', { max: '100', value: this.state.percent })
+											),
+											_react2.default.createElement(
+												'div',
+												{ className: 'column shrink' },
 												this.state.percent,
 												'%'
 											)

@@ -2,6 +2,7 @@ import React from 'react';
 import {Link, browserHistory} from 'react-router';
 import passwordHash from 'password-hash';
 import Loading from './Loading.jsx';
+import API_URL from './conf.jsx';
 
 class LoginForm extends React.Component {
 
@@ -147,7 +148,7 @@ class LoginForm extends React.Component {
 
 		console.log(email, hashedPassword);
 
-		fetch('http://localhost:8080/login', {
+		fetch(API_URL + 'login', {
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',

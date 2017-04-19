@@ -2,6 +2,7 @@ import React from 'react';
 import {Link, browserHistory} from 'react-router';
 import passwordHash from 'password-hash';
 import Loading from './Loading.jsx';
+import API_URL from './conf.jsx';
 
 class UserForm extends React.Component {
 
@@ -193,7 +194,7 @@ class UserForm extends React.Component {
 
 		//var hashedPassword = passwordHash.generate(component.state.userPassword);
 
-		fetch('http://localhost:8080/users/subscribe', {
+		fetch(API_URL + 'users/subscribe', {
 			method: 'POST',
 			mode: 'cors',
 			headers: {

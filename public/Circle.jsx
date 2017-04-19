@@ -6,27 +6,41 @@ class Circle extends React.Component {
 	constructor(props) {
 		super(props);
 
+		var selectedLine = null;
+
+		if(props.circle 
+			&& props.circle.lines 
+			&& props.circle.lines.length > 0) {
+			selectedLine = props.circle.lines[0];
+		}
+
 		this.state = {
 			navbarHeight: 100,
-			lines: [],
-			selectedLine:  null
+			selectedLine: selectedLine
 		};
-
-		this.getAllLines = this.getAllLines.bind(this);
 	}
 
 	componentWillMount() {
-		this.getAllLines();
 	}
 
 	componentWillReceiveProps(nextProps) {
-		this.getAllLines(nextProps.circle.id);
+		var selectedLine = null;
+
+		if(nextProps.circle 
+			&& nextProps.circle.lines 
+			&& nextProps.circle.lines.length > 0) {
+			selectedLine = nextProps.circle.lines[0];
+		}
+
+		this.setState({
+			selectedLine: selectedLine
+		});
 	}
 
 	render() {
 		var line;
 		if(this.state.selectedLine) {
-			line = (<Line line={this.state.selectedLine} style={{height: "100%"}}/>);
+			line = (<Line line={this.state.selectedLine} updateUnreadPoints={this.props.updateUnreadPoints} style={{height: "100%"}}/>);
 		} else {
 			line = (
 				<div id="div-line" className="column">
@@ -65,34 +79,6 @@ class Circle extends React.Component {
 				</div>
 			</div>
 		);
-	}
-
-	getAllLines(idCircle) {
-		var component = this;
-
-		if(!idCircle) {
-			idCircle = this.props.circle.id;
-		}
-
-		fetch('http://localhost:8080/lines?idCircle=' + idCircle, {
-			method: 'GET',
-			headers: {
-				'Authorization': 'Bearer ' + localStorage.getItem('token')
-			}
-		})
-		.then(function(response) {
-			return response.json();
-		})
-		.then(function(lines) {
-			component.setState({
-				lines: lines,
-				selectedLine: (lines.length > 0) ? lines[0] : null
-			});
-		})
-		.catch(function(error) {
-			console.log(error);
-			component.setState({selectedLine: null});
-		});
 	}
 }
                 

@@ -13,14 +13,15 @@ class App extends React.Component {
 		};
 
 		this.updateSelectedCircle = this.updateSelectedCircle.bind(this);
+		this.updateUnreadPoints = this.updateUnreadPoints.bind(this);
 	}
 
 	render() {
 		return (
 			<div id="div-app" className="expanded row">
-				<Navigator updateSelectedCircle={this.updateSelectedCircle} selectedCircle={this.state.selectedCircle} />
+				<Navigator updateSelectedCircle={this.updateSelectedCircle} ref={instance => { this.navigatorRef = instance; }} />
 				{ this.state.selectedCircle &&
-					<Circle circle={this.state.selectedCircle} />
+					<Circle circle={this.state.selectedCircle} updateUnreadPoints={this.updateUnreadPoints} />
 				}
 			</div>
 		);
@@ -31,8 +32,13 @@ class App extends React.Component {
 
 	updateSelectedCircle(circle) {
 		if(!this.state.selectedCircle || this.state.selectedCircle.id != circle.id) {
+			circle.nbUnreadPoints = 0;
 			this.setState({selectedCircle: circle});
 		}
+	}
+
+	updateUnreadPoints(idLine) {
+		this.navigatorRef.updateUnreadPointsBadge(idLine);
 	}
 }
 

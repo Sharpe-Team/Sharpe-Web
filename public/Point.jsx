@@ -17,11 +17,11 @@ class Point extends React.Component {
         if(!pictureUrl) {
             pictureUrl = "/resource/unknown-person.png";
         } else {
-            pictureUrl = "uploads/" + pictureUrl;
+            pictureUrl = "/uploads/" + pictureUrl;
         }
 		return (
 			<li>
-                <div className="row align-middle">
+                <div className="row align-top">
                     <div className="imageLine column medium-1">
                         <img className="userPicture" src={pictureUrl} />
                     </div>

@@ -60,6 +60,7 @@ class CircleForm extends React.Component {
                                             <div className="medium-1"></div>
                                             <progress className="medium-centered" max="100" value={this.state.profilePercent}></progress>
                                             <div className="medium-1"></div>
+                                            <div>{this.state.profilePercent}%</div>
                                         </div>
 									</div>
 								</div>
@@ -75,6 +76,7 @@ class CircleForm extends React.Component {
                                             <div className="medium-1"></div>
                                             <progress className="medium-centered" max="100" value={this.state.bannerPercent}></progress>
                                             <div className="medium-1"></div>
+                                            <div>{this.state.bannerPercent}%</div>
                                         </div>
 									</div>
 								</div>
@@ -116,13 +118,16 @@ class CircleForm extends React.Component {
 
 	    siofu.addEventListener("load", function(event) {
 	    	// Save the name given by the server to the current picture
-	    	component.state[component.state.lastModifiedPicture] = event.name;
+	    	component.setState({[component.state.lastModifiedPicture]: event.name});
 	    });
 
 		// Do something on upload progress:
 		siofu.addEventListener("progress", function(event) {
 		    var percent = event.bytesLoaded / event.file.size * 100;
-            // Add a test to distinguish which picture it is
+            if(component.state.lastModifiedPicture == "profilePicture")
+                component.setState({profilePercent: percent});
+            if(component.state.lastModifiedPicture == "bannerPicture")
+                component.setState({bannerPercent: percent});
 		});
 
 		// Do something when a file is uploaded:

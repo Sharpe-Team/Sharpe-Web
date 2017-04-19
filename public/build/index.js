@@ -26429,13 +26429,14 @@ var CircleForm = function (_React$Component) {
 
 			siofu.addEventListener("load", function (event) {
 				// Save the name given by the server to the current picture
-				component.state[component.state.lastModifiedPicture] = event.name;
+				component.setState(_defineProperty({}, component.state.lastModifiedPicture, event.name));
 			});
 
 			// Do something on upload progress:
 			siofu.addEventListener("progress", function (event) {
 				var percent = event.bytesLoaded / event.file.size * 100;
-				console.log(event);
+				if (component.state.lastModifiedPicture == "profilePicture") component.setState({ profilePercent: percent });
+				if (component.state.lastModifiedPicture == "bannerPicture") component.setState({ bannerPercent: percent });
 			});
 
 			// Do something when a file is uploaded:

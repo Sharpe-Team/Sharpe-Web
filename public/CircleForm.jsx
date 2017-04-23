@@ -17,7 +17,9 @@ class CircleForm extends React.Component {
 				showError: false,
 				message: ""
 			},
-            displayLoading: false
+            displayLoading: false,
+            profilePercent: 0,
+            bannerPercent: 0
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -63,8 +65,14 @@ class CircleForm extends React.Component {
 									</div>
                                     <div className="colum medium-1"></div>
 									<div className="column medium-7">
-										<label htmlFor="profile-picture" className="button">Photo de profil</label>
-										<input type="file" id="profile-picture" name="profilePicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
+                                        <div className="row">
+                                            <label htmlFor="profile-picture" className="button">Photo de profil</label>
+                                            <input type="file" id="profile-picture" name="profilePicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
+                                            <div className="medium-1"></div>
+                                            <progress className="medium-centered" max="100" value={this.state.profilePercent}></progress>
+                                            <div className="medium-1"></div>
+                                            <div>{this.state.profilePercent}%</div>
+                                        </div>
 									</div>
 								</div>
 								<div className="row">
@@ -73,8 +81,14 @@ class CircleForm extends React.Component {
 									</div>
                                     <div className="colum medium-1"></div>
 									<div className="column medium-7">
-										<label htmlFor="banner-picture" className="button">Bannière</label>
-										<input type="file" id="banner-picture" name="bannerPicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
+                                        <div className="row">
+                                            <label htmlFor="banner-picture" className="button">Bannière</label>
+                                            <input type="file" id="banner-picture" name="bannerPicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
+                                            <div className="medium-1"></div>
+                                            <progress className="medium-centered" max="100" value={this.state.bannerPercent}></progress>
+                                            <div className="medium-1"></div>
+                                            <div>{this.state.bannerPercent}%</div>
+                                        </div>
 									</div>
 								</div>
 								<div className="row">
@@ -115,13 +129,16 @@ class CircleForm extends React.Component {
 
 	    siofu.addEventListener("load", function(event) {
 	    	// Save the name given by the server to the current picture
-	    	component.state[component.state.lastModifiedPicture] = event.name;
+	    	component.setState({[component.state.lastModifiedPicture]: event.name});
 	    });
 
 		// Do something on upload progress:
 		siofu.addEventListener("progress", function(event) {
 		    var percent = event.bytesLoaded / event.file.size * 100;
-		    //console.log("File is", percent.toFixed(2), "percent loaded");
+            if(component.state.lastModifiedPicture == "profilePicture")
+                component.setState({profilePercent: percent});
+            if(component.state.lastModifiedPicture == "bannerPicture")
+                component.setState({bannerPercent: percent});
 		});
 
 		// Do something when a file is uploaded:

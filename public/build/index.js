@@ -25889,6 +25889,16 @@ var CircleForm = function (_React$Component) {
 					_react2.default.createElement('img', { className: 'home-button', src: '/resource/home.png' })
 				),
 				_react2.default.createElement(
+					'div',
+					{ className: 'reveal', id: 'modalProfilePicturePreview', 'data-reveal': true },
+					_react2.default.createElement('img', { src: "/upload/" + this.state.profilePicture, width: '200' })
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'reveal', id: 'modalBannerPicturePreview', 'data-reveal': true },
+					_react2.default.createElement('img', { src: "/upload/" + this.state.bannerPicture, width: '200' })
+				),
+				_react2.default.createElement(
 					'form',
 					{ onSubmit: this.handleSubmit },
 					_react2.default.createElement(
@@ -25943,19 +25953,25 @@ var CircleForm = function (_React$Component) {
 										{ className: 'column medium-7' },
 										_react2.default.createElement(
 											'div',
-											{ className: 'row' },
-											_react2.default.createElement(
-												'label',
-												{ htmlFor: 'profile-picture', className: 'button' },
-												'Photo de profil'
-											),
-											_react2.default.createElement('input', { type: 'file', id: 'profile-picture', name: 'profilePicture', className: 'show-for-sr', accept: 'image/*', onChange: this.handleFileUpload }),
-											_react2.default.createElement('div', { className: 'medium-1' }),
-											_react2.default.createElement('progress', { className: 'medium-centered', max: '100', value: this.state.profilePercent }),
-											_react2.default.createElement('div', { className: 'medium-1' }),
+											{ className: 'row align-middle upload-row' },
 											_react2.default.createElement(
 												'div',
-												null,
+												{ className: 'column shrink' },
+												_react2.default.createElement(
+													'label',
+													{ htmlFor: 'profile-picture', className: 'button' },
+													'Photo de profil'
+												),
+												_react2.default.createElement('input', { type: 'file', id: 'profile-picture', name: 'profilePicture', className: 'show-for-sr', accept: 'image/*', onChange: this.handleFileUpload })
+											),
+											_react2.default.createElement(
+												'div',
+												{ className: 'column progress-div' },
+												_react2.default.createElement('progress', { max: '100', value: this.state.profilePercent })
+											),
+											_react2.default.createElement(
+												'div',
+												{ className: 'column shrink' },
 												this.state.profilePercent,
 												'%'
 											)
@@ -25980,19 +25996,25 @@ var CircleForm = function (_React$Component) {
 										{ className: 'column medium-7' },
 										_react2.default.createElement(
 											'div',
-											{ className: 'row' },
-											_react2.default.createElement(
-												'label',
-												{ htmlFor: 'banner-picture', className: 'button' },
-												'Banni\xE8re'
-											),
-											_react2.default.createElement('input', { type: 'file', id: 'banner-picture', name: 'bannerPicture', className: 'show-for-sr', accept: 'image/*', onChange: this.handleFileUpload }),
-											_react2.default.createElement('div', { className: 'medium-1' }),
-											_react2.default.createElement('progress', { className: 'medium-centered', max: '100', value: this.state.bannerPercent }),
-											_react2.default.createElement('div', { className: 'medium-1' }),
+											{ className: 'row align-middle upload-row' },
 											_react2.default.createElement(
 												'div',
-												null,
+												{ className: 'column shrink' },
+												_react2.default.createElement(
+													'label',
+													{ htmlFor: 'banner-picture', className: 'button' },
+													'Banni\xE8re'
+												),
+												_react2.default.createElement('input', { type: 'file', id: 'banner-picture', name: 'bannerPicture', className: 'show-for-sr', accept: 'image/*', onChange: this.handleFileUpload })
+											),
+											_react2.default.createElement(
+												'div',
+												{ className: 'column progress-div' },
+												_react2.default.createElement('progress', { max: '100', value: this.state.bannerPercent })
+											),
+											_react2.default.createElement(
+												'div',
+												{ className: 'column shrink' },
 												this.state.bannerPercent,
 												'%'
 											)

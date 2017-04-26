@@ -41,6 +41,14 @@ class CircleForm extends React.Component {
                 
                 <Link to="/app"><img className="home-button" src="/resource/home.png"></img></Link>
 
+                <div className="reveal" id="modalProfilePicturePreview" data-reveal>
+                	<img src={"/upload/" + this.state.profilePicture} width="200" />
+                </div>
+
+                <div className="reveal" id="modalBannerPicturePreview" data-reveal>
+                	<img src={"/upload/" + this.state.bannerPicture} width="200" />
+                </div>
+
 				<form onSubmit={this.handleSubmit}>
 					<div className="expanded row align-center">
 						<div className="column medium-6">
@@ -65,13 +73,15 @@ class CircleForm extends React.Component {
 									</div>
                                     <div className="colum medium-1"></div>
 									<div className="column medium-7">
-                                        <div className="row">
-                                            <label htmlFor="profile-picture" className="button">Photo de profil</label>
-                                            <input type="file" id="profile-picture" name="profilePicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
-                                            <div className="medium-1"></div>
-                                            <progress className="medium-centered" max="100" value={this.state.profilePercent}></progress>
-                                            <div className="medium-1"></div>
-                                            <div>{this.state.profilePercent}%</div>
+										<div className="row align-middle upload-row">
+                                        	<div className="column shrink">
+                                            	<label htmlFor="profile-picture" className="button">Photo de profil</label>
+                                            	<input type="file" id="profile-picture" name="profilePicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
+                                            </div>
+                                            <div className="column progress-div">
+                                           		<progress max="100" value={this.state.profilePercent}></progress>
+                                           	</div>
+                                            <div className="column shrink">{this.state.profilePercent}%</div>
                                         </div>
 									</div>
 								</div>
@@ -81,13 +91,15 @@ class CircleForm extends React.Component {
 									</div>
                                     <div className="colum medium-1"></div>
 									<div className="column medium-7">
-                                        <div className="row">
-                                            <label htmlFor="banner-picture" className="button">Bannière</label>
-                                            <input type="file" id="banner-picture" name="bannerPicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
-                                            <div className="medium-1"></div>
-                                            <progress className="medium-centered" max="100" value={this.state.bannerPercent}></progress>
-                                            <div className="medium-1"></div>
-                                            <div>{this.state.bannerPercent}%</div>
+										<div className="row align-middle upload-row">
+                                        	<div className="column shrink">
+                                            	<label htmlFor="banner-picture" className="button">Bannière</label>
+                                           		<input type="file" id="banner-picture" name="bannerPicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
+                                            </div>
+                                            <div className="column progress-div">
+                                            	<progress max="100" value={this.state.bannerPercent}></progress>
+                                            </div>
+                                            <div className="column shrink">{this.state.bannerPercent}%</div>
                                         </div>
 									</div>
 								</div>

@@ -33,6 +33,8 @@ class CircleForm extends React.Component {
 	}
 
 	render() {
+		var firstPrevDisabled = (this.state.profilePicture == null);
+
 		return (
 			<div className="circle-form-root">
 				{this.state.displayLoading && 
@@ -82,6 +84,9 @@ class CircleForm extends React.Component {
                                            		<progress max="100" value={this.state.profilePercent}></progress>
                                            	</div>
                                             <div className="column shrink">{this.state.profilePercent}%</div>
+                                        	<div className="column shrink">
+                                        		<button type="button" className="button" data-open="modalProfilePicturePreview" disabled={firstPrevDisabled}>Preview</button>
+                                        	</div>
                                         </div>
 									</div>
 								</div>

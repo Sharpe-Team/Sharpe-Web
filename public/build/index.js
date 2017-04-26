@@ -25879,6 +25879,8 @@ var CircleForm = function (_React$Component) {
 	_createClass(CircleForm, [{
 		key: 'render',
 		value: function render() {
+			var firstPrevDisabled = this.state.profilePicture == null;
+
 			return _react2.default.createElement(
 				'div',
 				{ className: 'circle-form-root' },
@@ -25974,6 +25976,15 @@ var CircleForm = function (_React$Component) {
 												{ className: 'column shrink' },
 												this.state.profilePercent,
 												'%'
+											),
+											_react2.default.createElement(
+												'div',
+												{ className: 'column shrink' },
+												_react2.default.createElement(
+													'button',
+													{ type: 'button', className: 'button', 'data-open': 'modalProfilePicturePreview', disabled: firstPrevDisabled },
+													'Preview'
+												)
 											)
 										)
 									)

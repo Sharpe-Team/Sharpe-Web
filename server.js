@@ -141,13 +141,13 @@ io.sockets.on('connection', function (socket) {
 					disconnected: false
 				};
 				connectedUsersMap.set(token, loggedUser);
+				
+	    		// Send info user to all clients except current client
+	    		socket.broadcast.emit('new-connected-user', loggedUser.user);
     		}
 
     		// Send info user to client
     		socket.emit('login-response', loggedUser.user);
-
-    		// Send info user to all clients except current client
-    		socket.broadcast.emit('new-connected-user', loggedUser.user);
     	} else {
     		console.log("Unregistered user connected...");
     	}
@@ -157,7 +157,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('disconnect', function() {
     	loggedUser.disconnected = true;
 
-    	// The user get 10 seconds to reconnect
+    	// The user gets 10 seconds to reconnect
     	setTimeout(function() {
     		if(loggedUser.disconnected && loggedUser.user) {
 				socket.broadcast.emit('disconnected-user', loggedUser.user);

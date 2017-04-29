@@ -11,8 +11,8 @@ function requireAuth(Component) {
 			this.state = {isAuthorized: false};
 
 			this.checkAuth = this.checkAuth.bind(this);
-			this.redirectToLogin = this.redirectToLogin.bind(this);
 			this.storeUserInStorage = this.storeUserInStorage.bind(this);
+			this.redirectToLogin = this.redirectToLogin.bind(this);
 		}
 
 		render() {
@@ -21,6 +21,13 @@ function requireAuth(Component) {
 		}
 
 		componentWillMount() {
+			var component = this;
+			
+			socket.on('disconnected-user', function(user) {
+				if(!localStorage.getItem('user-id')) {
+					component.redirectToLogin(component.props);
+				}
+			});
 
 			this.checkAuth();
 		}
@@ -29,34 +36,22 @@ function requireAuth(Component) {
 			//console.log(localStorage.getItem("token"));
 
 			if(localStorage.getItem("token") != null) {
-				socket.emit('verify-token', localStorage.getItem("token"));
-                
                 var component = this;
 
-                // Define SocketIO events
-                socket.on('verify-token-failure', function() {
-                    localStorage.clear();
-                    component.redirectToLogin();
-                });
-
-                socket.on('verify-token-success', function(user) {
-                	if(user.id != localStorage.getItem('user-id')) {
-                    	component.storeUserInStorage(user);
-                   	} 
-                    component.setState({isAuthorized: true});
-                });
+				socket.emit('verify-token', localStorage.getItem("token"), function(user) {
+					// Callback from server
+					if(user) {
+						if(user.id != localStorage.getItem('user-id')) {
+                    		component.storeUserInStorage(user);
+                   		} 
+                   		component.setState({isAuthorized: true});
+					} else {
+                		component.redirectToLogin();
+					}
+				});
 			} else {
 				this.redirectToLogin();
 			}
-		}
-
-		redirectToLogin() {
-			console.log("Not Authorized !");
-
-			const location = this.props.location;
-			const redirect = location.pathname + location.search;
-
-			this.props.router.push('/?redirect=' + redirect);
 		}
 
 		storeUserInStorage(user) {
@@ -65,6 +60,16 @@ function requireAuth(Component) {
 			localStorage.setItem('user-lastname', user.lastname);
 			localStorage.setItem('user-email', user.email);
 			localStorage.setItem('user-profile-picture', user.profilePicture);
+		}
+
+		redirectToLogin() {	
+			console.log("Not Authorized !");
+		    localStorage.clear();
+
+			const location = this.props.location;
+			const redirect = location.pathname + location.search;
+
+			this.props.router.push('/?redirect=' + redirect);
 		}
 	}
 

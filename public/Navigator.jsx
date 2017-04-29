@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, browserHistory} from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import { API_URL, hideError, handleAPIResult, displayLoading } from './Common.jsx';
 import Loading from './Loading.jsx';
 import ErrorComponent from './ErrorComponent.jsx';
@@ -86,9 +86,7 @@ class Navigator extends React.Component {
 
 		this.getAllCircles();
 
-		socket.emit('get-connected-users');
-
-		socket.on('get-connected-users-response', function(users) {
+		socket.emit('get-connected-users', function(users) {
 			component.setState({
 				users: users
 			});
@@ -96,20 +94,26 @@ class Navigator extends React.Component {
 
 		socket.on('new-connected-user', function(user) {
 			var users = component.state.users;
-			users.push(user);
-			component.setState({
-				users: users
+			var userIndex = users.findIndex(function(element) {
+				return element.id == user.id;
 			});
+
+			if(userIndex < 0) {
+				users.push(user);
+				component.setState({
+					users: users
+				});
+			}
 		});
 
-		socket.on('disconnected-user', function(user) {
+		socket.on('disconnected-user', function(disconnectedUser) {
 			var updatedUsers = component.state.users.filter(function(element) {
-				return element.id != user.id;
+				return element.id != disconnectedUser.id;
 			});
 			component.setState({
 				users: updatedUsers
 			});
-		})
+		});
 	}
 
 	getAllCircles() {
@@ -177,12 +181,14 @@ class Navigator extends React.Component {
 			});
 		});
 
-		var circles = this.state.circles;
-		circles[indexCircle].nbUnreadPoints++;
+		if(indexCircle >= 0) {
+			var circles = this.state.circles;
+			circles[indexCircle].nbUnreadPoints++;
 
-		this.setState({
-			circles: circles
-		});
+			this.setState({
+				circles: circles
+			});
+		}
 	}
 }
 

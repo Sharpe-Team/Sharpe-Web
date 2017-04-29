@@ -10,6 +10,16 @@ var UPLOAD_DIRECTORY;
 
 var connectedUsersMap = new Map();
 
+function isPresent(list, user) {
+	for (var i = 0; i < list.length; i++) {
+		if(list[i].id == user.id) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 /**
  *	Verify the validity of the token.
  *	Return the decoded token if it is valid, return null otherwise.
@@ -63,12 +73,16 @@ function onLogin(socket, token, loggedUser) {
     		socket.broadcast.emit('new-connected-user', loggedUser.user);
 		}
 
+		console.log("login : " + loggedUser.user.email);
+
 		// Send info user to client
 		socket.emit('login-response', loggedUser.user);
 	} else {
 		console.log("Unregistered user connected...");
 	}
+
 	console.log(connectedUsersMap.size);
+	return loggedUser;
 }
 
 function onDisconnect(socket, loggedUser) {
@@ -77,29 +91,31 @@ function onDisconnect(socket, loggedUser) {
 	// The user gets 10 seconds to reconnect
 	setTimeout(function() {
 		if(loggedUser.disconnected && loggedUser.user) {
-			socket.broadcast.emit('disconnected-user', loggedUser.user);
-			connectedUsersMap.delete(loggedUser.token);
+    		onLogout(socket, loggedUser);
 		}
 	}, 10000);
 }
 
-function onVerifyToken(socket, token) {
+function onVerifyToken(socket, token, callback) {
 	var decodedToken = getDecodedToken(token);
-
-	if(decodedToken) {
-		socket.emit('verify-token-success', decodedToken.body.user);
-	} else {
-		socket.emit('verify-token-failure');
-	}
+	callback((decodedToken) ? decodedToken.body.user : null);
 }
 
-function onGetConnectedUsers(socket) {
+function onGetConnectedUsers(socket, callback) {
 	var listUsers = new Array();
 	for(var [key, value] of connectedUsersMap) {
-		listUsers.push(value.user);
+		if(!isPresent(listUsers, value.user)) {
+			listUsers.push(value.user);
+		}
 	}
 
-	socket.emit('get-connected-users-response', listUsers);
+	callback(listUsers);
+}
+
+function onLogout(socket, loggedUser) {
+	console.log("logout : " + loggedUser.user.email);
+	socket.broadcast.emit('disconnected-user', loggedUser.user);
+	connectedUsersMap.delete(loggedUser.token);
 }
 
 function computeConnection(socket) {
@@ -115,7 +131,7 @@ function computeConnection(socket) {
 	computeFileUpload(socket);
 
     socket.on('login', function(token) {
-    	onLogin(socket, token, loggedUser);
+    	loggedUser = onLogin(socket, token, loggedUser);
     });
 
     socket.on('disconnect', function() {
@@ -123,8 +139,7 @@ function computeConnection(socket) {
     });
 
     socket.on('logout', function() {
-		socket.broadcast.emit('disconnected-user', loggedUser.user);
-		connectedUsersMap.delete(loggedUser.token);
+    	onLogout(socket, loggedUser);
     });
 
 	socket.on('new-point', function(point) {
@@ -135,12 +150,12 @@ function computeConnection(socket) {
 		io.emit('new-point', point);
 	});
 
-	socket.on('verify-token', function(token) {
-		onVerifyToken(socket, token);
+	socket.on('verify-token', function(token, callback) {
+		onVerifyToken(socket, token, callback);
 	});
 
-	socket.on('get-connected-users', function() {
-		onGetConnectedUsers(socket);
+	socket.on('get-connected-users', function(callback) {
+		onGetConnectedUsers(socket, callback);
 	})
 }
 

@@ -12,12 +12,12 @@ class LogoutComponent extends React.Component {
 
 	componentWillMount() {
 
+		localStorage.clear();
+		socket.emit('logout');
+		browserHistory.push('/');
+
 		// Remove the token in DB
 		if(localStorage.getItem('token') != null) {
-			
-			localStorage.clear();
-			socket.emit('logout');
-			browserHistory.push('/');
 			/*
 			fetch('http://localhost:8080/removeToken?token=' + localStorage.getItem('token'), {
 				method: 'GET',

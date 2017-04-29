@@ -33,5 +33,8 @@ const displayLoading = function(component) {
 }
 
 export {
-	API_URL, hideError, handleAPIResult, displayLoading
+	API_URL,
+	hideError,
+	handleAPIResult,
+	displayLoading
 };

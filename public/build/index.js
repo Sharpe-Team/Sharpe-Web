@@ -25600,8 +25600,8 @@ function requireAuth(Component) {
 			_this.state = { isAuthorized: false };
 
 			_this.checkAuth = _this.checkAuth.bind(_this);
-			_this.redirectToLogin = _this.redirectToLogin.bind(_this);
 			_this.storeUserInStorage = _this.storeUserInStorage.bind(_this);
+			_this.redirectToLogin = _this.redirectToLogin.bind(_this);
 			return _this;
 		}
 
@@ -25614,6 +25614,13 @@ function requireAuth(Component) {
 		}, {
 			key: 'componentWillMount',
 			value: function componentWillMount() {
+				var component = this;
+
+				socket.on('disconnected-user', function (user) {
+					if (!localStorage.getItem('user-id')) {
+						component.redirectToLogin(component.props);
+					}
+				});
 
 				this.checkAuth();
 			}
@@ -25623,35 +25630,22 @@ function requireAuth(Component) {
 				//console.log(localStorage.getItem("token"));
 
 				if (localStorage.getItem("token") != null) {
-					socket.emit('verify-token', localStorage.getItem("token"));
-
 					var component = this;
 
-					// Define SocketIO events
-					socket.on('verify-token-failure', function () {
-						localStorage.clear();
-						component.redirectToLogin();
-					});
-
-					socket.on('verify-token-success', function (user) {
-						if (user.id != localStorage.getItem('user-id')) {
-							component.storeUserInStorage(user);
+					socket.emit('verify-token', localStorage.getItem("token"), function (user) {
+						// Callback from server
+						if (user) {
+							if (user.id != localStorage.getItem('user-id')) {
+								component.storeUserInStorage(user);
+							}
+							component.setState({ isAuthorized: true });
+						} else {
+							component.redirectToLogin();
 						}
-						component.setState({ isAuthorized: true });
 					});
 				} else {
 					this.redirectToLogin();
 				}
-			}
-		}, {
-			key: 'redirectToLogin',
-			value: function redirectToLogin() {
-				console.log("Not Authorized !");
-
-				var location = this.props.location;
-				var redirect = location.pathname + location.search;
-
-				this.props.router.push('/?redirect=' + redirect);
 			}
 		}, {
 			key: 'storeUserInStorage',
@@ -25661,6 +25655,17 @@ function requireAuth(Component) {
 				localStorage.setItem('user-lastname', user.lastname);
 				localStorage.setItem('user-email', user.email);
 				localStorage.setItem('user-profile-picture', user.profilePicture);
+			}
+		}, {
+			key: 'redirectToLogin',
+			value: function redirectToLogin() {
+				console.log("Not Authorized !");
+				localStorage.clear();
+
+				var location = this.props.location;
+				var redirect = location.pathname + location.search;
+
+				this.props.router.push('/?redirect=' + redirect);
 			}
 		}]);
 
@@ -26800,12 +26805,12 @@ var LogoutComponent = function (_React$Component) {
 		key: 'componentWillMount',
 		value: function componentWillMount() {
 
+			localStorage.clear();
+			socket.emit('logout');
+			_reactRouter.browserHistory.push('/');
+
 			// Remove the token in DB
 			if (localStorage.getItem('token') != null) {
-
-				localStorage.clear();
-				socket.emit('logout');
-				_reactRouter.browserHistory.push('/');
 				/*
     fetch('http://localhost:8080/removeToken?token=' + localStorage.getItem('token'), {
     	method: 'GET',
@@ -26993,9 +26998,7 @@ var Navigator = function (_React$Component) {
 
 			this.getAllCircles();
 
-			socket.emit('get-connected-users');
-
-			socket.on('get-connected-users-response', function (users) {
+			socket.emit('get-connected-users', function (users) {
 				component.setState({
 					users: users
 				});
@@ -27003,15 +27006,21 @@ var Navigator = function (_React$Component) {
 
 			socket.on('new-connected-user', function (user) {
 				var users = component.state.users;
-				users.push(user);
-				component.setState({
-					users: users
+				var userIndex = users.findIndex(function (element) {
+					return element.id == user.id;
 				});
+
+				if (userIndex < 0) {
+					users.push(user);
+					component.setState({
+						users: users
+					});
+				}
 			});
 
-			socket.on('disconnected-user', function (user) {
+			socket.on('disconnected-user', function (disconnectedUser) {
 				var updatedUsers = component.state.users.filter(function (element) {
-					return element.id != user.id;
+					return element.id != disconnectedUser.id;
 				});
 				component.setState({
 					users: updatedUsers
@@ -27084,12 +27093,14 @@ var Navigator = function (_React$Component) {
 				});
 			});
 
-			var circles = this.state.circles;
-			circles[indexCircle].nbUnreadPoints++;
+			if (indexCircle >= 0) {
+				var circles = this.state.circles;
+				circles[indexCircle].nbUnreadPoints++;
 
-			this.setState({
-				circles: circles
-			});
+				this.setState({
+					circles: circles
+				});
+			}
 		}
 	}]);
 

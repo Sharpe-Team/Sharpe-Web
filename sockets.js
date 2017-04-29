@@ -1,7 +1,12 @@
 // Import lib
-var socketIO = require('socket.io');
 var nJwt = require('njwt');
-var socketIOFileUpload = require('socketio-file-upload');
+var io;
+var socketIOFileUpload;
+
+// CONSTANTS
+const SECRET_KEY = "ThisIsASecret";
+const ALGORITHM = 'HS512';
+var UPLOAD_DIRECTORY;
 
 var connectedUsersMap = new Map();
 
@@ -27,7 +32,7 @@ function computeFileUpload(socket) {
 
 	// Do something when a file is saved:
     uploader.on("saved", function(event) {
-        console.log(event);
+        console.log("File uploaded !");
     });
 
     // Error handler:
@@ -36,10 +41,71 @@ function computeFileUpload(socket) {
     });
 }
 
+function onLogin(socket, token, loggedUser) {
+	var decodedToken;
+
+	if(token && (decodedToken = getDecodedToken(token))) {
+		if(connectedUsersMap.has(token)) {
+			// The current socket is the new socket of a previous connected user
+			// Assign to this new socket the previous data of the user
+			loggedUser = connectedUsersMap.get(token);
+			loggedUser.disconnected = false;
+		} else {
+			// Add a new user in the list of connected users
+	    	loggedUser = {
+				token: token,
+				user: decodedToken.body.user,
+				disconnected: false
+			};
+			connectedUsersMap.set(token, loggedUser);
+			
+    		// Send info user to all clients except current client
+    		socket.broadcast.emit('new-connected-user', loggedUser.user);
+		}
+
+		// Send info user to client
+		socket.emit('login-response', loggedUser.user);
+	} else {
+		console.log("Unregistered user connected...");
+	}
+	console.log(connectedUsersMap.size);
+}
+
+function onDisconnect(socket, loggedUser) {
+	loggedUser.disconnected = true;
+
+	// The user gets 10 seconds to reconnect
+	setTimeout(function() {
+		if(loggedUser.disconnected && loggedUser.user) {
+			socket.broadcast.emit('disconnected-user', loggedUser.user);
+			connectedUsersMap.delete(loggedUser.token);
+		}
+	}, 10000);
+}
+
+function onVerifyToken(socket, token) {
+	var decodedToken = getDecodedToken(token);
+
+	if(decodedToken) {
+		socket.emit('verify-token-success', decodedToken.body.user);
+	} else {
+		socket.emit('verify-token-failure');
+	}
+}
+
+function onGetConnectedUsers(socket) {
+	var listUsers = new Array();
+	for(var [key, value] of connectedUsersMap) {
+		listUsers.push(value.user);
+	}
+
+	socket.emit('get-connected-users-response', listUsers);
+}
+
 function computeConnection(socket) {
 	/**
-	* Logged user of the socket
-	*/
+	 * Logged user of the socket
+	 */
 	var loggedUser = {
 		token: null,
 		user: null,
@@ -49,45 +115,11 @@ function computeConnection(socket) {
 	computeFileUpload(socket);
 
     socket.on('login', function(token) {
-    	var decodedToken;
-
-    	if(token && (decodedToken = getDecodedToken(token))) {
-    		if(connectedUsersMap.has(token)) {
-    			// The current socket is the new socket of a previous connected user
-    			// Assign to this new socket the previous data of the user
-    			loggedUser = connectedUsersMap.get(token);
-    			loggedUser.disconnected = false;
-    		} else {
-    			// Add a new user in the list of connected users
-		    	loggedUser = {
-					token: token,
-					user: decodedToken.body.user,
-					disconnected: false
-				};
-				connectedUsersMap.set(token, loggedUser);
-				
-	    		// Send info user to all clients except current client
-	    		socket.broadcast.emit('new-connected-user', loggedUser.user);
-    		}
-
-    		// Send info user to client
-    		socket.emit('login-response', loggedUser.user);
-    	} else {
-    		console.log("Unregistered user connected...");
-    	}
-		console.log(connectedUsersMap.size);
+    	onLogin(socket, token, loggedUser);
     });
 
     socket.on('disconnect', function() {
-    	loggedUser.disconnected = true;
-
-    	// The user gets 10 seconds to reconnect
-    	setTimeout(function() {
-    		if(loggedUser.disconnected && loggedUser.user) {
-				socket.broadcast.emit('disconnected-user', loggedUser.user);
-    			connectedUsersMap.delete(loggedUser.token);
-    		}
-    	}, 10000);
+    	onDisconnect(socket, loggedUser);
     });
 
     socket.on('logout', function() {
@@ -97,38 +129,27 @@ function computeConnection(socket) {
 
 	socket.on('new-point', function(point) {
 		// Add info of the point's sender
-		point.user = loggedUser.user;
+		// point.user = loggedUser.user;
+
 		// Emit the new point to all connected users
 		io.emit('new-point', point);
 	});
 
 	socket.on('verify-token', function(token) {
-		var decodedToken = getDecodedToken(token);
-
-		if(decodedToken) {
-			socket.emit('verify-token-success', decodedToken.body.user);
-		} else {
-			socket.emit('verify-token-failure');
-		}
+		onVerifyToken(socket, token);
 	});
 
 	socket.on('get-connected-users', function() {
-		var listUsers = new Array();
-		for(var [key, value] of connectedUsersMap) {
-			listUsers.push(value.user);
-		}
-
-		socket.emit('get-connected-users-response', listUsers);
+		onGetConnectedUsers(socket);
 	})
 }
 
-function initSocketIO(app, http) {
-	app.use(socketIOFileUpload.router);
+function initSocketIO(sio, siofu, uploadDir) {
+	io = sio;
+	socketIOFileUpload = siofu;
+	UPLOAD_DIRECTORY = uploadDir;
 
-	var io = socketIO.listen(http);
-
-	// Gestion des sockets avec les clients
-	io.sockets.on('connection', computeConnection(socket));
+	io.sockets.on('connection', computeConnection);
 }
 
-export default initSocketIO;
+module.exports = initSocketIO;

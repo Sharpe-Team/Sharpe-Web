@@ -25632,7 +25632,9 @@ function requireAuth(Component) {
 					});
 
 					socket.on('verify-token-success', function (user) {
-						//component.storeUserInStorage(user);
+						if (user.id != localStorage.getItem('user-id')) {
+							component.storeUserInStorage(user);
+						}
 						component.setState({ isAuthorized: true });
 					});
 				} else {

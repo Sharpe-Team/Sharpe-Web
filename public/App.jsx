@@ -19,7 +19,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div id="div-app" className="expanded row">
-				<Navigator updateSelectedCircle={this.updateSelectedCircle} ref={instance => { this.navigatorRef = instance; }} />
+				<Navigator updateSelectedCircle={this.updateSelectedCircle} ref={ (instance) => { this.navigatorRef = instance; }} />
 				{ this.state.selectedCircle &&
 					<Circle circle={this.state.selectedCircle} updateUnreadPoints={this.updateUnreadPoints} />
 				}
@@ -29,7 +29,7 @@ class App extends React.Component {
 
 	componentWillMount() {
 	}
-
+    
 	updateSelectedCircle(circle) {
 		if(!this.state.selectedCircle || this.state.selectedCircle.id != circle.id) {
 			circle.nbUnreadPoints = 0;
@@ -38,7 +38,9 @@ class App extends React.Component {
 	}
 
 	updateUnreadPoints(idLine) {
-		this.navigatorRef.updateUnreadPointsBadge(idLine);
+        if(this.navigatorRef) {
+		  this.navigatorRef.updateUnreadPointsBadge(idLine);
+        }
 	}
 }
 

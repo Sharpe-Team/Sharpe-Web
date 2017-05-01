@@ -25457,7 +25457,7 @@ var App = function (_React$Component) {
 	}, {
 		key: 'updateSelectedCircle',
 		value: function updateSelectedCircle(circle) {
-			if (!this.state.selectedCircle || this.state.selectedCircle.id != circle.id) {
+			if (circle && (!this.state.selectedCircle || this.state.selectedCircle.id != circle.id)) {
 				circle.nbUnreadPoints = 0;
 				this.setState({ selectedCircle: circle });
 			}
@@ -26907,6 +26907,8 @@ var Navigator = function (_React$Component) {
 		_this.getAllCircles = _this.getAllCircles.bind(_this);
 		_this.updateUnreadPointsBadge = _this.updateUnreadPointsBadge.bind(_this);
 		_this.selectCircle = _this.selectCircle.bind(_this);
+		_this.resetUnreadPoints = _this.resetUnreadPoints.bind(_this);
+		_this.selectUser = _this.selectUser.bind(_this);
 		return _this;
 	}
 
@@ -26982,7 +26984,7 @@ var Navigator = function (_React$Component) {
 					this.state.users.map(function (user) {
 						return _react2.default.createElement(
 							'div',
-							{ key: user.id, className: 'row circleListItem' },
+							{ key: user.id, className: 'row circleListItem', onClick: this.selectUser.bind(this, user) },
 							user.firstname,
 							'\xA0',
 							user.lastname
@@ -27065,13 +27067,8 @@ var Navigator = function (_React$Component) {
 			});
 		}
 	}, {
-		key: 'selectCircle',
-		value: function selectCircle(circle) {
-			// Find the circle that needs to be updated in the list of circles
-			var indexCircle = this.state.circles.findIndex(function (element) {
-				return element.id == circle.id;
-			});
-
+		key: 'resetUnreadPoints',
+		value: function resetUnreadPoints(indexCircle) {
 			// Set to 0 the number of unread points to this circle
 			var circles = this.state.circles;
 			circles[indexCircle].nbUnreadPoints = 0;
@@ -27080,6 +27077,16 @@ var Navigator = function (_React$Component) {
 				circles: circles,
 				selectedCircle: circles[indexCircle]
 			});
+		}
+	}, {
+		key: 'selectCircle',
+		value: function selectCircle(circle) {
+			// Find the circle that needs to be updated in the list of circles
+			var indexCircle = this.state.circles.findIndex(function (element) {
+				return element.id == circle.id;
+			});
+
+			this.resetUnreadPoints(indexCircle);
 
 			this.props.updateSelectedCircle(circles[indexCircle]);
 		}
@@ -27100,7 +27107,51 @@ var Navigator = function (_React$Component) {
 				this.setState({
 					circles: circles
 				});
+			} else {
+				// If the circle to update is not in the list, it could be a private circle
+				// TODO: get the circle for the given line id in the API
 			}
+		}
+	}, {
+		key: 'selectUser',
+		value: function selectUser(user) {
+			var component = this;
+
+			var currentUserId = parseInt(localStorage.getItem('user-id'));
+			if (!currentUserId || currentUserId < 0) {
+				return;
+			}
+
+			var params = "userId1=" + currentUserId + "&userId2=" + user.id;
+
+			/*
+         displayLoading(this);
+   fetch(API_URL + 'privateCircle?' + params, {
+   	method: 'GET',
+   	headers: {
+   		'Authorization': 'Bearer ' + localStorage.getItem('token')
+   	}
+   })
+   .then(function(response) {
+   	return response.json();
+   })
+   .then(function(circle) {
+   	if(circle) {
+   		handleAPIResult(component, false, "");
+   			circle['nbUnreadPoints'] = 0;
+   			component.setState({
+   			selectedCircle: circle
+   		});
+   			component.props.updateSelectedCircle(selectedCircle);
+   	} else {
+   		handleAPIResult(component, true, "Une erreur est survenue lors de la récupération du cercle privé...");
+   	}
+   })
+   .catch(function(error) {
+   	console.log(error);
+   	handleAPIResult(component, true, "Une erreur est survenue lors de la récupération du cercle privé...");
+   });
+   */
 		}
 	}]);
 

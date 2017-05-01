@@ -31,7 +31,7 @@ class App extends React.Component {
 	}
     
 	updateSelectedCircle(circle) {
-		if(!this.state.selectedCircle || this.state.selectedCircle.id != circle.id) {
+		if(circle && (!this.state.selectedCircle || this.state.selectedCircle.id != circle.id)) {
 			circle.nbUnreadPoints = 0;
 			this.setState({selectedCircle: circle});
 		}

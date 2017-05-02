@@ -3,6 +3,7 @@ import { Link, browserHistory } from 'react-router';
 import { API_URL, hideError, handleAPIResult, displayLoading } from '../base/Common.jsx';
 import Loading from '../loading/Loading.jsx';
 import ErrorComponent from '../error/ErrorComponent.jsx';
+import NavigatorMenu from './NavigatorMenu.jsx';
 
 class Navigator extends React.Component {
 
@@ -31,6 +32,7 @@ class Navigator extends React.Component {
 				{this.state.displayLoading && 
                 	<Loading />
                 }
+                <NavigatorMenu/>
 				<div id="search" className="row">
 					<div className="medium-1"></div>
 					<Link className="medium-2" to="/userform"><img className="user-form-button" src="/resource/user.png"></img></Link>

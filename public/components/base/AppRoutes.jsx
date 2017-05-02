@@ -1,8 +1,8 @@
 import React from 'react';
 import { Router, Route, browserHistory, withRouter } from 'react-router';
-import requireAuth from '../authentification/AuthenticationComponent.jsx';
+import requireAuth from '../authentication/AuthenticationComponent.jsx';
 import LoginPage from '../form/LoginForm.jsx';
-import LogoutComponent from '../authentification/LogoutComponent.jsx';
+import LogoutComponent from '../authentication/LogoutComponent.jsx';
 import App from '../../App.jsx';
 import CircleFormPage from '../form/CircleForm.jsx';
 import UserFormPage from '../form/UserForm.jsx';

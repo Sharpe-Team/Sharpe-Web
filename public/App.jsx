@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router';
-import Circle from './Circle.jsx';
-import Navigator from './Navigator.jsx';
+import Circle from './components/base/Circle.jsx';
+import Navigator from './components/navigator/Navigator.jsx';
 
 class App extends React.Component {
 

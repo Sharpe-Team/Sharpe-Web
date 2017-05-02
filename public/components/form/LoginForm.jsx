@@ -1,9 +1,9 @@
 import React from 'react';
 import {Link, browserHistory} from 'react-router';
 import passwordHash from 'password-hash';
-import Loading from './Loading.jsx';
-import ErrorComponent from './ErrorComponent.jsx';
-import { API_URL, hideError, handleAPIResult, displayLoading } from './Common.jsx';
+import Loading from '../loading/Loading.jsx';
+import ErrorComponent from '../error/ErrorComponent.jsx';
+import { API_URL, hideError, handleAPIResult, displayLoading } from '../base/Common.jsx';
 
 class LoginForm extends React.Component {
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Line from './Line.jsx';
+import Line from '../base/Line.jsx';
 
 class Circle extends React.Component {
 

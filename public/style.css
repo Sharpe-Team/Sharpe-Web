@@ -193,6 +193,11 @@ input, button {
     padding-bottom: 50px;
 }
 
+.loadingMessage {
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 30px;
+}
 .spinner {
     margin-left: auto;
     margin-right: auto;

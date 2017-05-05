@@ -27,10 +27,11 @@ class LoginForm extends React.Component {
 	}
 
 	render() {
+        
 		return (
 			<div className="login-form-root">
                 {this.state.displayLoading && 
-                	<Loading />
+                	<Loading loadingFrom="LoginForm"/>
                 }
                 
                 <img className="expanded row align-center logo" src="/resource/logo.png"/>

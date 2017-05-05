@@ -32,9 +32,21 @@ const displayLoading = function(component) {
 	});
 }
 
+const generateLoadingMessage = function(componentName){
+    var messages = [
+        ["Nous vérifions votre mot de passe ...","Nous nous assurons que vous êtes bien la bonne personne ...", "Nous consultons notre base de données ...", "Scanner rétinien en cours ..."]
+    ];
+    if(componentName == "LoginForm"){
+        var choosenMessage = Math.floor((Math.random() * 3));
+        return messages[0][choosenMessage];
+    }
+    return "Ceci est un message parce qu'on a pas trouvé d'autres messages";
+}
+
 export {
 	API_URL,
 	hideError,
 	handleAPIResult,
-	displayLoading
+	displayLoading,
+    generateLoadingMessage
 };

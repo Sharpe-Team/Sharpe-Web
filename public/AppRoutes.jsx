@@ -1,12 +1,12 @@
 import React from 'react';
 import { Router, Route, browserHistory, withRouter } from 'react-router';
-import requireAuth from '../authentication/AuthenticationComponent.jsx';
-import LoginPage from '../form/LoginForm.jsx';
-import LogoutComponent from '../authentication/LogoutComponent.jsx';
-import App from '../../App.jsx';
-import CircleFormPage from '../form/CircleForm.jsx';
-import UserFormPage from '../form/UserForm.jsx';
-import NotFoundPage from '../error/NotFoundPage.jsx';
+import requireAuth from './components/authentication/AuthenticationComponent.jsx';
+import LoginPage from './components/authentication/LoginForm.jsx';
+import LogoutComponent from './components/authentication/LogoutComponent.jsx';
+import App from './components/app/chat/App.jsx';
+import CircleFormPage from './components/app/manage/CircleForm.jsx';
+import UserFormPage from './components/app/manage/UserForm.jsx';
+import NotFoundPage from './components/common/NotFoundPage.jsx';
 
 class AppRoutes extends React.Component {
 	render() {

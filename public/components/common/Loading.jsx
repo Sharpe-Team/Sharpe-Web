@@ -1,5 +1,5 @@
 import React from 'react';
-import { generateLoadingMessage } from '../base/Common.jsx';
+import { generateLoadingMessage } from './Common.jsx';
 
 class Loading extends React.Component {
 

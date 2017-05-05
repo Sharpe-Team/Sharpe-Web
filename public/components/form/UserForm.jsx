@@ -34,7 +34,7 @@ class UserForm extends React.Component {
 		return (
 			<div className="user-form-root">
                 {this.state.displayLoading && 
-                	<Loading />
+                	<Loading loadingFrom="UserForm"/>
                 }
                 
 				<Link to="/app"><img className="home-button" src="/resource/home.png"></img></Link>

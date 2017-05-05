@@ -8451,11 +8451,23 @@ var displayLoading = function displayLoading(component) {
 	});
 };
 
+function getRandomArbitrary(min, max) {
+	return Math.floor(Math.random() * (max - min) + min);
+}
+
 var generateLoadingMessage = function generateLoadingMessage(componentName) {
-	var messages = [["Nous vérifions votre mot de passe ...", "Nous nous assurons que vous êtes bien la bonne personne", "Nous consultons notre base de données", "Scanner rétinien en cours ..."]];
+	var messages = [["Nous vérifions votre mot de passe ...", "Nous nous assurons que vous êtes bien la bonne personne ...", "Nous consultons notre base de données ...", "Scanner rétinien en cours ..."], ["Nous ajoutons votre cercle ...", "Nous créons votre nouveau cercle ...", "Nous vérifions que vous avez choisi une belle image de profil ..."], ["Nous ajoutons ce nouvel utilisateur ...", "Nous vérifions l'ajout du nouvel utilisateur ...", "Nous consultons la NSA au sujet du nouvel utilisateur que vous ajoutez ...", "Nous vérifions que vous avez choisi une belle photo de profil pour votre compte ...", "Nous nous assurons que vous ne créez pas un compte \"Barack Obama\" ou autre juste pour vous amusez ..."]];
 	if (componentName == "LoginForm") {
-		var choosenMessage = Math.floor(Math.random() * 3);
+		var choosenMessage = getRandomArbitrary(0, 3);
 		return messages[0][choosenMessage];
+	}
+	if (componentName == "CircleForm") {
+		var choosenMessage = getRandomArbitrary(0, 2);
+		return messages[1][choosenMessage];
+	}
+	if (componentName == "UserForm") {
+		var choosenMessage = getRandomArbitrary(0);
+		return messages[2][choosenMessage];
 	}
 	return "Ceci est un message parce qu'on a pas trouvé d'autres messages";
 };
@@ -27033,7 +27045,7 @@ var CircleForm = function (_React$Component) {
 			return _react2.default.createElement(
 				'div',
 				{ className: 'circle-form-root' },
-				this.state.displayLoading && _react2.default.createElement(_Loading2.default, null),
+				this.state.displayLoading && _react2.default.createElement(_Loading2.default, { loadingFrom: 'CircleForm' }),
 				_react2.default.createElement(
 					_reactRouter.Link,
 					{ to: '/app' },
@@ -27688,7 +27700,7 @@ var UserForm = function (_React$Component) {
 			return _react2.default.createElement(
 				'div',
 				{ className: 'user-form-root' },
-				this.state.displayLoading && _react2.default.createElement(_Loading2.default, null),
+				this.state.displayLoading && _react2.default.createElement(_Loading2.default, { loadingFrom: 'UserForm' }),
 				_react2.default.createElement(
 					_reactRouter.Link,
 					{ to: '/app' },

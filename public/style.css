@@ -196,8 +196,9 @@ input, button {
 .loadingMessage {
     text-align: center;
     color: #FFFFFF;
-    font-size: 30px;
+    font: italic 20px Georgia, serif
 }
+
 .spinner {
     margin-left: auto;
     margin-right: auto;

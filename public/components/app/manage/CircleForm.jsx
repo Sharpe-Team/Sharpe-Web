@@ -103,12 +103,13 @@ class CircleForm extends React.Component {
         
         /!\ LE CODE CI DESSOUS DOIT ÊTRE AJOUTE AU NOUVEAU COMPOSANT MAIS OU ET COMMENT ? /!\
 
+        // Ajouté dans ImageUploadItem, cela modifie son state pour avoir le event.name
 	    siofu.addEventListener("load", function(event) {
 	    	// Save the name given by the server to the current picture
 	    	component.setState({[component.state.lastModifiedPicture]: event.name});
 	    });
 
-		// Do something when a file is uploaded:
+        // Pas ajouté du tout
 		siofu.addEventListener("complete", function(event) {
 			if(event.success) {
 				// Save the final path of the latest modified picture
@@ -137,6 +138,14 @@ class CircleForm extends React.Component {
 			[this.state.lastModifiedPicture]: finalPath
 		});
 	}
+    
+    handleImageUpload(event) {
+		event.preventDefault();
+        
+		this.setState({
+			[event.target.name]: event.state.image
+		});
+	}
 
 	handleChange(event) {
 		this.setState({[event.target.name]: event.target.value});
@@ -153,14 +162,6 @@ class CircleForm extends React.Component {
 		}
 
 		this.setState({[event.target.name]: selectedOptions});
-	}
-    
-    handleImageUpload(event) {
-		event.preventDefault();
-        
-		this.setState({
-			[event.target.name]: event.state.image
-		});
 	}
 
 	handleSubmit(event) {

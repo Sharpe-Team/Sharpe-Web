@@ -37,9 +37,9 @@ class App extends React.Component {
 		}
 	}
 
-	updateUnreadPoints(idLine) {
+	updateUnreadPoints(point, isPrivate) {
         if(this.navigatorRef) {
-		  this.navigatorRef.updateUnreadPointsBadge(idLine);
+		  this.navigatorRef.updateUnreadPointsBadge(point, isPrivate);
         }
 	}
 }

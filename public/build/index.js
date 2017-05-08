@@ -25464,9 +25464,9 @@ var App = function (_React$Component) {
 		}
 	}, {
 		key: 'updateUnreadPoints',
-		value: function updateUnreadPoints(idLine) {
+		value: function updateUnreadPoints(point, isPrivate) {
 			if (this.navigatorRef) {
-				this.navigatorRef.updateUnreadPointsBadge(idLine);
+				this.navigatorRef.updateUnreadPointsBadge(point, isPrivate);
 			}
 		}
 	}]);
@@ -25748,7 +25748,7 @@ var Circle = function (_React$Component) {
 		value: function render() {
 			var line;
 			if (this.state.selectedLine) {
-				line = _react2.default.createElement(_Line2.default, { line: this.state.selectedLine, updateUnreadPoints: this.props.updateUnreadPoints, style: { height: "100%" } });
+				line = _react2.default.createElement(_Line2.default, { line: this.state.selectedLine, circle: this.props.circle, updateUnreadPoints: this.props.updateUnreadPoints, style: { height: "100%" } });
 			} else {
 				line = _react2.default.createElement(
 					'div',
@@ -26179,7 +26179,8 @@ var CircleForm = function (_React$Component) {
 					name: component.state.circleName,
 					//moderators: component.state.moderators,
 					pictureUrl: component.state.profilePicture,
-					bannerPictureUrl: component.state.bannerPicture
+					bannerPictureUrl: component.state.bannerPicture,
+					type: 1
 				})
 			}).then(function (response) {
 				if (response.status == 201) {
@@ -26302,6 +26303,7 @@ var Line = function (_React$Component) {
 		_this.handleSubmit = _this.handleSubmit.bind(_this);
 
 		// Register functions
+		_this.manageNewPoint = _this.manageNewPoint.bind(_this);
 		_this.getAllPoints = _this.getAllPoints.bind(_this);
 		_this.saveNewPoint = _this.saveNewPoint.bind(_this);
 		_this.scrollToBottom = _this.scrollToBottom.bind(_this);
@@ -26355,19 +26357,11 @@ var Line = function (_React$Component) {
 
 			// Define events function from SocketIO
 			socket.on('new-point', function (point) {
-				// If the user is on the line where it is the new point, we display it
-				if (point.idLine == component.props.line.id) {
-					point.created = new Date(point.created);
-					var points = component.state.points;
-					points.push(point);
-					component.setState({
-						points: points,
-						pointAdded: true
-					});
-				} else {
-					// Increase the number of unread points on the circle of the line$
-					component.props.updateUnreadPoints(point.idLine);
-				}
+				component.manageNewPoint(point, false);
+			});
+
+			socket.on('new-private-point', function (point) {
+				component.manageNewPoint(point, true);
 			});
 
 			var user = this.getUserFromStorage();
@@ -26413,9 +26407,7 @@ var Line = function (_React$Component) {
 		value: function handleSubmit(event) {
 			event.preventDefault();
 
-			var points = this.state.points;
 			var text = this.state.newPoint.trim();
-
 			this.state.newPoint = "";
 
 			if (text.length !== 0) {
@@ -26427,6 +26419,24 @@ var Line = function (_React$Component) {
   *					FUNCTIONS 					*
   *************************************************/
 
+	}, {
+		key: 'manageNewPoint',
+		value: function manageNewPoint(point, isPrivate) {
+			// If the user is on the line where it is the new point, we display it
+			if (point.idLine == this.props.line.id) {
+				// Display the new point
+				point.created = new Date(point.created);
+				var points = this.state.points;
+				points.push(point);
+				this.setState({
+					points: points,
+					pointAdded: true
+				});
+			} else {
+				// Increase the number of unread points on the circle of the line$
+				this.props.updateUnreadPoints(point, isPrivate);
+			}
+		}
 	}, {
 		key: 'getUserFromStorage',
 		value: function getUserFromStorage() {
@@ -26446,6 +26456,7 @@ var Line = function (_React$Component) {
 			if (!idLine) {
 				if (!this.props.line) {
 					this.setState({ points: [] });
+					return;
 				} else {
 					idLine = this.props.line.id;
 				}
@@ -26503,8 +26514,14 @@ var Line = function (_React$Component) {
 			}).then(function (point) {
 				if (point) {
 					(0, _Common.handleAPIResult)(component, false, "");
-					// Send the new point to the connected users
-					socket.emit('new-point', point);
+
+					if (component.props.circle.type == 2) {
+						// Send a private point to the receiver user
+						socket.emit('new-private-point', point, component.props.circle.receiverUserId);
+					} else {
+						// Send the new point to the connected users
+						socket.emit('new-point', point);
+					}
 				} else {
 					(0, _Common.handleAPIResult)(component, true, "Une erreur est apparue lors de l'ajout du point...");
 				}
@@ -26906,8 +26923,9 @@ var Navigator = function (_React$Component) {
 
 		_this.getAllCircles = _this.getAllCircles.bind(_this);
 		_this.updateUnreadPointsBadge = _this.updateUnreadPointsBadge.bind(_this);
+		_this.updateUnreadPointsCircle = _this.updateUnreadPointsCircle.bind(_this);
+		_this.updateUnreadPointsUser = _this.updateUnreadPointsUser.bind(_this);
 		_this.selectCircle = _this.selectCircle.bind(_this);
-		_this.resetUnreadPoints = _this.resetUnreadPoints.bind(_this);
 		_this.selectUser = _this.selectUser.bind(_this);
 		return _this;
 	}
@@ -26984,12 +27002,18 @@ var Navigator = function (_React$Component) {
 					this.state.users.map(function (user) {
 						return _react2.default.createElement(
 							'div',
-							{ key: user.id, className: 'row circleListItem', onClick: this.selectUser.bind(this, user) },
+							{ key: user.id, className: 'row circleListItem', onClick: this.selectUser.bind(this, user), 'aria-describedby': "badge_user_" + user.id },
 							user.firstname,
 							'\xA0',
-							user.lastname
+							user.lastname,
+							'\xA0',
+							user.nbUnreadPoints > 0 && _react2.default.createElement(
+								'span',
+								{ id: "badge_user_" + user.id, className: 'badge warning' },
+								user.nbUnreadPoints
+							)
 						);
-					})
+					}, this)
 				)
 			);
 		}
@@ -27001,6 +27025,10 @@ var Navigator = function (_React$Component) {
 			this.getAllCircles();
 
 			socket.emit('get-connected-users', function (users) {
+				for (var i = 0; i < users.length; i++) {
+					users[i]['nbUnreadPoints'] = 0;
+				}
+
 				component.setState({
 					users: users
 				});
@@ -27013,6 +27041,7 @@ var Navigator = function (_React$Component) {
 				});
 
 				if (userIndex < 0) {
+					user['nbUnreadPoints'] = 0;
 					users.push(user);
 					component.setState({
 						users: users
@@ -27035,7 +27064,7 @@ var Navigator = function (_React$Component) {
 			var component = this;
 
 			(0, _Common.displayLoading)(this);
-			fetch(_Common.API_URL + 'circles', {
+			fetch(_Common.API_URL + 'circles/publics', {
 				method: 'GET',
 				headers: {
 					'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -27067,49 +27096,74 @@ var Navigator = function (_React$Component) {
 			});
 		}
 	}, {
-		key: 'resetUnreadPoints',
-		value: function resetUnreadPoints(indexCircle) {
-			// Set to 0 the number of unread points to this circle
-			var circles = this.state.circles;
-			circles[indexCircle].nbUnreadPoints = 0;
-
-			this.setState({
-				circles: circles,
-				selectedCircle: circles[indexCircle]
-			});
-		}
-	}, {
 		key: 'selectCircle',
 		value: function selectCircle(circle) {
+			var circles = this.state.circles;
+
 			// Find the circle that needs to be updated in the list of circles
-			var indexCircle = this.state.circles.findIndex(function (element) {
+			var indexCircle = circles.findIndex(function (element) {
 				return element.id == circle.id;
 			});
 
-			this.resetUnreadPoints(indexCircle);
+			this.updateUnreadPointsCircle(indexCircle, true);
+
+			this.setState({
+				selectedCircle: circles[indexCircle]
+			});
 
 			this.props.updateSelectedCircle(circles[indexCircle]);
 		}
 	}, {
 		key: 'updateUnreadPointsBadge',
-		value: function updateUnreadPointsBadge(idLine) {
-			// Find the circle that need to be updated in the list of circles
-			var indexCircle = this.state.circles.findIndex(function (circle) {
-				return circle.lines.find(function (line) {
-					return line.id == idLine;
+		value: function updateUnreadPointsBadge(point, isPrivate) {
+			if (isPrivate) {
+				this.updateUnreadPointsUser(point.user.id, false);
+			} else {
+				// Find the circle that needs to be updated in the list of circles
+				var indexCircle = this.state.circles.findIndex(function (circle) {
+					return circle.lines.find(function (line) {
+						return line.id == point.idLine;
+					});
 				});
-			});
-
+				this.updateUnreadPointsCircle(indexCircle, false);
+			}
+		}
+	}, {
+		key: 'updateUnreadPointsCircle',
+		value: function updateUnreadPointsCircle(indexCircle, defaultValue) {
 			if (indexCircle >= 0) {
 				var circles = this.state.circles;
-				circles[indexCircle].nbUnreadPoints++;
+
+				if (defaultValue) {
+					circles[indexCircle].nbUnreadPoints = 0;
+				} else {
+					circles[indexCircle].nbUnreadPoints++;
+				}
 
 				this.setState({
 					circles: circles
 				});
-			} else {
-				// If the circle to update is not in the list, it could be a private circle
-				// TODO: get the circle for the given line id in the API
+			}
+		}
+	}, {
+		key: 'updateUnreadPointsUser',
+		value: function updateUnreadPointsUser(userId, defaultValue) {
+			var indexUser = this.state.users.findIndex(function (user) {
+				return user.id == userId;
+			});
+
+			if (indexUser >= 0) {
+				var users = this.state.users;
+
+				if (defaultValue) {
+					users[indexUser].nbUnreadPoints = 0;
+				} else {
+					users[indexUser].nbUnreadPoints++;
+				}
+
+				this.setState({
+					users: users
+				});
 			}
 		}
 	}, {
@@ -27118,40 +27172,41 @@ var Navigator = function (_React$Component) {
 			var component = this;
 
 			var currentUserId = parseInt(localStorage.getItem('user-id'));
-			if (!currentUserId || currentUserId < 0) {
+			if (!currentUserId || currentUserId < 0 || this.state.selectedCircle.receiverUserId == user.id) {
 				return;
 			}
 
-			var params = "userId1=" + currentUserId + "&userId2=" + user.id;
+			var params = "idUser1=" + currentUserId + "&idUser2=" + user.id;
 
-			/*
-         displayLoading(this);
-   fetch(API_URL + 'privateCircle?' + params, {
-   	method: 'GET',
-   	headers: {
-   		'Authorization': 'Bearer ' + localStorage.getItem('token')
-   	}
-   })
-   .then(function(response) {
-   	return response.json();
-   })
-   .then(function(circle) {
-   	if(circle) {
-   		handleAPIResult(component, false, "");
-   			circle['nbUnreadPoints'] = 0;
-   			component.setState({
-   			selectedCircle: circle
-   		});
-   			component.props.updateSelectedCircle(selectedCircle);
-   	} else {
-   		handleAPIResult(component, true, "Une erreur est survenue lors de la récupération du cercle privé...");
-   	}
-   })
-   .catch(function(error) {
-   	console.log(error);
-   	handleAPIResult(component, true, "Une erreur est survenue lors de la récupération du cercle privé...");
-   });
-   */
+			(0, _Common.displayLoading)(this);
+			fetch(_Common.API_URL + 'circles/private?' + params, {
+				method: 'GET',
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('token')
+				}
+			}).then(function (response) {
+				return response.json();
+			}).then(function (circle) {
+				if (circle) {
+					(0, _Common.handleAPIResult)(component, false, "");
+
+					circle['nbUnreadPoints'] = 0;
+					circle['receiverUserId'] = user.id;
+
+					component.updateUnreadPointsUser(user.id, true);
+
+					component.setState({
+						selectedCircle: circle
+					});
+
+					component.props.updateSelectedCircle(circle);
+				} else {
+					(0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération du cercle privé...");
+				}
+			}).catch(function (error) {
+				console.log(error);
+				(0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération du cercle privé...");
+			});
 		}
 	}]);
 

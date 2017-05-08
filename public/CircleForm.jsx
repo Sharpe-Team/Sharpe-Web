@@ -228,7 +228,8 @@ class CircleForm extends React.Component {
 				name: component.state.circleName,
 				//moderators: component.state.moderators,
 				pictureUrl: component.state.profilePicture,
-				bannerPictureUrl: component.state.bannerPicture
+				bannerPictureUrl: component.state.bannerPicture,
+				type: 1
 			})
 		})
 		.then(function(response) {
@@ -240,7 +241,7 @@ class CircleForm extends React.Component {
 		})
 		.then(function(response) {
 			if(response.status == 201) {
-            	handleAPIResult(component, false, "");
+				handleAPIResult(component, false, "");
 				alert("Le cercle a bien été ajouté !");
 				// redirect to main file 'App'
 				browserHistory.push('/app');
@@ -260,15 +261,15 @@ class CircleForm extends React.Component {
 		fetch(API_URL + 'users', {
 			method: 'GET',
 			headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
+				'Authorization': 'Bearer ' + localStorage.getItem('token')
+			}
 		})
 		.then(function(response) {
 			return response.json();
 		})
 		.then(function(users) {
 			if(users) {
-            	handleAPIResult(component, false, "");
+				handleAPIResult(component, false, "");
 				component.setState({users: users});
 			} else {
 				handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des utilisateurs !");

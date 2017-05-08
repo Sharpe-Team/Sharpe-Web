@@ -40,7 +40,7 @@ class Circle extends React.Component {
 	render() {
 		var line;
 		if(this.state.selectedLine) {
-			line = (<Line line={this.state.selectedLine} updateUnreadPoints={this.props.updateUnreadPoints} style={{height: "100%"}}/>);
+			line = (<Line line={this.state.selectedLine} circle={this.props.circle} updateUnreadPoints={this.props.updateUnreadPoints} style={{height: "100%"}}/>);
 		} else {
 			line = (
 				<div id="div-line" className="column">

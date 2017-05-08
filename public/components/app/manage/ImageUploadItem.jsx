@@ -20,7 +20,7 @@ class ImageUploadItem extends React.Component {
                     <div className="row align-middle upload-row">
                         <div className="column shrink">
                             <label htmlFor={this.props.id} className="button">{this.props.buttonLabel}</label>
-                            <input type="file" id={this.props.id} name={this.props.name} className="show-for-sr" accept="image/*" onChange={this.props.handleFileUpload}/>
+                            <input type="file" id={this.props.id} name={this.props.name} className="show-for-sr" accept="image/*" onChange={this.props.onChange}/>
                         </div>
                         <div className="column progress-div">
                             <progress max="100" value={this.state.percent}></progress>

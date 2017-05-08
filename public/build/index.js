@@ -27255,15 +27255,19 @@ var CircleForm = function (_React$Component) {
 	}, {
 		key: 'handleBannerUpload',
 		value: function handleBannerUpload(event) {
+			event.preventDefault();
+
 			this.setState({
-				bannerPicture: event.target.name
+				bannerPicture: event.target.value
 			});
 		}
 	}, {
 		key: 'handleProfileUpload',
 		value: function handleProfileUpload(event) {
+			event.preventDefault();
+
 			this.setState({
-				profilePicture: event.target.name
+				profilePicture: event.target.value
 			});
 		}
 	}, {
@@ -27411,7 +27415,7 @@ var ImageUploadItem = function (_React$Component) {
                                 { htmlFor: this.props.id, className: "button" },
                                 this.props.buttonLabel
                             ),
-                            _react2.default.createElement("input", { type: "file", id: this.props.id, name: this.props.name, className: "show-for-sr", accept: "image/*", onChange: this.props.handleFileUpload })
+                            _react2.default.createElement("input", { type: "file", id: this.props.id, name: this.props.name, className: "show-for-sr", accept: "image/*", onChange: this.props.onChange })
                         ),
                         _react2.default.createElement(
                             "div",

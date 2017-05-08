@@ -158,14 +158,18 @@ class CircleForm extends React.Component {
 	}
     
     handleBannerUpload(event) {
+		event.preventDefault();
+        
 		this.setState({
-			bannerPicture: event.target.name
+			bannerPicture: event.target.value
 		});
 	}
     
     handleProfileUpload(event) {
+		event.preventDefault();
+        
 		this.setState({
-			profilePicture: event.target.name
+			profilePicture: event.target.value
 		});
 	}
 

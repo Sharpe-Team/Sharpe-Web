@@ -27141,8 +27141,8 @@ var CircleForm = function (_React$Component) {
 										_react2.default.createElement('input', { type: 'text', id: 'circle-name', name: 'circleName', onChange: this.handleChange, required: true })
 									)
 								),
-								_react2.default.createElement(_ImageUploadItem2.default, { id: 'profile-picture', onChange: this.handleProfileUpload, name: 'profilePicture', label: 'Ajouter une photo de profil', buttonLabel: 'Photo de profil' }),
-								_react2.default.createElement(_ImageUploadItem2.default, { id: 'banner-picture', onChange: this.handleBannerUpload, name: 'bannerPicture', label: 'Ajouter une banni\xE8re', buttonLabel: 'Banni\xE8re' }),
+								_react2.default.createElement(_ImageUploadItem2.default, { id: 'profile-picture', onChange: this.handleProfileUpload, name: 'profilePicture', label: 'Ajouter une photo de profil', buttonLabel: 'Photo de profil', siofu: new SocketIOFileUpload(socket) }),
+								_react2.default.createElement(_ImageUploadItem2.default, { id: 'banner-picture', onChange: this.handleBannerUpload, name: 'bannerPicture', label: 'Ajouter une banni\xE8re', buttonLabel: 'Banni\xE8re', siofu: new SocketIOFileUpload(socket) }),
 								_react2.default.createElement(
 									'div',
 									{ className: 'row' },
@@ -27255,9 +27255,6 @@ var CircleForm = function (_React$Component) {
 	}, {
 		key: 'handleBannerUpload',
 		value: function handleBannerUpload(event) {
-			event.preventDefault();
-
-			console.log("in");
 			this.setState({
 				bannerPicture: event.target.name
 			});
@@ -27265,8 +27262,6 @@ var CircleForm = function (_React$Component) {
 	}, {
 		key: 'handleProfileUpload',
 		value: function handleProfileUpload(event) {
-			event.preventDefault();
-
 			this.setState({
 				profilePicture: event.target.name
 			});
@@ -27439,15 +27434,12 @@ var ImageUploadItem = function (_React$Component) {
 
             var component = this;
 
-            var siofu = new SocketIOFileUpload(socket);
-
-            siofu.listenOnInput(document.getElementById(this.props.id));
+            this.props.siofu.listenOnInput(document.getElementById(this.props.id));
 
             // Do something on upload progress:
-            siofu.addEventListener("progress", function (event) {
+            this.props.siofu.addEventListener("progress", function (event) {
                 var percent = event.bytesLoaded / event.file.size * 100;
                 component.setState({ percent: percent });
-                console.log(this.props.id);
             });
         }
     }]);

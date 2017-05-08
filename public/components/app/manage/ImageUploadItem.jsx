@@ -35,21 +35,14 @@ class ImageUploadItem extends React.Component {
     componentDidMount() {
 
 		var component = this;
-        
-        var siofu = new SocketIOFileUpload(socket);
 
-		siofu.listenOnInput(document.getElementById(this.props.id));
+		this.props.siofu.listenOnInput(document.getElementById(this.props.id));
 
 		// Do something on upload progress:
-		siofu.addEventListener("progress", function(event) {
+		this.props.siofu.addEventListener("progress", function(event) {
 		    var percent = event.bytesLoaded / event.file.size * 100;
-            component.setState({percent: percent});        
-            console.log(this.props.id);
+            component.setState({percent: percent});
 		});
-        
-        siofu.addEventListern("complete", function(event)) {
-            component.props.handleFileUpload();                      
-        }
 	}
 }
 

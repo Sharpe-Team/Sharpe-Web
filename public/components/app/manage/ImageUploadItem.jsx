@@ -1,15 +1,17 @@
 import React from 'react';
 
 class ImageUploadItem extends React.Component {
+
     constructor(props) {
 		super(props);
         
         this.state = {
-            percent: 0
+            percent: 0,
+            image: ""
         }
     }
     
-    render(){
+    render() {
         return (
             <div className="row">
                 <div className="column medium-4">
@@ -29,25 +31,47 @@ class ImageUploadItem extends React.Component {
                     </div>
                 </div>
             </div>
-        )
+        );
     }
     
     componentDidMount() {
-
 		var component = this;
+        var siofu = new SocketIOFileUpload(socket);
 
-		this.props.siofu.listenOnInput(document.getElementById(this.props.id));
+        siofu.listenOnInput(document.getElementById(this.props.id));
         
-        this.props.siofu.addEventListener("load", function(event) {
+        siofu.addEventListener("load", function(event) {
 	    	// Save the name given by the server to the current picture
-	    	component.setState({image: event.name});
+	    	component.setState({
+                image: event.name
+            });
 	    });
 
 		// Do something on upload progress:
-		this.props.siofu.addEventListener("progress", function(event) {
+		siofu.addEventListener("progress", function(event) {
 		    var percent = event.bytesLoaded / event.file.size * 100;
-            component.setState({percent: percent});
+            component.setState({
+                percent: percent
+            });
 		});
+
+        // Pas ajouté du tout
+        siofu.addEventListener("complete", function(event) {
+            if(event.success) {
+                var currentName = event.file.name;
+                var extension = currentName.substring(currentName.lastIndexOf("."));
+                var finalPath = component.state.image + extension;
+
+                // Call a function to parent to notify the picture is uploaded successfully
+                component.props.callback(finalPath);
+            } else {
+                component.setState({
+                    image: undefined
+                });
+                component.props.callback(undefined);
+                alert("Une erreur est survenue lors de l'envoi des images...");
+            }
+        });
 	}
 }
 

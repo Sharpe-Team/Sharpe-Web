@@ -25,7 +25,8 @@ class CircleForm extends React.Component {
 		this.handleMultipleSelectChange = this.handleMultipleSelectChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
         
-        this.handleImageUpload = this.handleImageUpload.bind(this);
+        this.profilePictureHandler = this.profilePictureHandler.bind(this);
+        this.bannerPictureHandler = this.bannerPictureHandler.bind(this);
 
 		this.getAllUsers = this.getAllUsers.bind(this);
 		this.createCircle = this.createCircle.bind(this);
@@ -66,8 +67,8 @@ class CircleForm extends React.Component {
 										<input type="text" id="circle-name" name="circleName" onChange={this.handleChange} required/>
 									</div>
 								</div>
-                                <ImageUploadItem id="profile-picture" onChange={this.handleImageUpload} name="profilePicture" label="Ajouter une photo de profil" buttonLabel="Photo de profil" siofu={new SocketIOFileUpload(socket)}/>
-                                <ImageUploadItem id="banner-picture" onChange={this.handleImageUpload} name="bannerPicture" label="Ajouter une bannière" buttonLabel="Bannière" siofu={new SocketIOFileUpload(socket)}/>
+                                <ImageUploadItem id="profile-picture" name="profilePicture" label="Ajouter une photo de profil" buttonLabel="Photo de profil" callback={this.profilePictureHandler} />
+                                <ImageUploadItem id="banner-picture" name="bannerPicture" label="Ajouter une bannière" buttonLabel="Bannière" callback={this.bannerPictureHandler} />
 								<div className="row">
 									<div data-tooltip aria-haspopup="true" className="has-tip" title="Vous pouvez sélectionner plusieurs modérateurs. Vous pouvez taper les premières lettres du modérateur pour le retrouver plus facilement." className="column medium-4 form-label">
 										<label htmlFor="moderators" className="text-right middle">Liste des modérateurs</label>
@@ -98,53 +99,10 @@ class CircleForm extends React.Component {
 	}
 
 	componentDidMount() {
-
-		/*var component = this;
-        
-        /!\ LE CODE CI DESSOUS DOIT ÊTRE AJOUTE AU NOUVEAU COMPOSANT MAIS OU ET COMMENT ? /!\
-
-        // Ajouté dans ImageUploadItem, cela modifie son state pour avoir le event.name
-	    siofu.addEventListener("load", function(event) {
-	    	// Save the name given by the server to the current picture
-	    	component.setState({[component.state.lastModifiedPicture]: event.name});
-	    });
-
-        // Pas ajouté du tout
-		siofu.addEventListener("complete", function(event) {
-			if(event.success) {
-				// Save the final path of the latest modified picture
-				component.saveFinalPathOfLastModifiedPicture(event.file);
-			} else {
-				component.setState({
-					[component.state.lastModifiedPicture]: undefined
-				});
-				alert("Une erreur est survenue lors de l'envoi des images...");
-			}
-		});*/
 	}
 
 	componentWillMount() {
 		this.getAllUsers();
-	}
-
-	saveFinalPathOfLastModifiedPicture(file) {
-
-		var finalName = this.state[this.state.lastModifiedPicture];
-		var currentName = file.name;
-		var extension = currentName.substring(currentName.indexOf("."));
-		var finalPath = finalName + extension;
-
-		this.setState({
-			[this.state.lastModifiedPicture]: finalPath
-		});
-	}
-    
-    handleImageUpload(event) {
-		event.preventDefault();
-        
-		this.setState({
-			[event.target.name]: event.state.image
-		});
 	}
 
 	handleChange(event) {
@@ -162,6 +120,18 @@ class CircleForm extends React.Component {
 		}
 
 		this.setState({[event.target.name]: selectedOptions});
+	}
+
+	profilePictureHandler(pictureName) {
+		this.setState({
+			profilePicture: pictureName
+		});
+	}
+
+	bannerPictureHandler(pictureName) {
+		this.setState({
+			bannerPicture: pictureName
+		});
 	}
 
 	handleSubmit(event) {
@@ -185,7 +155,8 @@ class CircleForm extends React.Component {
 				name: component.state.circleName,
 				//moderators: component.state.moderators,
 				pictureUrl: component.state.profilePicture,
-				bannerPictureUrl: component.state.bannerPicture
+				bannerPictureUrl: component.state.bannerPicture,
+				type: 1
 			})
 		})
 		.then(function(response) {

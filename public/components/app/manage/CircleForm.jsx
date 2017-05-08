@@ -25,8 +25,7 @@ class CircleForm extends React.Component {
 		this.handleMultipleSelectChange = this.handleMultipleSelectChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
         
-        this.handleBannerUpload = this.handleBannerUpload.bind(this);
-        this.handleProfileUpload = this.handleProfileUpload.bind(this);
+        this.handleImageUpload = this.handleImageUpload.bind(this);
 
 		this.getAllUsers = this.getAllUsers.bind(this);
 		this.createCircle = this.createCircle.bind(this);
@@ -67,8 +66,8 @@ class CircleForm extends React.Component {
 										<input type="text" id="circle-name" name="circleName" onChange={this.handleChange} required/>
 									</div>
 								</div>
-                                <ImageUploadItem id="profile-picture" onChange={this.handleProfileUpload} name="profilePicture" label="Ajouter une photo de profil" buttonLabel="Photo de profil" siofu={new SocketIOFileUpload(socket)}/>
-                                <ImageUploadItem id="banner-picture" onChange={this.handleBannerUpload} name="bannerPicture" label="Ajouter une bannière" buttonLabel="Bannière" siofu={new SocketIOFileUpload(socket)}/>
+                                <ImageUploadItem id="profile-picture" onChange={this.handleImageUpload} name="profilePicture" label="Ajouter une photo de profil" buttonLabel="Photo de profil" siofu={new SocketIOFileUpload(socket)}/>
+                                <ImageUploadItem id="banner-picture" onChange={this.handleImageUpload} name="bannerPicture" label="Ajouter une bannière" buttonLabel="Bannière" siofu={new SocketIOFileUpload(socket)}/>
 								<div className="row">
 									<div data-tooltip aria-haspopup="true" className="has-tip" title="Vous pouvez sélectionner plusieurs modérateurs. Vous pouvez taper les premières lettres du modérateur pour le retrouver plus facilement." className="column medium-4 form-label">
 										<label htmlFor="moderators" className="text-right middle">Liste des modérateurs</label>
@@ -101,9 +100,8 @@ class CircleForm extends React.Component {
 	componentDidMount() {
 
 		/*var component = this;
-
-		siofu.listenOnInput(document.getElementById("profile-picture"));
-	    siofu.listenOnInput(document.getElementById("banner-picture"));
+        
+        /!\ LE CODE CI DESSOUS DOIT ÊTRE AJOUTE AU NOUVEAU COMPOSANT MAIS OU ET COMMENT ? /!\
 
 	    siofu.addEventListener("load", function(event) {
 	    	// Save the name given by the server to the current picture
@@ -157,19 +155,11 @@ class CircleForm extends React.Component {
 		this.setState({[event.target.name]: selectedOptions});
 	}
     
-    handleBannerUpload(event) {
+    handleImageUpload(event) {
 		event.preventDefault();
         
 		this.setState({
-			bannerPicture: event.target.value
-		});
-	}
-    
-    handleProfileUpload(event) {
-		event.preventDefault();
-        
-		this.setState({
-			profilePicture: event.target.value
+			[event.target.name]: event.state.image
 		});
 	}
 

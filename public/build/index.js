@@ -27074,8 +27074,7 @@ var CircleForm = function (_React$Component) {
 		_this.handleMultipleSelectChange = _this.handleMultipleSelectChange.bind(_this);
 		_this.handleSubmit = _this.handleSubmit.bind(_this);
 
-		_this.handleBannerUpload = _this.handleBannerUpload.bind(_this);
-		_this.handleProfileUpload = _this.handleProfileUpload.bind(_this);
+		_this.handleImageUpload = _this.handleImageUpload.bind(_this);
 
 		_this.getAllUsers = _this.getAllUsers.bind(_this);
 		_this.createCircle = _this.createCircle.bind(_this);
@@ -27141,8 +27140,8 @@ var CircleForm = function (_React$Component) {
 										_react2.default.createElement('input', { type: 'text', id: 'circle-name', name: 'circleName', onChange: this.handleChange, required: true })
 									)
 								),
-								_react2.default.createElement(_ImageUploadItem2.default, { id: 'profile-picture', onChange: this.handleProfileUpload, name: 'profilePicture', label: 'Ajouter une photo de profil', buttonLabel: 'Photo de profil', siofu: new SocketIOFileUpload(socket) }),
-								_react2.default.createElement(_ImageUploadItem2.default, { id: 'banner-picture', onChange: this.handleBannerUpload, name: 'bannerPicture', label: 'Ajouter une banni\xE8re', buttonLabel: 'Banni\xE8re', siofu: new SocketIOFileUpload(socket) }),
+								_react2.default.createElement(_ImageUploadItem2.default, { id: 'profile-picture', onChange: this.handleImageUpload, name: 'profilePicture', label: 'Ajouter une photo de profil', buttonLabel: 'Photo de profil', siofu: new SocketIOFileUpload(socket) }),
+								_react2.default.createElement(_ImageUploadItem2.default, { id: 'banner-picture', onChange: this.handleImageUpload, name: 'bannerPicture', label: 'Ajouter une banni\xE8re', buttonLabel: 'Banni\xE8re', siofu: new SocketIOFileUpload(socket) }),
 								_react2.default.createElement(
 									'div',
 									{ className: 'row' },
@@ -27198,8 +27197,8 @@ var CircleForm = function (_React$Component) {
 		value: function componentDidMount() {
 
 			/*var component = this;
-   		siofu.listenOnInput(document.getElementById("profile-picture"));
-      siofu.listenOnInput(document.getElementById("banner-picture"));
+         
+         /!\ LE CODE CI DESSOUS DOIT ÊTRE AJOUTE AU NOUVEAU COMPOSANT MAIS OU ET COMMENT ? /!\
    	    siofu.addEventListener("load", function(event) {
       	// Save the name given by the server to the current picture
       	component.setState({[component.state.lastModifiedPicture]: event.name});
@@ -27253,22 +27252,11 @@ var CircleForm = function (_React$Component) {
 			this.setState(_defineProperty({}, event.target.name, selectedOptions));
 		}
 	}, {
-		key: 'handleBannerUpload',
-		value: function handleBannerUpload(event) {
+		key: 'handleImageUpload',
+		value: function handleImageUpload(event) {
 			event.preventDefault();
 
-			this.setState({
-				bannerPicture: event.target.value
-			});
-		}
-	}, {
-		key: 'handleProfileUpload',
-		value: function handleProfileUpload(event) {
-			event.preventDefault();
-
-			this.setState({
-				profilePicture: event.target.value
-			});
+			this.setState(_defineProperty({}, event.target.name, event.state.image));
 		}
 	}, {
 		key: 'handleSubmit',
@@ -27439,6 +27427,11 @@ var ImageUploadItem = function (_React$Component) {
             var component = this;
 
             this.props.siofu.listenOnInput(document.getElementById(this.props.id));
+
+            this.props.siofu.addEventListener("load", function (event) {
+                // Save the name given by the server to the current picture
+                component.setState({ image: event.name });
+            });
 
             // Do something on upload progress:
             this.props.siofu.addEventListener("progress", function (event) {

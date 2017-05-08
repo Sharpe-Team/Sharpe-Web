@@ -37,6 +37,11 @@ class ImageUploadItem extends React.Component {
 		var component = this;
 
 		this.props.siofu.listenOnInput(document.getElementById(this.props.id));
+        
+        this.props.siofu.addEventListener("load", function(event) {
+	    	// Save the name given by the server to the current picture
+	    	component.setState({image: event.name});
+	    });
 
 		// Do something on upload progress:
 		this.props.siofu.addEventListener("progress", function(event) {

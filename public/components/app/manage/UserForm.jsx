@@ -3,6 +3,7 @@ import {Link, browserHistory} from 'react-router';
 import passwordHash from 'password-hash';
 import Loading from '../../common/Loading.jsx';
 import ErrorComponent from '../../common/ErrorComponent.jsx';
+import ImageUploadItem from './ImageUploadItem.jsx';
 import { API_URL, hideError, handleAPIResult, displayLoading } from '../../common/Common.jsx';
 
 class UserForm extends React.Component {
@@ -23,6 +24,7 @@ class UserForm extends React.Component {
 		this.handlePasswordAgainChange = this.handlePasswordAgainChange.bind(this);
 		this.handleFileUpload = this.handleFileUpload.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+        this.profilePictureHandler = this.profilePictureHandler.bind(this);
 
 		this.createUser = this.createUser.bind(this);
 		this.saveFinalPathOfProfilePicture = this.saveFinalPathOfProfilePicture.bind(this);
@@ -98,24 +100,7 @@ class UserForm extends React.Component {
 									</div>
 								</div>
 
-								<div className="row">
-									<div className="column medium-4">
-										<label htmlFor="" className="text-right middle">Ajouter une photo de profil</label>
-									</div>
-                                    <div className="colum medium-1"></div>
-									<div className="column medium-7">
-                                        <div className="row align-middle upload-row">
-                                        	<div className="column shrink">
-                                            	<label htmlFor="profile-picture" className="button">Photo de profil</label>
-                                            	<input type="file" id="profile-picture" name="profilePicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
-                                            </div>
-                                            <div className="column progress-div">
-                                           		<progress max="100" value={this.state.percent}></progress>
-                                           	</div>
-                                            <div className="column shrink">{this.state.percent}%</div>
-                                        </div>
-									</div>
-								</div>
+								<ImageUploadItem id="profile-picture" name="profilePicture" label="Ajouter une photo de profil" buttonLabel="Photo de profil" callback={this.profilePictureHandler} />
 
 								<div className="row align-center">
 									<div className="column medium-4">
@@ -131,32 +116,12 @@ class UserForm extends React.Component {
 	}
 
 	componentDidMount() {
-		var component = this;
-
-		siofu.listenOnInput(document.getElementById("profile-picture"));
-
-	    siofu.addEventListener("load", function(event) {
-	    	// Save the name given by the server to the current picture
-	    	component.state.profilePicture = event.name;
-	    });
-
-		// Do something on upload progress:
-		siofu.addEventListener("progress", function(event) {
-	        var percent = event.bytesLoaded / event.file.size * 100;
-	        component.setState({percent: percent});
-		});
-
-		// Do something when a file is uploaded:
-		siofu.addEventListener("complete", function(event) {
-			if(event.success) {
-				// Save the final path of the latest modified picture
-				component.saveFinalPathOfProfilePicture(event.file);
-			} else {
-				component.setState({
-					profilePicture: undefined
-				});
-				alert("Une erreur est survenue lors de l'envoi des images...");
-			}
+		
+	}
+    
+    profilePictureHandler(pictureName) {
+		this.setState({
+			profilePicture: pictureName
 		});
 	}
 
@@ -227,7 +192,6 @@ class UserForm extends React.Component {
 		.then(function(response) {
 			if(response.status == 201) {
 				handleAPIResult(component, false, "");
-				alert("L'utilisateur a été ajouté avec succès !");
 				browserHistory.push('/app');
 			} else {
 				handleAPIResult(component, true, "Une erreur est survenue lors de la création du nouvel utilisateur !");

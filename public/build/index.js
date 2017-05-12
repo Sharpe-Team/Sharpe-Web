@@ -8458,15 +8458,15 @@ function getRandomArbitrary(min, max) {
 var generateLoadingMessage = function generateLoadingMessage(componentName) {
 	var messages = [["Nous vérifions votre mot de passe ...", "Nous nous assurons que vous êtes bien la bonne personne ...", "Nous consultons notre base de données ...", "Scanner rétinien en cours ..."], ["Nous ajoutons votre cercle ...", "Nous créons votre nouveau cercle ...", "Nous vérifions que vous avez choisi une belle image de profil ..."], ["Nous ajoutons ce nouvel utilisateur ...", "Nous vérifions l'ajout du nouvel utilisateur ...", "Nous consultons la NSA au sujet du nouvel utilisateur que vous ajoutez ...", "Nous vérifions que vous avez choisi une belle photo de profil pour votre compte ...", "Nous nous assurons que vous ne créez pas un compte \"Barack Obama\" ou autre juste pour vous amusez ..."]];
 	if (componentName == "LoginForm") {
-		var choosenMessage = getRandomArbitrary(0, 3);
+		var choosenMessage = getRandomArbitrary(0, 4);
 		return messages[0][choosenMessage];
 	}
 	if (componentName == "CircleForm") {
-		var choosenMessage = getRandomArbitrary(0, 2);
+		var choosenMessage = getRandomArbitrary(0, 3);
 		return messages[1][choosenMessage];
 	}
 	if (componentName == "UserForm") {
-		var choosenMessage = getRandomArbitrary(0);
+		var choosenMessage = getRandomArbitrary(0, 5);
 		return messages[2][choosenMessage];
 	}
 	return "Ceci est un message parce qu'on a pas trouvé d'autres messages";
@@ -26665,6 +26665,7 @@ var Navigator = function (_React$Component) {
 				_react2.default.createElement(
 					'ul',
 					{ className: 'navigationList', style: { height: "40%" } },
+					_react2.default.createElement('hr', null),
 					this.state.error.showError && _react2.default.createElement(_ErrorComponent2.default, { message: this.state.error.message, hideError: _Common.hideError.bind(this, this) }),
 					this.state.circles.map(function (circle) {
 						if (this.state.selectedCircle && this.state.selectedCircle.id == circle.id) {
@@ -26873,25 +26874,21 @@ var NavigatorMenu = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 { id: 'search', className: 'row' },
-                _react2.default.createElement('div', { className: 'medium-1' }),
                 _react2.default.createElement(
                     _reactRouter.Link,
-                    { className: 'medium-2', to: '/userform' },
+                    { to: '/userform' },
                     _react2.default.createElement('img', { className: 'user-form-button', src: '/resource/user.png' })
                 ),
-                _react2.default.createElement('div', { className: 'medium-2' }),
                 _react2.default.createElement(
                     _reactRouter.Link,
-                    { className: 'medium-2', to: '/circleform' },
+                    { to: '/circleform' },
                     _react2.default.createElement('img', { className: 'circle-form-button', src: '/resource/circle.png' })
                 ),
-                _react2.default.createElement('div', { className: 'medium-2' }),
                 _react2.default.createElement(
                     _reactRouter.Link,
-                    { className: 'medium-2', to: '/logout' },
+                    { to: '/logout' },
                     _react2.default.createElement('img', { className: 'logout-form-button', src: '/resource/logout.png' })
-                ),
-                _react2.default.createElement('div', { className: 'medium-1' })
+                )
             );
         }
     }]);

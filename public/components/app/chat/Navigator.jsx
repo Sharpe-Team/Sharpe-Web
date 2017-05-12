@@ -35,6 +35,7 @@ class Navigator extends React.Component {
                 <NavigatorMenu/>
 				
 				<ul className="navigationList" style={{height: "40%"}}>
+                <hr></hr>
 				{this.state.error.showError &&
 					<ErrorComponent message={this.state.error.message} hideError={hideError.bind(this, this)} />
 				}

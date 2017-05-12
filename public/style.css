@@ -1,7 +1,19 @@
+/* colors :
+    blue : #30A9DE
+    yellow : #EFDC05
+    red : #E53A40
+    grey : #090707
+*/
+
 html, body, #app, #div-app {
 	width: 100%;
 	min-height: 100%;
 	height: 100%;
+    font-family: Century Gothic, sans-serif;
+}
+
+.form-title {
+    font-family: Century Gothic, sans-serif;
 }
 
 * {
@@ -22,18 +34,13 @@ html, body, #app, #div-app {
 
 #left-column {
     height: 100%;
-    background-color: #A12C26;
-    padding: 10px;
+    background-color: #30A9DE;
+    padding: 5px;
 }
 
-#profile {
+#profile, #banner {
     height: 100%;
-    background-color: #550400
-}
-
-#banner {
-    height: 100%;
-    background-color: #550400;
+    background-color: #E53A40
 }
 
 #div-line {
@@ -64,8 +71,9 @@ html, body, #app, #div-app {
 }
 
 .point {
-    background-color: #f4f4f4;
+    background-color: #f7f7f7;
     padding: 5px;
+    color: #333333;
 }
 
 #main-content {
@@ -80,18 +88,14 @@ input, button {
 
 #cubes {
     height: 100%;
-    background-color: #A12C26;
+    background-color: #EFDC05 ;
 }
 
 .circleListItem {
     color: #FFFFFF;
-    margin-bottom: 10px;
     font-size: 150%;
     cursor: pointer;
-}
-
-#search {
-    margin-bottom: 30px;
+    font-size: large;
 }
 
 .navigationList {
@@ -106,7 +110,8 @@ input, button {
 #banner {
     display:table-cell; 
     vertical-align:middle; 
-    text-align:center
+    text-align:center;
+    padding: 5px;
 }
 
 .bannerPicture {
@@ -114,11 +119,11 @@ input, button {
 }
 
 .circularImageContainer {
-    margin: 5px;
+    margin: 15px;
     display: inline-block;
     position: relative;
-    width: 90px;
-    height: 90px;
+    width: 70px;
+    height: 70px;
     overflow: hidden;
     border-radius: 50%;
 }
@@ -131,7 +136,8 @@ input, button {
 .circleTitle {
     line-height: 230%;
     text-align: center;
-    color: #FFFFFF
+    color: #FFFFFF;
+    font-family: Century Gothic, sans-serif;
 }
 
 .imageLine {
@@ -151,19 +157,19 @@ input, button {
 }
 
 .login-form-root {
-    background: url("resource/background-login.jpg");
+    background: url("resource/background-login.png");
     background-size: cover;
     height: 100%;
 }
 
 .user-form-root {
-    background: url("resource/background-user.jpg");
+    background: url("resource/background-user.png");
     background-size: cover;
     height: 100%;
 }
 
 .circle-form-root {
-    background: url("resource/background-circle.jpg");
+    background: url("resource/background-circle.png");
     background-size: cover;
     height: 100%;
 }
@@ -184,7 +190,8 @@ input, button {
 }
 
 .user-form-button, .circle-form-button, .logout-form-button {
-    width: 100%;
+    height: 30px;
+    margin: 5px;
 }
 
 .logo {
@@ -196,7 +203,7 @@ input, button {
 .loadingMessage {
     text-align: center;
     color: #FFFFFF;
-    font: italic 20px Georgia, serif
+    font: italic 20px Century Gothic, sans-serif;
 }
 
 .spinner {

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
-import { API_URL, hideError, handleAPIResult, displayLoading } from './Common.jsx';
-import Loading from './Loading.jsx';
-import ErrorComponent from './ErrorComponent.jsx';
+import { API_URL, hideError, handleAPIResult, displayLoading } from '../../common/Common.jsx';
+import Loading from '../../common/Loading.jsx';
+import ErrorComponent from '../../common/ErrorComponent.jsx';
+import NavigatorMenu from './NavigatorMenu.jsx';
 
 class Navigator extends React.Component {
 
@@ -34,15 +35,8 @@ class Navigator extends React.Component {
 				{this.state.displayLoading && 
                 	<Loading />
                 }
-				<div id="search" className="row">
-					<div className="medium-1"></div>
-					<Link className="medium-2" to="/userform"><img className="user-form-button" src="/resource/user.png"></img></Link>
-					<div className="medium-2"></div>
-					<Link className="medium-2" to="/circleform"><img className="circle-form-button" src="/resource/circle.png"></img></Link>
-					<div className="medium-2"></div>
-					<Link className="medium-2" to="/logout"><img className="logout-form-button" src="/resource/logout.png"></img></Link>
-					<div className="medium-1"></div>
-				</div>
+                <NavigatorMenu/>
+				
 				<ul className="navigationList" style={{height: "40%"}}>
 				{this.state.error.showError &&
 					<ErrorComponent message={this.state.error.message} hideError={hideError.bind(this, this)} />

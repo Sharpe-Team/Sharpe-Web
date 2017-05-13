@@ -1,9 +1,9 @@
 import React from 'react';
 import {Link, browserHistory} from 'react-router';
 import passwordHash from 'password-hash';
-import Loading from './Loading.jsx';
-import ErrorComponent from './ErrorComponent.jsx';
-import { API_URL, hideError, handleAPIResult, displayLoading } from './Common.jsx';
+import Loading from '../../common/Loading.jsx';
+import ErrorComponent from '../../common/ErrorComponent.jsx';
+import { API_URL, hideError, handleAPIResult, displayLoading } from '../../common/Common.jsx';
 
 class UserForm extends React.Component {
 
@@ -34,7 +34,7 @@ class UserForm extends React.Component {
 		return (
 			<div className="user-form-root">
                 {this.state.displayLoading && 
-                	<Loading />
+                	<Loading loadingFrom="UserForm"/>
                 }
                 
 				<Link to="/app"><img className="home-button" src="/resource/home.png"></img></Link>

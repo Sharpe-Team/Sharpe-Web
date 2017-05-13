@@ -1,9 +1,9 @@
 import React from 'react';
 import {Link, browserHistory} from 'react-router';
 import passwordHash from 'password-hash';
-import Loading from './Loading.jsx';
-import ErrorComponent from './ErrorComponent.jsx';
-import { API_URL, hideError, handleAPIResult, displayLoading } from './Common.jsx';
+import Loading from '../common/Loading.jsx';
+import ErrorComponent from '../common/ErrorComponent.jsx';
+import { API_URL, hideError, handleAPIResult, displayLoading } from '../common/Common.jsx';
 
 class LoginForm extends React.Component {
 
@@ -27,10 +27,11 @@ class LoginForm extends React.Component {
 	}
 
 	render() {
+        
 		return (
 			<div className="login-form-root">
                 {this.state.displayLoading && 
-                	<Loading />
+                	<Loading loadingFrom="LoginForm"/>
                 }
                 
                 <img className="expanded row align-center logo" src="/resource/logo.png"/>

@@ -33,9 +33,8 @@ class Navigator extends React.Component {
                 	<Loading />
                 }
                 <NavigatorMenu/>
-				
+				<hr/>
 				<ul className="navigationList" style={{height: "40%"}}>
-                <hr></hr>
 				{this.state.error.showError &&
 					<ErrorComponent message={this.state.error.message} hideError={hideError.bind(this, this)} />
 				}
@@ -64,7 +63,7 @@ class Navigator extends React.Component {
 					}, this)
 				}
 				</ul>
-				<hr></hr>
+				<hr/>
 				<ul className="navigationList" style={{height: "40%"}}>
 				{
 					this.state.users.map(function(user) {

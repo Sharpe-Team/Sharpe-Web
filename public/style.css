@@ -88,7 +88,7 @@ input, button {
 
 #cubes {
     height: 100%;
-    background-color: #EFDC05 ;
+    background-color: #30A9DE ;
 }
 
 .circleListItem {
@@ -202,7 +202,7 @@ input, button {
 
 .loadingMessage {
     text-align: center;
-    color: #FFFFFF;
+    color: #090707;
     font: italic 20px Century Gothic, sans-serif;
 }
 
@@ -218,7 +218,7 @@ input, button {
 }
 
 .spinner > div {
-    background-color: #FFFFFF;
+    background-color: #090707;
     height: 100%;
     width: 6px;
     display: inline-block;
@@ -266,7 +266,7 @@ input, button {
     position: fixed;
     height: 100%;
     width: 100%;
-    background-color: #A12C26; 
+    background: url("resource/background-loading.png")
 }
 
 .upload-row {

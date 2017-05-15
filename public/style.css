@@ -299,3 +299,17 @@ input, button {
     vertical-align: bottom;
 }
 
+.not-found {
+    background: url("resource/background-not-found.png");
+    background-size: cover;
+    height: 100%;
+}
+
+.not-found-link {
+    text-align: center;
+}
+
+.not-found-image {
+    display: block;
+    margin: 0 auto;
+}

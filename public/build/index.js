@@ -28407,23 +28407,14 @@ var NotFoundPage = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 { className: 'not-found' },
-                _react2.default.createElement(
-                    'h1',
-                    null,
-                    '404'
-                ),
-                _react2.default.createElement(
-                    'h2',
-                    null,
-                    'Page not found!'
-                ),
+                _react2.default.createElement('img', { className: 'not-found-image', src: '/resource/not-found.png' }),
                 _react2.default.createElement(
                     'p',
-                    null,
+                    { className: 'not-found-link' },
                     _react2.default.createElement(
                         _reactRouter.Link,
                         { to: '/app' },
-                        'Go back to the main page'
+                        'Retour \xE0 la page d\'accueil'
                     )
                 )
             );

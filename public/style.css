@@ -1,9 +1,14 @@
 /* colors :
-    blue : #30A9DE
+    blue : #334F81
     yellow : #EFDC05
     red : #E53A40
     grey : #090707
 */
+
+:root{
+    --main-color:#334F81;
+    --second-color:#EC7A00;
+}
 
 @font-face {
     font-family: 'SharpeFont'; /*a name to be used later*/
@@ -39,13 +44,13 @@ html, body, #app, #div-app {
 
 #left-column {
     height: 100%;
-    background-color: #30A9DE;
+    background-color: var(--main-color);
     padding: 5px;
 }
 
 #profile, #banner {
     height: 100%;
-    background-color: #E53A40
+    background-color: var(--second-color);
 }
 
 #div-line {
@@ -93,7 +98,8 @@ input, button {
 
 #cubes {
     height: 100%;
-    background-color: #30A9DE ;
+    background-color: #F4F4F4;
+    border-left: 3px solid #F4F4F4;
 }
 
 .circleListItem {
@@ -207,7 +213,7 @@ input, button {
 
 .loadingMessage {
     text-align: center;
-    color: #090707;
+    color: white;
     font: italic 20px Century Gothic, sans-serif;
 }
 
@@ -223,7 +229,7 @@ input, button {
 }
 
 .spinner > div {
-    background-color: #090707;
+    background-color: white;
     height: 100%;
     width: 6px;
     display: inline-block;

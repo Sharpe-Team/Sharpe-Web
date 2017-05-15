@@ -55,7 +55,7 @@ class Circle extends React.Component {
 				<CircleHeader circle={this.props.circle} navbarHeight={this.state.navbarHeight}/>
 				<div className="row" style={{height: "calc(100% - " + this.state.navbarHeight + "px"}}>
 					{line}
-					<div id="cubes" className="column medium-3">
+					<div id="cubes" className="column medium-2">
 					</div>
 				</div>
 			</div>

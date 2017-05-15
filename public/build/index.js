@@ -26203,7 +26203,7 @@ var Circle = function (_React$Component) {
 					'div',
 					{ className: 'row', style: { height: "calc(100% - " + this.state.navbarHeight + "px" } },
 					line,
-					_react2.default.createElement('div', { id: 'cubes', className: 'column medium-3' })
+					_react2.default.createElement('div', { id: 'cubes', className: 'column medium-2' })
 				)
 			);
 		}

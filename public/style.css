@@ -5,15 +5,20 @@
     grey : #090707
 */
 
+@font-face {
+    font-family: 'SharpeFont'; /*a name to be used later*/
+    src: url('./resource/font.ttf'); /*URL to font*/
+}
+
 html, body, #app, #div-app {
 	width: 100%;
 	min-height: 100%;
 	height: 100%;
-    font-family: Century Gothic, sans-serif;
+    font-family: SharpeFont, sans-serif;
 }
 
 .form-title {
-    font-family: Century Gothic, sans-serif;
+    font-family: SharpeFont, sans-serif;
 }
 
 * {
@@ -137,7 +142,7 @@ input, button {
     line-height: 230%;
     text-align: center;
     color: #FFFFFF;
-    font-family: Century Gothic, sans-serif;
+    font-family: SharpeFont, sans-serif;
 }
 
 .imageLine {

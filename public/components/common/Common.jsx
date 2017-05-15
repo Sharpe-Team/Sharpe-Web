@@ -43,15 +43,15 @@ const generateLoadingMessage = function(componentName){
         ["Nous ajoutons ce nouvel utilisateur ...", "Nous vérifions l'ajout du nouvel utilisateur ...", "Nous consultons la NSA au sujet du nouvel utilisateur que vous ajoutez ...", "Nous vérifions que vous avez choisi une belle photo de profil pour votre compte ...", "Nous nous assurons que vous ne créez pas un compte \"Barack Obama\" ou autre juste pour vous amusez ..."]
     ];
     if(componentName == "LoginForm"){
-        var choosenMessage = getRandomArbitrary(0, 3);
+        var choosenMessage = getRandomArbitrary(0, 4);
         return messages[0][choosenMessage];
     }
     if(componentName == "CircleForm"){
-        var choosenMessage = getRandomArbitrary(0, 2);
+        var choosenMessage = getRandomArbitrary(0, 3);
         return messages[1][choosenMessage];
     }
     if(componentName == "UserForm"){
-        var choosenMessage = getRandomArbitrary(0, );
+        var choosenMessage = getRandomArbitrary(0, 5);
         return messages[2][choosenMessage];
     }
     return "Ceci est un message parce qu'on a pas trouvé d'autres messages";

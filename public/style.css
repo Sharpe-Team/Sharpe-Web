@@ -1,13 +1,13 @@
 /* colors :
-    blue : #334F81
-    yellow : #EFDC05
-    red : #E53A40
-    grey : #090707
+    dark blue : #334F81
+    light blue : #7f95be
+    orange : #f19132
 */
 
 :root{
-    --main-color:#334F81;
-    --second-color:#EC7A00;
+    --main-color: #334F81;
+    --second-color: #7f95be;
+    --third-color: #f19132;
 }
 
 @font-face {
@@ -200,7 +200,7 @@ input, button {
     margin-left: 10px;
 }
 
-.user-form-button, .circle-form-button, .logout-form-button {
+.nav-button {
     height: 30px;
     margin: 5px;
 }
@@ -213,7 +213,7 @@ input, button {
 
 .loadingMessage {
     text-align: center;
-    color: white;
+    color: #555;
     font: italic 20px Century Gothic, sans-serif;
 }
 
@@ -229,7 +229,7 @@ input, button {
 }
 
 .spinner > div {
-    background-color: white;
+    background-color: #EEE;
     height: 100%;
     width: 6px;
     display: inline-block;
@@ -299,3 +299,17 @@ input, button {
     vertical-align: bottom;
 }
 
+.not-found {
+    background: url("resource/background-not-found.png");
+    background-size: cover;
+    height: 100%;
+}
+
+.not-found-link {
+    text-align: center;
+}
+
+.not-found-image {
+    display: block;
+    margin: 0 auto;
+}

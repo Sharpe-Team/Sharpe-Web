@@ -25,6 +25,8 @@
     "webpack": "^2.2.1"
   },
   "scripts": {
-    "start": "webpack-dev-server --hot --watch"
+    "start-dev": "webpack-dev-server --hot --watch",
+    "start": "node server",
+    "build": "webpack"
   }
 }

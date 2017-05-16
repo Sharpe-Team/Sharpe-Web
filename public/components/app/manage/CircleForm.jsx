@@ -104,7 +104,7 @@ class CircleForm extends React.Component {
 									</div>
 								</div>
 								<div className="row">
-									<div data-tooltip aria-haspopup="true" className="has-tip" title="Vous pouvez sélectionner plusieurs modérateurs. Vous pouvez taper les premières lettres du modérateur pour le retrouver plus facilement." className="column medium-4 form-label">
+									<div data-tooltip aria-haspopup="true" className="column medium-4 form-label has-tip" title="Vous pouvez sélectionner plusieurs modérateurs. Vous pouvez taper les premières lettres du modérateur pour le retrouver plus facilement.">
 										<label htmlFor="moderators" className="text-right middle">Liste des modérateurs</label>
 									</div>
                                     <div className="colum medium-1"></div>

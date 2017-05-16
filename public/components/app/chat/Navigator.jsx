@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link, browserHistory } from 'react-router';
 import { API_URL, hideError, handleAPIResult, displayLoading } from '../../common/Common.jsx';
 import Loading from '../../common/Loading.jsx';
 import ErrorComponent from '../../common/ErrorComponent.jsx';

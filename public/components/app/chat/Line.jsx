@@ -1,6 +1,6 @@
 import React from 'react';
 import Point from './Point.jsx';
-import { API_URL, hideError, handleAPIResult, displayLoading } from '../../common/Common.jsx';
+import { API_URL, hideError, handleAPIResult } from '../../common/Common.jsx';
 import Loading from '../../common/Loading.jsx';
 import ErrorComponent from '../../common/ErrorComponent.jsx';
 //import MyEditor from './MyEditor.jsx';

@@ -27686,14 +27686,7 @@ var LoginForm = function (_React$Component) {
 		}
 	}, {
 		key: 'componentWillMount',
-		value: function componentWillMount() {
-			var component = this;
-
-			socket.on('login-response', function (user) {
-				component.storeUserInStorage(user);
-				component.goToNextPage();
-			});
-		}
+		value: function componentWillMount() {}
 	}, {
 		key: 'handleChange',
 		value: function handleChange(event) {
@@ -27750,7 +27743,10 @@ var LoginForm = function (_React$Component) {
 					var token = authorizationHeader.split(" ")[1];
 
 					localStorage.setItem('token', token);
-					socket.emit('login', token);
+					socket.emit('login', token, function (user) {
+						component.storeUserInStorage(user);
+						component.goToNextPage();
+					});
 				} else {
 					(0, _Common.handleAPIResult)(component, true, response.message);
 				}

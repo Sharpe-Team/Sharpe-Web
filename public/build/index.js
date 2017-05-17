@@ -26981,11 +26981,6 @@ var NavigatorMenu = function (_React$Component) {
                 { id: 'search', className: 'row' },
                 _react2.default.createElement(
                     _reactRouter.Link,
-                    { to: '/' },
-                    _react2.default.createElement('img', { className: 'nav-button', src: '/resource/circlehome.png' })
-                ),
-                _react2.default.createElement(
-                    _reactRouter.Link,
                     { to: '/userform' },
                     _react2.default.createElement('img', { className: 'nav-button', src: '/resource/user.png' })
                 ),

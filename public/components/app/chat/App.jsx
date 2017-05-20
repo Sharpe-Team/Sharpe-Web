@@ -18,7 +18,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div id="div-app" className="expanded row">
-				<Navigator updateSelectedCircle={this.updateSelectedCircle} ref={ (instance) => { this.navigatorRef = instance; }} />
+				<Navigator updateSelectedCircle={this.updateSelectedCircle} selectedCircle={this.state.selectedCircle} ref={ (instance) => { this.navigatorRef = instance; }} />
 				{ this.state.selectedCircle &&
 					<Circle circle={this.state.selectedCircle} updateUnreadPoints={this.updateUnreadPoints} />
 				}

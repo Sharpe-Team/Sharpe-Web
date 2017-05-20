@@ -25508,7 +25508,6 @@ var App = function (_React$Component) {
 		};
 
 		_this.updateSelectedCircle = _this.updateSelectedCircle.bind(_this);
-		_this.updateUnreadPoints = _this.updateUnreadPoints.bind(_this);
 		return _this;
 	}
 
@@ -25523,7 +25522,7 @@ var App = function (_React$Component) {
 				_react2.default.createElement(_Navigator2.default, { updateSelectedCircle: this.updateSelectedCircle, selectedCircle: this.state.selectedCircle, ref: function ref(instance) {
 						_this2.navigatorRef = instance;
 					} }),
-				this.state.selectedCircle && _react2.default.createElement(_Circle2.default, { circle: this.state.selectedCircle, updateUnreadPoints: this.updateUnreadPoints })
+				this.state.selectedCircle && _react2.default.createElement(_Circle2.default, { circle: this.state.selectedCircle, updateUnreadPoints: this.navigatorRef.updateUnreadPointsBadge })
 			);
 		}
 	}, {
@@ -25535,13 +25534,6 @@ var App = function (_React$Component) {
 			if (circle && (!this.state.selectedCircle || this.state.selectedCircle.id != circle.id)) {
 				circle.nbUnreadPoints = 0;
 				this.setState({ selectedCircle: circle });
-			}
-		}
-	}, {
-		key: 'updateUnreadPoints',
-		value: function updateUnreadPoints(point, isPrivate) {
-			if (this.navigatorRef) {
-				this.navigatorRef.updateUnreadPointsBadge(point, isPrivate);
 			}
 		}
 	}]);
@@ -25792,6 +25784,7 @@ var CircleList = function (_React$Component) {
 
 		_this.getAllCircles = _this.getAllCircles.bind(_this);
 		_this.updateUnreadPointsCircle = _this.updateUnreadPointsCircle.bind(_this);
+		_this.updateUnreadPointsCircleFromPoint = _this.updateUnreadPointsCircleFromPoint.bind(_this);
 		_this.selectCircle = _this.selectCircle.bind(_this);
 		return _this;
 	}
@@ -25811,7 +25804,7 @@ var CircleList = function (_React$Component) {
 						if (this.props.selectedCircle && this.props.selectedCircle.id == circle.id) {
 							return _react2.default.createElement(
 								'div',
-								{ key: circle.id, onClick: this.selectCircle.bind(this, circle), className: 'circleListItem' },
+								{ key: circle.id, className: 'circleListItem' },
 								_react2.default.createElement(
 									'b',
 									null,
@@ -25894,6 +25887,18 @@ var CircleList = function (_React$Component) {
 			this.updateUnreadPointsCircle(indexCircle, true);
 
 			this.props.updateSelectedCircle(circles[indexCircle]);
+		}
+	}, {
+		key: 'updateUnreadPointsCircleFromPoint',
+		value: function updateUnreadPointsCircleFromPoint(point, defaultValue) {
+			// Find the circle that needs to be updated in the list of circles
+			var indexCircle = this.state.circles.findIndex(function (circle) {
+				return circle.lines.find(function (line) {
+					return line.id == point.idLine;
+				});
+			});
+
+			this.updateUnreadPointsCircle(indexCircle, defaultValue);
 		}
 	}, {
 		key: 'updateUnreadPointsCircle',
@@ -26309,14 +26314,7 @@ var Navigator = function (_React$Component) {
 				this.userListRef.updateUnreadPointsUser(point.user.id, false);
 			} else {
 				if (this.circleListRef) {
-					// Find the circle that needs to be updated in the list of circles
-					var indexCircle = this.circleListRef.state.circles.findIndex(function (circle) {
-						return circle.lines.find(function (line) {
-							return line.id == point.idLine;
-						});
-					});
-
-					this.circleListRef.updateUnreadPointsCircle(indexCircle, false);
+					this.circleListRef.updateUnreadPointsCircleFromPoint(point, false);
 				}
 			}
 		}

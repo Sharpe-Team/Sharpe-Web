@@ -34,19 +34,10 @@ class Navigator extends React.Component {
 			this.userListRef.updateUnreadPointsUser(point.user.id, false);
 		} else {
 			if(this.circleListRef) {
-				// Find the circle that needs to be updated in the list of circles
-				let indexCircle = this.circleListRef.state.circles.findIndex(function(circle) {
-					return circle.lines.find(function(line) {
-						return line.id == point.idLine;
-					});
-				});
-
-				this.circleListRef.updateUnreadPointsCircle(indexCircle, false);
+				this.circleListRef.updateUnreadPointsCircleFromPoint(point, false);
 			}
 		}
 	}
-
-
 }
 
 export default Navigator;

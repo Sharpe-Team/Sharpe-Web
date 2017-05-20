@@ -19,6 +19,7 @@ class CircleList extends React.Component {
 
 		this.getAllCircles = this.getAllCircles.bind(this);
 		this.updateUnreadPointsCircle = this.updateUnreadPointsCircle.bind(this);
+		this.updateUnreadPointsCircleFromPoint = this.updateUnreadPointsCircleFromPoint.bind(this);
 		this.selectCircle = this.selectCircle.bind(this);
 	}
 
@@ -36,7 +37,7 @@ class CircleList extends React.Component {
 						this.state.circles.map(function(circle) {
 							if(this.props.selectedCircle && this.props.selectedCircle.id == circle.id) {
 								return (
-									<div key={circle.id} onClick={this.selectCircle.bind(this, circle)} className="circleListItem">
+									<div key={circle.id} className="circleListItem">
 										<b>{circle.name}</b>
 										&nbsp;
 										{ circle.nbUnreadPoints > 0 &&
@@ -114,6 +115,17 @@ class CircleList extends React.Component {
 		this.updateUnreadPointsCircle(indexCircle, true);
 
 		this.props.updateSelectedCircle(circles[indexCircle]);
+	}
+
+	updateUnreadPointsCircleFromPoint(point, defaultValue) {
+		// Find the circle that needs to be updated in the list of circles
+		let indexCircle = this.state.circles.findIndex(function(circle) {
+			return circle.lines.find(function(line) {
+				return line.id == point.idLine;
+			});
+		});
+
+		this.updateUnreadPointsCircle(indexCircle, defaultValue);
 	}
 
 	updateUnreadPointsCircle(indexCircle, defaultValue) {

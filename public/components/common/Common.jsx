@@ -82,10 +82,29 @@ const generateLoadingMessage = function(componentName) {
     return choosenMessage;
 };
 
+/**
+ * Get user information from localStorage of the browser
+ * @returns {{id, firstname, lastname, email, profilePicture}}
+ */
+const getUserFromStorage = function() {
+	let user = {
+		id: localStorage.getItem('user-id'),
+		firstname: localStorage.getItem('user-firstname'),
+		lastname: localStorage.getItem('user-lastname'),
+		email: localStorage.getItem('user-email'),
+		profilePicture: localStorage.getItem('user-profile-picture')
+	};
+
+	user.id = parseInt(user.id);
+
+	return user;
+}
+
 export {
 	API_URL,
 	hideError,
 	handleAPIResult,
 	displayLoading,
-    generateLoadingMessage
+    generateLoadingMessage,
+	getUserFromStorage
 };

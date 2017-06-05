@@ -33,20 +33,29 @@ class UserList extends React.Component {
 				<ul className="navigationList" style={{height: "40%"}}>
 					{
 						this.state.users.map(function(user) {
-							return (
-								<div key={user.id} className="row circleListItem" onClick={this.selectUser.bind(this, user)} aria-describedby={"badge_user_" + user.id}>
-									{user.firstname}&nbsp;{user.lastname}
-									&nbsp;
-									{ user.nbUnreadPoints > 0 &&
-									<span id={"badge_user_" + user.id} className="badge warning">{user.nbUnreadPoints}</span>
-									}
-								</div>)
+                            if(user.firstname.toLowerCase().includes(this.state.search.toLowerCase()) || user.lastname.toLowerCase().includes(this.state.search)){
+                                return (
+                                    <div key={user.id} className="row circleListItem" onClick={this.selectUser.bind(this, user)} aria-describedby={"badge_user_" + user.id}>
+                                        {user.firstname}&nbsp;{user.lastname}
+                                        &nbsp;
+                                        { user.nbUnreadPoints > 0 &&
+                                        <span id={"badge_user_" + user.id} className="badge warning">{user.nbUnreadPoints}</span>
+                                        }
+                                    </div>)
+                                
+                            }
 						}, this)
 					}
 				</ul>
 			</div>
 		);
 	}
+    
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            search: nextProps.search
+        });
+    }
 
 	componentDidMount() {
 		let component = this;

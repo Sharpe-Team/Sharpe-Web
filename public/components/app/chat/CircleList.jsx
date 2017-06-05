@@ -35,26 +35,28 @@ class CircleList extends React.Component {
 					}
 					{
 						this.state.circles.map(function(circle) {
-							if(this.props.selectedCircle && this.props.selectedCircle.id == circle.id) {
-								return (
-									<div key={circle.id} className="circleListItem">
-										<b>{circle.name}</b>
-										&nbsp;
-										{ circle.nbUnreadPoints > 0 &&
-										<span className="badge warning">{circle.nbUnreadPoints}</span>
-										}
-									</div>
-								)
-							}
-							return (
-								<div key={circle.id} onClick={this.selectCircle.bind(this, circle)} className="circleListItem" aria-describedby={"badge_" + circle.id}>
-									{circle.name}
-									&nbsp;
-									{ circle.nbUnreadPoints > 0 &&
-									<span id={"badge_" + circle.id} className="badge warning">{circle.nbUnreadPoints}</span>
-									}
-								</div>
-							)
+                            if(circle.name.toLowerCase().includes(this.state.search.toLowerCase())) {
+                                if(this.props.selectedCircle && this.props.selectedCircle.id == circle.id) {
+                                    return (
+                                        <div key={circle.id} className="circleListItem">
+                                            <b>{circle.name}</b>
+                                            &nbsp;
+                                            { circle.nbUnreadPoints > 0 &&
+                                            <span className="badge warning">{circle.nbUnreadPoints}</span>
+                                            }
+                                        </div>
+                                    )
+                                }
+                                return (
+                                    <div key={circle.id} onClick={this.selectCircle.bind(this, circle)} className="circleListItem" aria-describedby={"badge_" + circle.id}>
+                                        {circle.name}
+                                        &nbsp;
+                                        { circle.nbUnreadPoints > 0 &&
+                                        <span id={"badge_" + circle.id} className="badge warning">{circle.nbUnreadPoints}</span>
+                                        }
+                                    </div>
+                                )   
+                            }
 						}, this)
 					}
 				</ul>
@@ -65,6 +67,12 @@ class CircleList extends React.Component {
 	componentDidMount() {
 		this.getAllCircles();
 	}
+    
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            search: nextProps.search
+        });
+    }
 
 	getAllCircles() {
 		let component = this;

@@ -4,6 +4,7 @@ import { API_URL, hideError, handleAPIResult, displayLoading } from '../../commo
 import Loading from '../../common/Loading.jsx';
 import ErrorComponent from '../../common/ErrorComponent.jsx';
 import NavigatorMenu from './NavigatorMenu.jsx';
+import NavigatorSearch from './NavigatorSearch.jsx';
 
 class Navigator extends React.Component {
 
@@ -18,7 +19,8 @@ class Navigator extends React.Component {
 				showError: false,
 				message: ""
 			},
-            displayLoading: false
+            displayLoading: false,
+            search: ""
 		}
 
 		this.getAllCircles = this.getAllCircles.bind(this);
@@ -27,6 +29,7 @@ class Navigator extends React.Component {
 		this.updateUnreadPointsUser = this.updateUnreadPointsUser.bind(this);
 		this.selectCircle = this.selectCircle.bind(this);
 		this.selectUser = this.selectUser.bind(this);
+        this.searchHandler = this.searchHandler.bind(this);
 	}
 
 	render() {
@@ -36,14 +39,16 @@ class Navigator extends React.Component {
                 	<Loading />
                 }
                 <NavigatorMenu/>
-				<hr/>
+                <hr/>
+                <NavigatorSearch action={this.searchHandler}/>
 				<ul className="navigationList" style={{height: "40%"}}>
 				{this.state.error.showError &&
 					<ErrorComponent message={this.state.error.message} hideError={hideError.bind(this, this)} />
 				}
 				{
 					this.state.circles.map(function(circle) {
-						if(this.state.selectedCircle && this.state.selectedCircle.id == circle.id) {
+                        if(circle.name.toLowerCase().includes(this.state.search)){
+                            if(this.state.selectedCircle && this.state.selectedCircle.id == circle.id) {
 							return (
 								<div key={circle.id} onClick={this.selectCircle.bind(this, circle)} className="circleListItem">
 									<b>{circle.name}</b>
@@ -53,16 +58,17 @@ class Navigator extends React.Component {
 									}
 								</div>
 							)
-						}
-						return (
-							<div key={circle.id} onClick={this.selectCircle.bind(this, circle)} className="circleListItem" aria-describedby={"badge_" + circle.id}>
-								{circle.name}
-								&nbsp;
-								{ circle.nbUnreadPoints > 0 &&
-									<span id={"badge_" + circle.id} className="badge warning">{circle.nbUnreadPoints}</span>
-								}
-							</div>
-						)
+                            }
+                            return (
+                                <div key={circle.id} onClick={this.selectCircle.bind(this, circle)} className="circleListItem" aria-describedby={"badge_" + circle.id}>
+                                    {circle.name}
+                                    &nbsp;
+                                    { circle.nbUnreadPoints > 0 &&
+                                        <span id={"badge_" + circle.id} className="badge warning">{circle.nbUnreadPoints}</span>
+                                    }
+                                </div>
+                            )
+                        }		
 					}, this)
 				}
 				</ul>
@@ -70,14 +76,16 @@ class Navigator extends React.Component {
 				<ul className="navigationList" style={{height: "40%"}}>
 				{
 					this.state.users.map(function(user) {
-						return (
-							<div key={user.id} className="row circleListItem" onClick={this.selectUser.bind(this, user)} aria-describedby={"badge_user_" + user.id}>
-								{user.firstname}&nbsp;{user.lastname}
-								&nbsp;
-								{ user.nbUnreadPoints > 0 &&
-									<span id={"badge_user_" + user.id} className="badge warning">{user.nbUnreadPoints}</span>
-								}
-							</div>)
+                        if(user.firstname.toLowerCase().includes(this.state.search) || user.lastname.toLowerCase().includes(this.state.search)){
+                            return (
+                                <div key={user.id} className="row circleListItem" onClick={this.selectUser.bind(this, user)} aria-describedby={"badge_user_" + user.id}>
+                                    {user.firstname}&nbsp;{user.lastname}
+                                    &nbsp;
+                                    { user.nbUnreadPoints > 0 &&
+                                        <span id={"badge_user_" + user.id} className="badge warning">{user.nbUnreadPoints}</span>
+                                    }
+                                </div>)
+                        }
 					}, this)
 				}
 				</ul>
@@ -276,6 +284,12 @@ class Navigator extends React.Component {
 			handleAPIResult(component, true, "Une erreur est survenue lors de la récupération du cercle privé...");
 		});
 	}
+    
+    searchHandler(search){
+        this.setState({
+            search: search
+        });
+    }
 }
 
 export default Navigator;

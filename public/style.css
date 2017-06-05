@@ -6,8 +6,8 @@
 
 :root{
     --main-color: #334F81;
-    --second-color: #7f95be;
-    --third-color: #f19132;
+    --second-color: #f19132;
+    --third-color: #7f95be;
 }
 
 @font-face {

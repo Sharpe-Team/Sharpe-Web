@@ -14,7 +14,8 @@ class UserList extends React.Component {
 				showError: false,
 				message: ""
 			},
-			displayLoading: false
+			displayLoading: false,
+            search: this.props.search
 		};
 
 		this.updateUnreadPointsUser = this.updateUnreadPointsUser.bind(this);

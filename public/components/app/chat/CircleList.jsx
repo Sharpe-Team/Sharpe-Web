@@ -14,7 +14,8 @@ class CircleList extends React.Component {
 				showError: false,
 				message: ""
 			},
-			displayLoading: false
+			displayLoading: false,
+            search: this.props.search
 		};
 
 		this.getAllCircles = this.getAllCircles.bind(this);

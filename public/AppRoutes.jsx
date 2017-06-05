@@ -7,16 +7,17 @@ import App from './components/app/chat/App.jsx';
 import CircleFormPage from './components/app/manage/CircleForm.jsx';
 import UserFormPage from './components/app/manage/UserForm.jsx';
 import NotFoundPage from './components/common/NotFoundPage.jsx';
+import { userType } from './components/common/Common.jsx';
 
 class AppRoutes extends React.Component {
 	render() {
 		return (
 			<Router history={browserHistory}>
 				<Route path="/" component={LoginPage} />
-				<Route path="/logout" component={requireAuth(LogoutComponent)} />
-				<Route path="/app" component={requireAuth(App)} />
-				<Route path="/circleForm" component={requireAuth(CircleFormPage)} />
-				<Route path="/userForm" component={requireAuth(UserFormPage)} />
+				<Route path="/logout" component={requireAuth(LogoutComponent, userType.user)} />
+				<Route path="/app" component={requireAuth(App, userType.user)} />
+				<Route path="/circleForm" component={requireAuth(CircleFormPage, userType.user)} />
+				<Route path="/userForm" component={requireAuth(UserFormPage, userType.admin)} />
 				<Route path="/*" component={NotFoundPage} />
 			</Router>
 		);

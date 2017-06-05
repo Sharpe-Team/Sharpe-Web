@@ -15,6 +15,11 @@ const hideError = function(component) {
 	});
 };
 
+const userType = {
+    user : 0,
+    admin : 1
+}
+    
 /**
  * Function to handle the result of an API request by updating the state
  * @param component the target component where the state should be updated
@@ -87,5 +92,6 @@ export {
 	hideError,
 	handleAPIResult,
 	displayLoading,
-    generateLoadingMessage
+    generateLoadingMessage,
+    userType
 };

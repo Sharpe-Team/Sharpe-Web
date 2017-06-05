@@ -1,7 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router';
+import { userType } from '../common/Common.jsx';
 
-function requireAuth(Component) {
+function requireAuth(Component, neededUserType) {
 
 	class AuthenticationComponent extends React.Component {
 
@@ -43,7 +44,10 @@ function requireAuth(Component) {
 					if(user) {
 						if(user.id != localStorage.getItem('user-id')) {
                     		component.storeUserInStorage(user);
-                   		} 
+                   		}
+                        if(neededUserType == userType.admin && user.admin != 1){
+                            component.props.router.push('/notAuthorized');
+                        }
                    		component.setState({isAuthorized: true});
 					} else {
                 		component.redirectToLogin();
@@ -60,6 +64,7 @@ function requireAuth(Component) {
 			localStorage.setItem('user-lastname', user.lastname);
 			localStorage.setItem('user-email', user.email);
 			localStorage.setItem('user-profile-picture', user.profilePicture);
+            localStorage.setItem('user-admin', user.admin);
 		}
 
 		redirectToLogin() {	

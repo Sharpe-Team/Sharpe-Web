@@ -80,12 +80,6 @@ class LoginForm extends React.Component {
 	}
 
 	componentWillMount() {
-		var component = this;
-
-		socket.on('login-response', function(user) {
-			component.storeUserInStorage(user);
-			component.goToNextPage();
-		});
 	}
 
 	handleChange(event) {
@@ -140,7 +134,10 @@ class LoginForm extends React.Component {
 				var token = authorizationHeader.split(" ")[1];
 
 				localStorage.setItem('token', token);
-				socket.emit('login', token);
+				socket.emit('login', token, function(user) {
+					component.storeUserInStorage(user);
+					component.goToNextPage();
+				});
 			} else {
 				handleAPIResult(component, true, response.message);
 			}

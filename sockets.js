@@ -64,7 +64,7 @@ function computeFileUpload(socket) {
     });
 }
 
-function onLogin(socket, token, loggedUser) {
+function onLogin(socket, token, loggedUser, callback) {
 	var decodedToken;
 
 	if(token && (decodedToken = getDecodedToken(token))) {
@@ -91,7 +91,9 @@ function onLogin(socket, token, loggedUser) {
 		console.log("login : " + loggedUser.user.email);
 
 		// Send info user to client
-		socket.emit('login-response', loggedUser.user);
+		if(callback) {
+			callback(loggedUser.user);
+		}
 	} else {
 		console.log("Unregistered user connected...");
 	}
@@ -159,8 +161,8 @@ function computeConnection(socket) {
 
 	computeFileUpload(socket);
 
-    socket.on('login', function(token) {
-    	loggedUser = onLogin(socket, token, loggedUser);
+    socket.on('login', function(token, callback) {
+    	loggedUser = onLogin(socket, token, loggedUser, callback);
     });
 
     socket.on('disconnect', function() {

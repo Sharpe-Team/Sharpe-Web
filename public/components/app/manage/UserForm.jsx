@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link, browserHistory} from 'react-router';
-import passwordHash from 'password-hash';
 import Loading from '../../common/Loading.jsx';
 import ErrorComponent from '../../common/ErrorComponent.jsx';
 import { API_URL, hideError, handleAPIResult, displayLoading } from '../../common/Common.jsx';

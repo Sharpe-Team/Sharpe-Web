@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router';
 import Circle from './Circle.jsx';
 import Navigator from './Navigator.jsx';
 
@@ -13,15 +12,14 @@ class App extends React.Component {
 		};
 
 		this.updateSelectedCircle = this.updateSelectedCircle.bind(this);
-		this.updateUnreadPoints = this.updateUnreadPoints.bind(this);
 	}
 
 	render() {
 		return (
 			<div id="div-app" className="expanded row">
-				<Navigator updateSelectedCircle={this.updateSelectedCircle} ref={ (instance) => { this.navigatorRef = instance; }} />
+				<Navigator updateSelectedCircle={this.updateSelectedCircle} selectedCircle={this.state.selectedCircle} ref={ (instance) => { this.navigatorRef = instance; }} />
 				{ this.state.selectedCircle &&
-					<Circle circle={this.state.selectedCircle} updateUnreadPoints={this.updateUnreadPoints} />
+					<Circle circle={this.state.selectedCircle} updateUnreadPoints={this.navigatorRef.updateUnreadPointsBadge} />
 				}
 			</div>
 		);
@@ -35,12 +33,6 @@ class App extends React.Component {
 			circle.nbUnreadPoints = 0;
 			this.setState({selectedCircle: circle});
 		}
-	}
-
-	updateUnreadPoints(point, isPrivate) {
-        if(this.navigatorRef) {
-		  this.navigatorRef.updateUnreadPointsBadge(point, isPrivate);
-        }
 	}
 }
 

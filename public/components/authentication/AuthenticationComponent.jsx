@@ -62,7 +62,6 @@ function requireAuth(Component, neededUserType) {
 			localStorage.setItem('user-lastname', user.lastname);
 			localStorage.setItem('user-email', user.email);
 			localStorage.setItem('user-profile-picture', user.profilePicture);
-            console.log("storage:"+user.admin);
             localStorage.setItem('user-admin', user.admin);
 		}
 

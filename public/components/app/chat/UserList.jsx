@@ -34,7 +34,9 @@ class UserList extends React.Component {
 				<ul className="navigationList" style={{height: "40%"}}>
 					{
 						this.state.users.map(function(user) {
-                            if(user.firstname.toLowerCase().includes(this.state.search.toLowerCase()) || user.lastname.toLowerCase().includes(this.state.search)){
+                            var name = user.firstname + " " + user.lastname;
+                            if(user.firstname.toLowerCase().includes(this.state.search.toLowerCase()) || user.lastname.toLowerCase().includes(this.state.search.toLowerCase()) ||
+                            name.toLowerCase().includes(this.state.search.toLowerCase()) ) {
                                 return (
                                     <div key={user.id} className="row circleListItem" onClick={this.selectUser.bind(this, user)} aria-describedby={"badge_user_" + user.id}>
                                         {user.firstname}&nbsp;{user.lastname}

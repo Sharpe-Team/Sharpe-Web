@@ -5817,7 +5817,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 var _prodInvariant = __webpack_require__(6);
 
-var DOMProperty = __webpack_require__(22);
+var DOMProperty = __webpack_require__(21);
 var ReactDOMComponentFlags = __webpack_require__(143);
 
 var invariant = __webpack_require__(2);
@@ -7215,121 +7215,6 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-/**
- * URL of the API
- */
-var API_URL = "https://localhost:8443/";
-
-/**
- * Function to hide the ErrorComponent by setting showError to false in the state
- * @param component the component which the state should be updated
- */
-var hideError = function hideError(component) {
-  component.setState({
-    error: {
-      showError: false
-    }
-  });
-};
-
-/**
- * Function to handle the result of an API request by updating the state
- * @param component the target component where the state should be updated
- * @param showError if the component should displayed the error message
- * @param message the error message
- */
-var handleAPIResult = function handleAPIResult(component, showError, message) {
-  component.setState({
-    error: {
-      showError: showError,
-      message: message
-    },
-    displayLoading: false
-  });
-};
-
-/**
- * Function to display the LoadingComponent (call just before an API request)
- * @param component the component where the Loading component should be displayed
- */
-var displayLoading = function displayLoading(component) {
-  component.setState({
-    error: {
-      showError: false,
-      message: ""
-    },
-    displayLoading: true
-  });
-};
-
-/**
- * Function to get a random number between a range
- * @param min the minimum value
- * @param max the maximum value
- * @returns {number} the random number
- */
-function getRandomArbitrary(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
-
-/**
- * Function to generate a loading message for the LoadingComponent
- * @param componentName the name of the component
- * @returns {string} the choosen message
- */
-var generateLoadingMessage = function generateLoadingMessage(componentName) {
-  var messages = [["Nous vérifions votre mot de passe ...", "Nous nous assurons que vous êtes bien la bonne personne ...", "Nous consultons notre base de données ...", "Scanner rétinien en cours ..."], ["Nous ajoutons votre cercle ...", "Nous créons votre nouveau cercle ...", "Nous vérifions que vous avez choisi une belle image de profil ..."], ["Nous ajoutons ce nouvel utilisateur ...", "Nous vérifions l'ajout du nouvel utilisateur ...", "Nous consultons la NSA au sujet du nouvel utilisateur que vous ajoutez ...", "Nous vérifions que vous avez choisi une belle photo de profil pour votre compte ...", "Nous nous assurons que vous ne créez pas un compte \"Barack Obama\" ou autre juste pour vous amusez ..."]];
-  var choosenMessage = "Ceci est un message parce qu'on a pas trouvé d'autres messages";
-  if (componentName === "LoginForm") {
-    var index = getRandomArbitrary(0, messages[0].length - 1);
-    choosenMessage = messages[0][index];
-  }
-  if (componentName === "CircleForm") {
-    var _index = getRandomArbitrary(0, messages[1].length - 1);
-    choosenMessage = messages[1][_index];
-  }
-  if (componentName === "UserForm") {
-    var _index2 = getRandomArbitrary(0, messages[2].length - 1);
-    choosenMessage = messages[2][_index2];
-  }
-  return choosenMessage;
-};
-
-/**
- * Get user information from localStorage of the browser
- * @returns {{id, firstname, lastname, email, profilePicture}}
- */
-var getUserFromStorage = function getUserFromStorage() {
-  var user = {
-    id: localStorage.getItem('user-id'),
-    firstname: localStorage.getItem('user-firstname'),
-    lastname: localStorage.getItem('user-lastname'),
-    email: localStorage.getItem('user-email'),
-    profilePicture: localStorage.getItem('user-profile-picture')
-  };
-
-  user.id = parseInt(user.id);
-
-  return user;
-};
-
-exports.API_URL = API_URL;
-exports.hideError = hideError;
-exports.handleAPIResult = handleAPIResult;
-exports.displayLoading = displayLoading;
-exports.generateLoadingMessage = generateLoadingMessage;
-exports.getUserFromStorage = getUserFromStorage;
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -7542,7 +7427,7 @@ module.exports = DOMProperty;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7641,7 +7526,7 @@ function createRoutes(routes) {
 }
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7650,7 +7535,7 @@ function createRoutes(routes) {
 exports.__esModule = true;
 exports.createMemoryHistory = exports.hashHistory = exports.browserHistory = exports.applyRouterMiddleware = exports.formatPattern = exports.useRouterHistory = exports.match = exports.routerShape = exports.locationShape = exports.PropTypes = exports.RoutingContext = exports.RouterContext = exports.createRoutes = exports.useRoutes = exports.RouteContext = exports.Lifecycle = exports.History = exports.Route = exports.Redirect = exports.IndexRoute = exports.IndexRedirect = exports.withRouter = exports.IndexLink = exports.Link = exports.Router = undefined;
 
-var _RouteUtils = __webpack_require__(23);
+var _RouteUtils = __webpack_require__(22);
 
 Object.defineProperty(exports, 'createRoutes', {
   enumerable: true,
@@ -7801,6 +7686,121 @@ exports.applyRouterMiddleware = _applyRouterMiddleware3.default;
 exports.browserHistory = _browserHistory3.default;
 exports.hashHistory = _hashHistory3.default;
 exports.createMemoryHistory = _createMemoryHistory3.default;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+ * URL of the API
+ */
+var API_URL = "https://localhost:8443/";
+
+/**
+ * Function to hide the ErrorComponent by setting showError to false in the state
+ * @param component the component which the state should be updated
+ */
+var hideError = function hideError(component) {
+  component.setState({
+    error: {
+      showError: false
+    }
+  });
+};
+
+/**
+ * Function to handle the result of an API request by updating the state
+ * @param component the target component where the state should be updated
+ * @param showError if the component should displayed the error message
+ * @param message the error message
+ */
+var handleAPIResult = function handleAPIResult(component, showError, message) {
+  component.setState({
+    error: {
+      showError: showError,
+      message: message
+    },
+    displayLoading: false
+  });
+};
+
+/**
+ * Function to display the LoadingComponent (call just before an API request)
+ * @param component the component where the Loading component should be displayed
+ */
+var displayLoading = function displayLoading(component) {
+  component.setState({
+    error: {
+      showError: false,
+      message: ""
+    },
+    displayLoading: true
+  });
+};
+
+/**
+ * Function to get a random number between a range
+ * @param min the minimum value
+ * @param max the maximum value
+ * @returns {number} the random number
+ */
+function getRandomArbitrary(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+/**
+ * Function to generate a loading message for the LoadingComponent
+ * @param componentName the name of the component
+ * @returns {string} the choosen message
+ */
+var generateLoadingMessage = function generateLoadingMessage(componentName) {
+  var messages = [["Nous vérifions votre mot de passe ...", "Nous nous assurons que vous êtes bien la bonne personne ...", "Nous consultons notre base de données ...", "Scanner rétinien en cours ..."], ["Nous ajoutons votre cercle ...", "Nous créons votre nouveau cercle ...", "Nous vérifions que vous avez choisi une belle image de profil ..."], ["Nous ajoutons ce nouvel utilisateur ...", "Nous vérifions l'ajout du nouvel utilisateur ...", "Nous consultons la NSA au sujet du nouvel utilisateur que vous ajoutez ...", "Nous vérifions que vous avez choisi une belle photo de profil pour votre compte ...", "Nous nous assurons que vous ne créez pas un compte \"Barack Obama\" ou autre juste pour vous amusez ..."]];
+  var choosenMessage = "Ceci est un message parce qu'on a pas trouvé d'autres messages";
+  if (componentName === "LoginForm") {
+    var index = getRandomArbitrary(0, messages[0].length - 1);
+    choosenMessage = messages[0][index];
+  }
+  if (componentName === "CircleForm") {
+    var _index = getRandomArbitrary(0, messages[1].length - 1);
+    choosenMessage = messages[1][_index];
+  }
+  if (componentName === "UserForm") {
+    var _index2 = getRandomArbitrary(0, messages[2].length - 1);
+    choosenMessage = messages[2][_index2];
+  }
+  return choosenMessage;
+};
+
+/**
+ * Get user information from localStorage of the browser
+ * @returns {{id, firstname, lastname, email, profilePicture}}
+ */
+var getUserFromStorage = function getUserFromStorage() {
+  var user = {
+    id: localStorage.getItem('user-id'),
+    firstname: localStorage.getItem('user-firstname'),
+    lastname: localStorage.getItem('user-lastname'),
+    email: localStorage.getItem('user-email'),
+    profilePicture: localStorage.getItem('user-profile-picture')
+  };
+
+  user.id = parseInt(user.id);
+
+  return user;
+};
+
+exports.API_URL = API_URL;
+exports.hideError = hideError;
+exports.handleAPIResult = handleAPIResult;
+exports.displayLoading = displayLoading;
+exports.generateLoadingMessage = generateLoadingMessage;
+exports.getUserFromStorage = getUserFromStorage;
 
 /***/ }),
 /* 25 */
@@ -8611,7 +8611,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Common = __webpack_require__(21);
+var _Common = __webpack_require__(24);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12749,7 +12749,7 @@ var _getRouteParams = __webpack_require__(363);
 
 var _getRouteParams2 = _interopRequireDefault(_getRouteParams);
 
-var _RouteUtils = __webpack_require__(23);
+var _RouteUtils = __webpack_require__(22);
 
 var _routerWarning = __webpack_require__(11);
 
@@ -20266,7 +20266,7 @@ module.exports = PooledClass.addPoolingTo(CallbackQueue);
 
 
 
-var DOMProperty = __webpack_require__(22);
+var DOMProperty = __webpack_require__(21);
 var ReactDOMComponentTree = __webpack_require__(9);
 var ReactInstrumentation = __webpack_require__(15);
 
@@ -21006,7 +21006,7 @@ module.exports = ReactInputSelection;
 var _prodInvariant = __webpack_require__(6);
 
 var DOMLazyTree = __webpack_require__(38);
-var DOMProperty = __webpack_require__(22);
+var DOMProperty = __webpack_require__(21);
 var React = __webpack_require__(41);
 var ReactBrowserEventEmitter = __webpack_require__(65);
 var ReactCurrentOwner = __webpack_require__(19);
@@ -22432,7 +22432,7 @@ var _invariant = __webpack_require__(12);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _RouteUtils = __webpack_require__(23);
+var _RouteUtils = __webpack_require__(22);
 
 var _PatternUtils = __webpack_require__(40);
 
@@ -25413,7 +25413,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(24);
+var _reactRouter = __webpack_require__(23);
 
 var _AuthenticationComponent = __webpack_require__(197);
 
@@ -25770,7 +25770,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Common = __webpack_require__(21);
+var _Common = __webpack_require__(24);
 
 var _Loading = __webpack_require__(34);
 
@@ -25964,8 +25964,6 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Common = __webpack_require__(21);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25995,44 +25993,49 @@ var Cube = function (_React$Component) {
 		_this.answerCall = _this.answerCall.bind(_this);
 		_this.rejectCall = _this.rejectCall.bind(_this);
 		_this.askMediaDevicesPermission = _this.askMediaDevicesPermission.bind(_this);
-		_this.addAudioStream = _this.addAudioStream.bind(_this);
+		_this.onReceiveStream = _this.onReceiveStream.bind(_this);
 		return _this;
 	}
 
 	_createClass(Cube, [{
-		key: 'render',
+		key: "render",
 		value: function render() {
 			return _react2.default.createElement(
-				'div',
-				{ id: 'cubes', className: 'column medium-2' },
+				"div",
+				{ id: "cubes", className: "column medium-2" },
 				_react2.default.createElement(
-					'div',
-					{ className: 'row' },
+					"div",
+					{ className: "row" },
 					this.props.circle.type === 2 && _react2.default.createElement(
-						'div',
-						{ className: 'column' },
+						"div",
+						{ className: "column" },
 						_react2.default.createElement(
-							'button',
-							{ type: 'button', className: 'button primary', disabled: this.state.isCalling || this.state.isReceivingCall, onClick: this.callPeer },
-							'Appeler'
+							"button",
+							{ type: "button", className: "button primary", disabled: this.state.isCalling || this.state.isReceivingCall, onClick: this.callPeer },
+							"Appeler"
 						),
 						_react2.default.createElement(
-							'button',
-							{ type: 'button', className: 'button success', disabled: !this.state.isReceivingCall, onClick: this.answerCall },
-							'R\xE9pondre'
+							"button",
+							{ type: "button", className: "button alert", disabled: !this.state.isCalling || this.state.isReceivingCall, onClick: this.endCall },
+							"Raccrocher"
 						),
 						_react2.default.createElement(
-							'button',
-							{ type: 'button', className: 'button alert', disabled: !this.state.isReceivingCall, onClick: this.rejectCall },
-							'Annuler'
+							"button",
+							{ type: "button", className: "button success", disabled: !this.state.isReceivingCall, onClick: this.answerCall },
+							"R\xE9pondre"
 						),
-						_react2.default.createElement('audio', { id: 'audioStream', controls: true })
+						_react2.default.createElement(
+							"button",
+							{ type: "button", className: "button alert", disabled: !this.state.isReceivingCall, onClick: this.rejectCall },
+							"Annuler"
+						),
+						_react2.default.createElement("video", { id: "videoStream", controls: true, style: { width: "100%" } })
 					)
 				)
 			);
 		}
 	}, {
-		key: 'componentDidMount',
+		key: "componentDidMount",
 		value: function componentDidMount() {
 			peer.on('call', this.onReceiveCall);
 		}
@@ -26042,13 +26045,13 @@ var Cube = function (_React$Component) {
    ****************************************************************/
 
 	}, {
-		key: 'callPeer',
+		key: "callPeer",
 		value: function callPeer() {
 			var component = this;
 
 			this.askMediaDevicesPermission(function (mediaStream) {
 				var mediaConnection = peer.call(component.props.circle.receiverUserId, mediaStream);
-				mediaConnection.on("stream", component.addAudioStream);
+				mediaConnection.on("stream", component.onReceiveStream);
 
 				component.setState({
 					isCalling: true,
@@ -26057,7 +26060,7 @@ var Cube = function (_React$Component) {
 			});
 		}
 	}, {
-		key: 'endCall',
+		key: "endCall",
 		value: function endCall() {
 			if (this.state.isCalling && this.state.mediaConnection) {
 				this.state.mediaConnection.close();
@@ -26069,9 +26072,11 @@ var Cube = function (_React$Component) {
 			}
 		}
 	}, {
-		key: 'onReceiveCall',
+		key: "onReceiveCall",
 		value: function onReceiveCall(mediaConnection) {
 			var component = this;
+
+			console.log("in receive call");
 
 			this.setState({
 				isReceivingCall: true,
@@ -26086,7 +26091,7 @@ var Cube = function (_React$Component) {
 			}, 5000);
 		}
 	}, {
-		key: 'answerCall',
+		key: "answerCall",
 		value: function answerCall() {
 			var component = this;
 			var mediaConnection = this.state.mediaConnection;
@@ -26099,11 +26104,11 @@ var Cube = function (_React$Component) {
 			this.askMediaDevicesPermission(function (mediaStream) {
 				mediaConnection.answer(mediaStream);
 
-				mediaConnection.on("stream", component.addAudioStream);
+				mediaConnection.on("stream", component.onReceiveStream);
 			});
 		}
 	}, {
-		key: 'rejectCall',
+		key: "rejectCall",
 		value: function rejectCall() {
 			if (this.state.mediaConnection) {
 				this.state.mediaConnection.close();
@@ -26115,28 +26120,63 @@ var Cube = function (_React$Component) {
 			});
 		}
 	}, {
-		key: 'askMediaDevicesPermission',
+		key: "askMediaDevicesPermission",
 		value: function askMediaDevicesPermission(callback) {
 			var component = this;
 			var constraints = {
 				audio: true,
-				video: false
+				video: true
 			};
+
+			// Older browsers might not implement mediaDevices at all, so we set an empty object first
+			if (navigator.mediaDevices === undefined) {
+				navigator.mediaDevices = {};
+			}
+
+			// Some browsers partially implement mediaDevices. We can't just assign an object
+			// with getUserMedia as it would overwrite existing properties.
+			// Here, we will just add the getUserMedia property if it's missing.
+			if (navigator.mediaDevices.getUserMedia === undefined) {
+				navigator.mediaDevices.getUserMedia = function (constraints) {
+					// First get ahold of the legacy getUserMedia, if present
+					var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+					// Some browsers just don't implement it - return a rejected promise with an error
+					// to keep a consistent interface
+					if (!getUserMedia) {
+						return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+					}
+
+					// Otherwise, wrap the call to the old navigator.getUserMedia with a Promise
+					return new Promise(function (resolve, reject) {
+						getUserMedia.call(navigator, constraints, resolve, reject);
+					});
+				};
+			}
 
 			navigator.mediaDevices.getUserMedia(constraints).then(function (mediaStream) {
 				callback(mediaStream);
 			}).catch(function (error) {
-				console.log(error);
+				console.log("Error while getting userMedia function : " + error);
 				component.rejectCall();
+				alert(error);
 			});
 		}
 	}, {
-		key: 'onReceiveStream',
-		value: function addAudioStream(stream) {
-			var audioComponent = document.getElementById("audioStream");
-			audioComponent.src = window.URL.createObjectURL(stream);
-			audioComponent.onloadedmetadata = function (e) {
-				audioComponent.play();
+		key: "onReceiveStream",
+		value: function onReceiveStream(stream) {
+			/*
+   let audioComponent = document.getElementById("audioStream");
+   audioComponent.src = window.URL.createObjectURL(stream);
+   audioComponent.onloadedmetadata = function(e) {
+   	audioComponent.play();
+   }
+   */
+
+			var videoComponent = document.getElementById("videoStream");
+			videoComponent.src = window.URL.createObjectURL(stream);
+			videoComponent.onloadedmetadata = function (e) {
+				videoComponent.play();
 			};
 		}
 	}]);
@@ -26167,7 +26207,7 @@ var _Point = __webpack_require__(193);
 
 var _Point2 = _interopRequireDefault(_Point);
 
-var _Common = __webpack_require__(21);
+var _Common = __webpack_require__(24);
 
 var _Loading = __webpack_require__(34);
 
@@ -26551,7 +26591,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(24);
+var _reactRouter = __webpack_require__(23);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26724,7 +26764,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Common = __webpack_require__(21);
+var _Common = __webpack_require__(24);
 
 var _Loading = __webpack_require__(34);
 
@@ -26915,9 +26955,9 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(24);
+var _reactRouter = __webpack_require__(23);
 
-var _Common = __webpack_require__(21);
+var _Common = __webpack_require__(24);
 
 var _Loading = __webpack_require__(34);
 
@@ -27334,7 +27374,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(24);
+var _reactRouter = __webpack_require__(23);
 
 var _Loading = __webpack_require__(34);
 
@@ -27344,7 +27384,7 @@ var _ErrorComponent = __webpack_require__(33);
 
 var _ErrorComponent2 = _interopRequireDefault(_ErrorComponent);
 
-var _Common = __webpack_require__(21);
+var _Common = __webpack_require__(24);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27722,7 +27762,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(24);
+var _reactRouter = __webpack_require__(23);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27838,7 +27878,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(24);
+var _reactRouter = __webpack_require__(23);
 
 var _passwordHash = __webpack_require__(271);
 
@@ -27852,7 +27892,7 @@ var _ErrorComponent = __webpack_require__(33);
 
 var _ErrorComponent2 = _interopRequireDefault(_ErrorComponent);
 
-var _Common = __webpack_require__(21);
+var _Common = __webpack_require__(24);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28070,7 +28110,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(24);
+var _reactRouter = __webpack_require__(23);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28157,7 +28197,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(24);
+var _reactRouter = __webpack_require__(23);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39237,7 +39277,7 @@ module.exports = FallbackCompositionState;
 
 
 
-var DOMProperty = __webpack_require__(22);
+var DOMProperty = __webpack_require__(21);
 
 var MUST_USE_PROPERTY = DOMProperty.injection.MUST_USE_PROPERTY;
 var HAS_BOOLEAN_VALUE = DOMProperty.injection.HAS_BOOLEAN_VALUE;
@@ -40683,7 +40723,7 @@ var AutoFocusUtils = __webpack_require__(279);
 var CSSPropertyOperations = __webpack_require__(281);
 var DOMLazyTree = __webpack_require__(38);
 var DOMNamespaces = __webpack_require__(83);
-var DOMProperty = __webpack_require__(22);
+var DOMProperty = __webpack_require__(21);
 var DOMPropertyOperations = __webpack_require__(142);
 var EventPluginHub = __webpack_require__(51);
 var EventPluginRegistry = __webpack_require__(64);
@@ -42132,7 +42172,7 @@ module.exports = ReactDOMInput;
 
 
 
-var DOMProperty = __webpack_require__(22);
+var DOMProperty = __webpack_require__(21);
 var ReactComponentTreeHook = __webpack_require__(14);
 
 var warning = __webpack_require__(3);
@@ -43104,7 +43144,7 @@ module.exports = {
 
 
 
-var DOMProperty = __webpack_require__(22);
+var DOMProperty = __webpack_require__(21);
 var EventPluginRegistry = __webpack_require__(64);
 var ReactComponentTreeHook = __webpack_require__(14);
 
@@ -44015,7 +44055,7 @@ module.exports = ReactHostOperationHistoryHook;
 
 
 
-var DOMProperty = __webpack_require__(22);
+var DOMProperty = __webpack_require__(21);
 var EventPluginHub = __webpack_require__(51);
 var EventPluginUtils = __webpack_require__(84);
 var ReactComponentEnvironment = __webpack_require__(87);
@@ -47443,7 +47483,7 @@ var _invariant = __webpack_require__(12);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _RouteUtils = __webpack_require__(23);
+var _RouteUtils = __webpack_require__(22);
 
 var _InternalPropTypes = __webpack_require__(29);
 
@@ -47581,7 +47621,7 @@ var _invariant = __webpack_require__(12);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _RouteUtils = __webpack_require__(23);
+var _RouteUtils = __webpack_require__(22);
 
 var _InternalPropTypes = __webpack_require__(29);
 
@@ -47717,7 +47757,7 @@ var _RouterContext = __webpack_require__(70);
 
 var _RouterContext2 = _interopRequireDefault(_RouterContext);
 
-var _RouteUtils = __webpack_require__(23);
+var _RouteUtils = __webpack_require__(22);
 
 var _RouterUtils = __webpack_require__(163);
 
@@ -48535,7 +48575,7 @@ var _createTransitionManager = __webpack_require__(99);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
-var _RouteUtils = __webpack_require__(23);
+var _RouteUtils = __webpack_require__(22);
 
 var _RouterUtils = __webpack_require__(163);
 
@@ -48627,7 +48667,7 @@ var _routerWarning = __webpack_require__(11);
 
 var _routerWarning2 = _interopRequireDefault(_routerWarning);
 
-var _RouteUtils = __webpack_require__(23);
+var _RouteUtils = __webpack_require__(22);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

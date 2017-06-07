@@ -87,11 +87,23 @@ const generateLoadingMessage = function(componentName) {
     return choosenMessage;
 };
 
+const getUserFromStorage = function() {
+    return {
+        id: localStorage.getItem('user-id'),
+        firstname: localStorage.getItem('user-firstname'),
+        lastname: localStorage.getItem('user-lastname'),
+        email: localStorage.getItem('user-email'),
+        profilePicture: localStorage.getItem('user-profile-picture'),
+        admin: localStorage.getItem('user-admin')
+    }
+};
+
 export {
 	API_URL,
 	hideError,
 	handleAPIResult,
 	displayLoading,
     generateLoadingMessage,
-    userType
+    userType,
+    getUserFromStorage
 };

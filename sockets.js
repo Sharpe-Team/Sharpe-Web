@@ -88,8 +88,6 @@ function onLogin(socket, token, loggedUser, callback) {
     		socket.broadcast.emit('new-connected-user', loggedUser.user);
 		}
 
-		console.log("login : " + loggedUser.user.email);
-
 		// Send info user to client
 		if(callback) {
 			callback(loggedUser.user);

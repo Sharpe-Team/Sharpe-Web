@@ -1,6 +1,6 @@
 import React from 'react';
 import Point from './Point.jsx';
-import { API_URL, hideError, handleAPIResult } from '../../common/Common.jsx';
+import { API_URL, hideError, handleAPIResult, getUserFromStorage } from '../../common/Common.jsx';
 import Loading from '../../common/Loading.jsx';
 import ErrorComponent from '../../common/ErrorComponent.jsx';
 //import MyEditor from './MyEditor.jsx';
@@ -33,7 +33,6 @@ class Line extends React.Component {
 		this.getAllPoints = this.getAllPoints.bind(this);
 		this.saveNewPoint = this.saveNewPoint.bind(this);
 		this.scrollToBottom = this.scrollToBottom.bind(this);
-		this.getUserFromStorage = this.getUserFromStorage.bind(this);
 	}
     
     render() {
@@ -79,7 +78,7 @@ class Line extends React.Component {
 			component.manageNewPoint(point, true);
 		});
         
-        var user = this.getUserFromStorage();
+        var user = getUserFromStorage();
         user.id = parseInt(user.id);
         
 		this.setState({
@@ -142,16 +141,6 @@ class Line extends React.Component {
 		} else {
 			// Increase the number of unread points on the circle of the line$
 			this.props.updateUnreadPoints(point, isPrivate);
-		}
-	}
-
-	getUserFromStorage() {
-		return {
-			id: localStorage.getItem('user-id'),
-			firstname: localStorage.getItem('user-firstname'),
-			lastname: localStorage.getItem('user-lastname'),
-			email: localStorage.getItem('user-email'),
-			profilePicture: localStorage.getItem('user-profile-picture')
 		}
 	}
 

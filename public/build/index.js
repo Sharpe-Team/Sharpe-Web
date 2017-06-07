@@ -6181,7 +6181,7 @@ elliptic.eddsa = __webpack_require__(236);
 
 var _prodInvariant = __webpack_require__(31);
 
-var ReactCurrentOwner = __webpack_require__(19);
+var ReactCurrentOwner = __webpack_require__(20);
 
 var invariant = __webpack_require__(2);
 var warning = __webpack_require__(3);
@@ -6580,6 +6580,120 @@ module.exports = emptyFunction;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+ * URL of the API
+ */
+var API_URL = "https://localhost:8443/";
+
+/**
+ * Function to hide the ErrorComponent by setting showError to false in the state
+ * @param component the component which the state should be updated
+ */
+var hideError = function hideError(component) {
+  component.setState({
+    error: {
+      showError: false
+    }
+  });
+};
+
+var userType = {
+  user: 0,
+  admin: 1
+};
+
+/**
+ * Function to handle the result of an API request by updating the state
+ * @param component the target component where the state should be updated
+ * @param showError if the component should displayed the error message
+ * @param message the error message
+ */
+var handleAPIResult = function handleAPIResult(component, showError, message) {
+  component.setState({
+    error: {
+      showError: showError,
+      message: message
+    },
+    displayLoading: false
+  });
+};
+
+/**
+ * Function to display the LoadingComponent (call just before an API request)
+ * @param component the component where the Loading component should be displayed
+ */
+var displayLoading = function displayLoading(component) {
+  component.setState({
+    error: {
+      showError: false,
+      message: ""
+    },
+    displayLoading: true
+  });
+};
+
+/**
+ * Function to get a random number between a range
+ * @param min the minimum value
+ * @param max the maximum value
+ * @returns {number} the random number
+ */
+function getRandomArbitrary(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+/**
+ * Function to generate a loading message for the LoadingComponent
+ * @param componentName the name of the component
+ * @returns {string} the choosen message
+ */
+var generateLoadingMessage = function generateLoadingMessage(componentName) {
+  var messages = [["Nous vérifions votre mot de passe ...", "Nous nous assurons que vous êtes bien la bonne personne ...", "Nous consultons notre base de données ...", "Scanner rétinien en cours ..."], ["Nous ajoutons votre cercle ...", "Nous créons votre nouveau cercle ...", "Nous vérifions que vous avez choisi une belle image de profil ..."], ["Nous ajoutons ce nouvel utilisateur ...", "Nous vérifions l'ajout du nouvel utilisateur ...", "Nous consultons la NSA au sujet du nouvel utilisateur que vous ajoutez ...", "Nous vérifions que vous avez choisi une belle photo de profil pour votre compte ...", "Nous nous assurons que vous ne créez pas un compte \"Barack Obama\" ou autre juste pour vous amusez ..."]];
+  var choosenMessage = "Ceci est un message parce qu'on a pas trouvé d'autres messages";
+  if (componentName === "LoginForm") {
+    var index = getRandomArbitrary(0, messages[0].length - 1);
+    choosenMessage = messages[0][index];
+  }
+  if (componentName === "CircleForm") {
+    var _index = getRandomArbitrary(0, messages[1].length - 1);
+    choosenMessage = messages[1][_index];
+  }
+  if (componentName === "UserForm") {
+    var _index2 = getRandomArbitrary(0, messages[2].length - 1);
+    choosenMessage = messages[2][_index2];
+  }
+  return choosenMessage;
+};
+
+var getUserFromStorage = function getUserFromStorage() {
+  return {
+    id: localStorage.getItem('user-id'),
+    firstname: localStorage.getItem('user-firstname'),
+    lastname: localStorage.getItem('user-lastname'),
+    email: localStorage.getItem('user-email'),
+    profilePicture: localStorage.getItem('user-profile-picture'),
+    admin: localStorage.getItem('user-admin')
+  };
+};
+
+exports.API_URL = API_URL;
+exports.hideError = hideError;
+exports.handleAPIResult = handleAPIResult;
+exports.displayLoading = displayLoading;
+exports.generateLoadingMessage = generateLoadingMessage;
+exports.userType = userType;
+exports.getUserFromStorage = getUserFromStorage;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -6644,7 +6758,7 @@ module.exports = warning;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6901,7 +7015,7 @@ module.exports = ReactUpdates;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6935,108 +7049,6 @@ var ReactCurrentOwner = {
 };
 
 module.exports = ReactCurrentOwner;
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-/**
- * URL of the API
- */
-var API_URL = "https://localhost:8443/";
-
-/**
- * Function to hide the ErrorComponent by setting showError to false in the state
- * @param component the component which the state should be updated
- */
-var hideError = function hideError(component) {
-  component.setState({
-    error: {
-      showError: false
-    }
-  });
-};
-
-var userType = {
-  user: 0,
-  admin: 1
-};
-
-/**
- * Function to handle the result of an API request by updating the state
- * @param component the target component where the state should be updated
- * @param showError if the component should displayed the error message
- * @param message the error message
- */
-var handleAPIResult = function handleAPIResult(component, showError, message) {
-  component.setState({
-    error: {
-      showError: showError,
-      message: message
-    },
-    displayLoading: false
-  });
-};
-
-/**
- * Function to display the LoadingComponent (call just before an API request)
- * @param component the component where the Loading component should be displayed
- */
-var displayLoading = function displayLoading(component) {
-  component.setState({
-    error: {
-      showError: false,
-      message: ""
-    },
-    displayLoading: true
-  });
-};
-
-/**
- * Function to get a random number between a range
- * @param min the minimum value
- * @param max the maximum value
- * @returns {number} the random number
- */
-function getRandomArbitrary(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
-
-/**
- * Function to generate a loading message for the LoadingComponent
- * @param componentName the name of the component
- * @returns {string} the choosen message
- */
-var generateLoadingMessage = function generateLoadingMessage(componentName) {
-  var messages = [["Nous vérifions votre mot de passe ...", "Nous nous assurons que vous êtes bien la bonne personne ...", "Nous consultons notre base de données ...", "Scanner rétinien en cours ..."], ["Nous ajoutons votre cercle ...", "Nous créons votre nouveau cercle ...", "Nous vérifions que vous avez choisi une belle image de profil ..."], ["Nous ajoutons ce nouvel utilisateur ...", "Nous vérifions l'ajout du nouvel utilisateur ...", "Nous consultons la NSA au sujet du nouvel utilisateur que vous ajoutez ...", "Nous vérifions que vous avez choisi une belle photo de profil pour votre compte ...", "Nous nous assurons que vous ne créez pas un compte \"Barack Obama\" ou autre juste pour vous amusez ..."]];
-  var choosenMessage = "Ceci est un message parce qu'on a pas trouvé d'autres messages";
-  if (componentName === "LoginForm") {
-    var index = getRandomArbitrary(0, messages[0].length - 1);
-    choosenMessage = messages[0][index];
-  }
-  if (componentName === "CircleForm") {
-    var _index = getRandomArbitrary(0, messages[1].length - 1);
-    choosenMessage = messages[1][_index];
-  }
-  if (componentName === "UserForm") {
-    var _index2 = getRandomArbitrary(0, messages[2].length - 1);
-    choosenMessage = messages[2][_index2];
-  }
-  return choosenMessage;
-};
-
-exports.API_URL = API_URL;
-exports.hideError = hideError;
-exports.handleAPIResult = handleAPIResult;
-exports.displayLoading = displayLoading;
-exports.generateLoadingMessage = generateLoadingMessage;
-exports.userType = userType;
 
 /***/ }),
 /* 21 */
@@ -7823,7 +7835,7 @@ exports.parsePath = parsePath;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _warning = __webpack_require__(17);
+var _warning = __webpack_require__(18);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -8056,7 +8068,7 @@ var routes = exports.routes = oneOfType([route, arrayOf(route)]);
 
 var _assign = __webpack_require__(7);
 
-var ReactCurrentOwner = __webpack_require__(19);
+var ReactCurrentOwner = __webpack_require__(20);
 
 var warning = __webpack_require__(3);
 var canDefineProperty = __webpack_require__(70);
@@ -8598,7 +8610,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Common = __webpack_require__(20);
+var _Common = __webpack_require__(17);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10865,7 +10877,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _warning = __webpack_require__(17);
+var _warning = __webpack_require__(18);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -13301,7 +13313,7 @@ exports.__esModule = true;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _warning = __webpack_require__(17);
+var _warning = __webpack_require__(18);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -13327,7 +13339,7 @@ exports.__esModule = true;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _warning = __webpack_require__(17);
+var _warning = __webpack_require__(18);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -14474,10 +14486,10 @@ module.exports = ReactErrorUtils;
 
 var _prodInvariant = __webpack_require__(6);
 
-var ReactCurrentOwner = __webpack_require__(19);
+var ReactCurrentOwner = __webpack_require__(20);
 var ReactInstanceMap = __webpack_require__(51);
 var ReactInstrumentation = __webpack_require__(15);
-var ReactUpdates = __webpack_require__(18);
+var ReactUpdates = __webpack_require__(19);
 
 var invariant = __webpack_require__(2);
 var warning = __webpack_require__(3);
@@ -18573,7 +18585,7 @@ exports.readState = readState;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _warning = __webpack_require__(17);
+var _warning = __webpack_require__(18);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -18699,7 +18711,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _warning = __webpack_require__(17);
+var _warning = __webpack_require__(18);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -18952,7 +18964,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _warning = __webpack_require__(17);
+var _warning = __webpack_require__(18);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -19247,7 +19259,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _warning = __webpack_require__(17);
+var _warning = __webpack_require__(18);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -20798,7 +20810,7 @@ var _assign = __webpack_require__(7);
 
 var LinkedValueUtils = __webpack_require__(87);
 var ReactDOMComponentTree = __webpack_require__(9);
-var ReactUpdates = __webpack_require__(18);
+var ReactUpdates = __webpack_require__(19);
 
 var warning = __webpack_require__(3);
 
@@ -21271,7 +21283,7 @@ var DOMLazyTree = __webpack_require__(38);
 var DOMProperty = __webpack_require__(23);
 var React = __webpack_require__(41);
 var ReactBrowserEventEmitter = __webpack_require__(63);
-var ReactCurrentOwner = __webpack_require__(19);
+var ReactCurrentOwner = __webpack_require__(20);
 var ReactDOMComponentTree = __webpack_require__(9);
 var ReactDOMContainerInfo = __webpack_require__(296);
 var ReactDOMFeatureFlags = __webpack_require__(298);
@@ -21281,7 +21293,7 @@ var ReactInstrumentation = __webpack_require__(15);
 var ReactMarkupChecksum = __webpack_require__(318);
 var ReactReconciler = __webpack_require__(39);
 var ReactUpdateQueue = __webpack_require__(90);
-var ReactUpdates = __webpack_require__(18);
+var ReactUpdates = __webpack_require__(19);
 
 var emptyObject = __webpack_require__(47);
 var instantiateReactComponent = __webpack_require__(157);
@@ -22332,7 +22344,7 @@ module.exports = setTextContent;
 
 var _prodInvariant = __webpack_require__(6);
 
-var ReactCurrentOwner = __webpack_require__(19);
+var ReactCurrentOwner = __webpack_require__(20);
 var REACT_ELEMENT_TYPE = __webpack_require__(312);
 
 var getIteratorFn = __webpack_require__(346);
@@ -23023,7 +23035,7 @@ module.exports = REACT_ELEMENT_TYPE;
 
 
 
-var ReactCurrentOwner = __webpack_require__(19);
+var ReactCurrentOwner = __webpack_require__(20);
 var ReactComponentTreeHook = __webpack_require__(14);
 var ReactElement = __webpack_require__(30);
 
@@ -25937,7 +25949,7 @@ var _NotFoundPage = __webpack_require__(202);
 
 var _NotFoundPage2 = _interopRequireDefault(_NotFoundPage);
 
-var _Common = __webpack_require__(20);
+var _Common = __webpack_require__(17);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26262,7 +26274,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Common = __webpack_require__(20);
+var _Common = __webpack_require__(17);
 
 var _Loading = __webpack_require__(34);
 
@@ -26470,7 +26482,7 @@ var _Point = __webpack_require__(195);
 
 var _Point2 = _interopRequireDefault(_Point);
 
-var _Common = __webpack_require__(20);
+var _Common = __webpack_require__(17);
 
 var _Loading = __webpack_require__(34);
 
@@ -26523,7 +26535,6 @@ var Line = function (_React$Component) {
 		_this.getAllPoints = _this.getAllPoints.bind(_this);
 		_this.saveNewPoint = _this.saveNewPoint.bind(_this);
 		_this.scrollToBottom = _this.scrollToBottom.bind(_this);
-		_this.getUserFromStorage = _this.getUserFromStorage.bind(_this);
 		return _this;
 	}
 
@@ -26580,7 +26591,7 @@ var Line = function (_React$Component) {
 				component.manageNewPoint(point, true);
 			});
 
-			var user = this.getUserFromStorage();
+			var user = (0, _Common.getUserFromStorage)();
 			user.id = parseInt(user.id);
 
 			this.setState({
@@ -26652,17 +26663,6 @@ var Line = function (_React$Component) {
 				// Increase the number of unread points on the circle of the line$
 				this.props.updateUnreadPoints(point, isPrivate);
 			}
-		}
-	}, {
-		key: 'getUserFromStorage',
-		value: function getUserFromStorage() {
-			return {
-				id: localStorage.getItem('user-id'),
-				firstname: localStorage.getItem('user-firstname'),
-				lastname: localStorage.getItem('user-lastname'),
-				email: localStorage.getItem('user-email'),
-				profilePicture: localStorage.getItem('user-profile-picture')
-			};
 		}
 	}, {
 		key: 'getAllPoints',
@@ -26892,6 +26892,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = __webpack_require__(22);
 
+var _Common = __webpack_require__(17);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -26915,7 +26917,8 @@ var NavigatorMenu = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 { id: 'search', className: 'row' },
-                _react2.default.createElement(
+                console.log("admin:" + (0, _Common.getUserFromStorage)().admin),
+                (0, _Common.getUserFromStorage)().admin == 1 && _react2.default.createElement(
                     _reactRouter.Link,
                     { to: '/userform' },
                     _react2.default.createElement('img', { className: 'nav-button', src: '/resource/user.png' })
@@ -27123,7 +27126,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Common = __webpack_require__(20);
+var _Common = __webpack_require__(17);
 
 var _Loading = __webpack_require__(34);
 
@@ -27326,7 +27329,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = __webpack_require__(22);
 
-var _Common = __webpack_require__(20);
+var _Common = __webpack_require__(17);
 
 var _Loading = __webpack_require__(34);
 
@@ -27753,7 +27756,7 @@ var _ErrorComponent = __webpack_require__(33);
 
 var _ErrorComponent2 = _interopRequireDefault(_ErrorComponent);
 
-var _Common = __webpack_require__(20);
+var _Common = __webpack_require__(17);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28133,7 +28136,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = __webpack_require__(22);
 
-var _Common = __webpack_require__(20);
+var _Common = __webpack_require__(17);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28190,9 +28193,7 @@ function requireAuth(Component, neededUserType) {
 					socket.emit('verify-token', localStorage.getItem("token"), function (user) {
 						// Callback from server
 						if (user) {
-							if (user.id != localStorage.getItem('user-id')) {
-								component.storeUserInStorage(user);
-							}
+							component.storeUserInStorage(user);
 							if (neededUserType == _Common.userType.admin && user.admin != 1) {
 								component.props.router.push('/notAuthorized');
 							}
@@ -28213,6 +28214,7 @@ function requireAuth(Component, neededUserType) {
 				localStorage.setItem('user-lastname', user.lastname);
 				localStorage.setItem('user-email', user.email);
 				localStorage.setItem('user-profile-picture', user.profilePicture);
+				console.log("storage:" + user.admin);
 				localStorage.setItem('user-admin', user.admin);
 			}
 		}, {
@@ -28267,7 +28269,7 @@ var _ErrorComponent = __webpack_require__(33);
 
 var _ErrorComponent2 = _interopRequireDefault(_ErrorComponent);
 
-var _Common = __webpack_require__(20);
+var _Common = __webpack_require__(17);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -37129,7 +37131,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _warning = __webpack_require__(17);
+var _warning = __webpack_require__(18);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -37187,7 +37189,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _warning = __webpack_require__(17);
+var _warning = __webpack_require__(18);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -39109,7 +39111,7 @@ var EventPluginHub = __webpack_require__(49);
 var EventPropagators = __webpack_require__(50);
 var ExecutionEnvironment = __webpack_require__(10);
 var ReactDOMComponentTree = __webpack_require__(9);
-var ReactUpdates = __webpack_require__(18);
+var ReactUpdates = __webpack_require__(19);
 var SyntheticEvent = __webpack_require__(21);
 
 var getEventTarget = __webpack_require__(94);
@@ -40187,7 +40189,7 @@ var _prodInvariant = __webpack_require__(6),
 
 var React = __webpack_require__(41);
 var ReactComponentEnvironment = __webpack_require__(88);
-var ReactCurrentOwner = __webpack_require__(19);
+var ReactCurrentOwner = __webpack_require__(20);
 var ReactErrorUtils = __webpack_require__(89);
 var ReactInstanceMap = __webpack_require__(51);
 var ReactInstrumentation = __webpack_require__(15);
@@ -41096,7 +41098,7 @@ var ReactDOMComponentTree = __webpack_require__(9);
 var ReactDefaultInjection = __webpack_require__(311);
 var ReactMount = __webpack_require__(149);
 var ReactReconciler = __webpack_require__(39);
-var ReactUpdates = __webpack_require__(18);
+var ReactUpdates = __webpack_require__(19);
 var ReactVersion = __webpack_require__(326);
 
 var findDOMNode = __webpack_require__(343);
@@ -42387,7 +42389,7 @@ var _prodInvariant = __webpack_require__(6),
 var DOMPropertyOperations = __webpack_require__(142);
 var LinkedValueUtils = __webpack_require__(87);
 var ReactDOMComponentTree = __webpack_require__(9);
-var ReactUpdates = __webpack_require__(18);
+var ReactUpdates = __webpack_require__(19);
 
 var invariant = __webpack_require__(2);
 var warning = __webpack_require__(3);
@@ -43341,7 +43343,7 @@ var _prodInvariant = __webpack_require__(6),
 
 var LinkedValueUtils = __webpack_require__(87);
 var ReactDOMComponentTree = __webpack_require__(9);
-var ReactUpdates = __webpack_require__(18);
+var ReactUpdates = __webpack_require__(19);
 
 var invariant = __webpack_require__(2);
 var warning = __webpack_require__(3);
@@ -44129,7 +44131,7 @@ module.exports = ReactDebugTool;
 
 var _assign = __webpack_require__(7);
 
-var ReactUpdates = __webpack_require__(18);
+var ReactUpdates = __webpack_require__(19);
 var Transaction = __webpack_require__(65);
 
 var emptyFunction = __webpack_require__(16);
@@ -44360,7 +44362,7 @@ var EventListener = __webpack_require__(123);
 var ExecutionEnvironment = __webpack_require__(10);
 var PooledClass = __webpack_require__(28);
 var ReactDOMComponentTree = __webpack_require__(9);
-var ReactUpdates = __webpack_require__(18);
+var ReactUpdates = __webpack_require__(19);
 
 var getEventTarget = __webpack_require__(94);
 var getUnboundedScrollPosition = __webpack_require__(248);
@@ -44560,7 +44562,7 @@ var ReactComponentEnvironment = __webpack_require__(88);
 var ReactEmptyComponent = __webpack_require__(145);
 var ReactBrowserEventEmitter = __webpack_require__(63);
 var ReactHostComponent = __webpack_require__(147);
-var ReactUpdates = __webpack_require__(18);
+var ReactUpdates = __webpack_require__(19);
 
 var ReactInjection = {
   Component: ReactComponentEnvironment.injection,
@@ -44696,7 +44698,7 @@ var ReactComponentEnvironment = __webpack_require__(88);
 var ReactInstanceMap = __webpack_require__(51);
 var ReactInstrumentation = __webpack_require__(15);
 
-var ReactCurrentOwner = __webpack_require__(19);
+var ReactCurrentOwner = __webpack_require__(20);
 var ReactReconciler = __webpack_require__(39);
 var ReactChildReconciler = __webpack_require__(291);
 
@@ -47275,7 +47277,7 @@ module.exports = dangerousStyleValue;
 
 var _prodInvariant = __webpack_require__(6);
 
-var ReactCurrentOwner = __webpack_require__(19);
+var ReactCurrentOwner = __webpack_require__(20);
 var ReactDOMComponentTree = __webpack_require__(9);
 var ReactInstanceMap = __webpack_require__(51);
 
@@ -51076,7 +51078,7 @@ module.exports = onlyChild;
 
 var _prodInvariant = __webpack_require__(31);
 
-var ReactCurrentOwner = __webpack_require__(19);
+var ReactCurrentOwner = __webpack_require__(20);
 var REACT_ELEMENT_TYPE = __webpack_require__(168);
 
 var getIteratorFn = __webpack_require__(171);

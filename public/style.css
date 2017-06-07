@@ -299,10 +299,11 @@ input, button {
     vertical-align: bottom;
 }
 
-.not-found, .not-authorized {
+.not-found, .not-authorized, .admin-page {
     background: url("resource/background.png");
     background-size: cover;
-    height: 100%;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
 }
 
 .not-found-link, .not-authorized-link {
@@ -312,4 +313,14 @@ input, button {
 .not-found-image, .not-authorized-image {
     display: block;
     margin: 0 auto;
+}
+
+table {
+    margin-bottom: 0px !important;
+    margin-top: 10px;
+}
+
+.admin-panel {
+    margin-left: 10px;
+    margin-right: 10px;
 }

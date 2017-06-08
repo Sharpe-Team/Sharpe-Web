@@ -17,26 +17,29 @@ class PointsModeration extends React.Component {
     
     render() {
         return (
-            <table className="unstriped">
-                <thead>
-                    <tr>
-                        <th>Point</th>
-                        <th>Suppression</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        this.state.points.map(function(point) {
-                            return (
-                                <tr key={point.id}>
-                                    <td><Point point={point}/></td>
-                                    <td><button className="button">Supprimer</button></td>
-                                </tr>
-                            )
-                        }, this)
-                    }        
-                </tbody>
-            </table>
+            <div className="row">
+                <table className="column medium-12 unstriped">
+                    <caption>Supprimer un point</caption>
+                    <thead>
+                        <tr>
+                            <th>Point</th>
+                            <th>Suppression</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            this.state.points.map(function(point) {
+                                return (
+                                    <tr key={point.id}>
+                                        <td><Point point={point}/></td>
+                                        <td><button className="button">Supprimer</button></td>
+                                    </tr>
+                                )
+                            }, this)
+                        }        
+                    </tbody>
+                </table>
+            </div>
         );
     }
     

@@ -64,7 +64,7 @@ html, body, #app, #div-app {
 	padding: 5px;
 }
 
-#div-line input, #div-line button {
+#div-line input, #div-line button, tr button {
 	margin: 0px !important;
 }
 
@@ -198,6 +198,8 @@ input, button {
     height: 50px;
     margin-top: 10px;
     margin-left: 10px;
+    cursor: pointer;
+    cursor: hand;
 }
 
 .nav-button {
@@ -329,4 +331,8 @@ table {
 .admin-panel, .moderation-panel {
     margin-left: 10px;
     margin-right: 10px;
+}
+
+.moderation-menu-bar {
+    margin-bottom: 10px;
 }

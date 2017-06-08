@@ -39,7 +39,7 @@ class CircleForm extends React.Component {
                 	<Loading loadingFrom="CircleForm"/>
                 }
                 
-                <Link to="/app"><img className="home-button" src="/resource/home.png"></img></Link>
+                <Link to="/app"><img className="home-button" src="/resource/home-button.png"></img></Link>
 
                 <div className="reveal" id="modalProfilePicturePreview" data-reveal>
                 	<img src={"/upload/" + this.state.profilePicture} width="200" />

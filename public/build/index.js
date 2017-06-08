@@ -26048,7 +26048,12 @@ var Admin = function (_React$Component) {
                 _react2.default.createElement(
                     _reactRouter.Link,
                     { to: '/app' },
-                    _react2.default.createElement('img', { className: 'home-button', src: '/resource/home.png' })
+                    _react2.default.createElement('img', { className: 'home-button', src: '/resource/home-button.png' })
+                ),
+                _react2.default.createElement(
+                    _reactRouter.Link,
+                    { to: '/userform' },
+                    _react2.default.createElement('img', { className: 'userform-button', src: '/resource/user-button.png' })
                 ),
                 _react2.default.createElement(
                     'div',
@@ -27635,7 +27640,7 @@ var CircleForm = function (_React$Component) {
 				_react2.default.createElement(
 					_reactRouter.Link,
 					{ to: '/app' },
-					_react2.default.createElement('img', { className: 'home-button', src: '/resource/home.png' })
+					_react2.default.createElement('img', { className: 'home-button', src: '/resource/home-button.png' })
 				),
 				_react2.default.createElement(
 					'div',
@@ -28051,7 +28056,12 @@ var UserForm = function (_React$Component) {
 				_react2.default.createElement(
 					_reactRouter.Link,
 					{ to: '/app' },
-					_react2.default.createElement('img', { className: 'home-button', src: '/resource/home.png' })
+					_react2.default.createElement('img', { className: 'home-button', src: '/resource/home-button.png' })
+				),
+				_react2.default.createElement(
+					_reactRouter.Link,
+					{ to: '/admin' },
+					_react2.default.createElement('img', { className: 'admin-button', src: '/resource/admin-button.png' })
 				),
 				_react2.default.createElement(
 					'form',

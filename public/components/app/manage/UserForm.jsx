@@ -36,7 +36,8 @@ class UserForm extends React.Component {
                 	<Loading loadingFrom="UserForm"/>
                 }
                 
-				<Link to="/app"><img className="home-button" src="/resource/home.png"></img></Link>
+				<Link to="/app"><img className="home-button" src="/resource/home-button.png"></img></Link>
+                <Link to="/admin"><img className="admin-button" src="/resource/admin-button.png"></img></Link>
 
 				<form onSubmit={this.handleSubmit}>
 					<div className="expanded row align-center">
@@ -227,7 +228,7 @@ class UserForm extends React.Component {
 			if(response.status == 201) {
 				handleAPIResult(component, false, "");
 				alert("L'utilisateur a été ajouté avec succès !");
-				browserHistory.push('/app');
+				browserHistory.push('/admin');
 			} else {
 				handleAPIResult(component, true, "Une erreur est survenue lors de la création du nouvel utilisateur !");
 			}

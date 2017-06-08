@@ -6,7 +6,8 @@ class Admin extends React.Component {
     render() {
         return (
             <div className="admin-page">
-                <Link to="/app"><img className="home-button" src="/resource/home.png"></img></Link>
+                <Link to="/app"><img className="home-button" src="/resource/home-button.png"></img></Link>
+                <Link to="/userform"><img className="userform-button" src="/resource/user-button.png"></img></Link>
                 <div className="admin-panel">
                     <UsersAdmin />
                 </div>

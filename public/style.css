@@ -194,7 +194,7 @@ input, button {
     text-align: center
 }
 
-.home-button {
+.home-button, .userform-button, .admin-button {
     height: 50px;
     margin-top: 10px;
     margin-left: 10px;

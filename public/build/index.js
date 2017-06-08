@@ -26709,6 +26709,11 @@ var CircleList = function (_React$Component) {
 							return _react2.default.createElement(
 								'div',
 								{ key: circle.id, onClick: this.selectCircle.bind(this, circle), className: 'circleListItem', 'aria-describedby': "badge_" + circle.id },
+								_react2.default.createElement(
+									_reactRouter.Link,
+									{ to: '/moderation/' + circle.id },
+									_react2.default.createElement('img', { className: 'moderation-button', src: '/resource/moderation-button.png' })
+								),
 								circle.name,
 								'\xA0',
 								circle.nbUnreadPoints > 0 && _react2.default.createElement(

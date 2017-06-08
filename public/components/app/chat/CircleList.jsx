@@ -54,6 +54,9 @@ class CircleList extends React.Component {
                                 }
                                 return (
                                     <div key={circle.id} onClick={this.selectCircle.bind(this, circle)} className="circleListItem" aria-describedby={"badge_" + circle.id}>
+                                        <Link to={'/moderation/'+circle.id}>
+                                            <img className="moderation-button" src="/resource/moderation-button.png"/>
+                                        </Link>
                                         {circle.name}
                                         &nbsp;
                                         { circle.nbUnreadPoints > 0 &&

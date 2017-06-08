@@ -28722,7 +28722,7 @@ var PointsModeration = function (_React$Component) {
         value: function getAllModerators() {
             var component = this;
 
-            fetch(_Common.API_URL + 'rucs?role_id=' + 1 + "&circle_id" + this.props.circle.id, {
+            fetch(_Common.API_URL + 'ruc?role_id=' + 1 + "&circle_id=" + this.props.circle.id, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('token')

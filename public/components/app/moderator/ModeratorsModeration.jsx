@@ -79,7 +79,7 @@ class PointsModeration extends React.Component {
     getAllModerators(){
         let component = this;
         
-        fetch(API_URL + 'rucs?role_id=' + 1 + "&circle_id" + this.props.circle.id, {
+        fetch(API_URL + 'ruc?role_id=' + 1 + "&circle_id=" + this.props.circle.id, {
 			method: 'GET',
 			headers: {
 				'Authorization': 'Bearer ' + localStorage.getItem('token')

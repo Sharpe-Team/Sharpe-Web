@@ -28408,7 +28408,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var selection = {
     point: 0,
-    request: 1
+    request: 1,
+    moderator: 2
 };
 
 var Admin = function (_React$Component) {
@@ -28447,6 +28448,11 @@ var Admin = function (_React$Component) {
                     'button',
                     { onClick: this.changeElement.bind(this, selection.request) },
                     _react2.default.createElement('img', { className: 'request-button', src: '/resource/request-button.png' })
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.changeElement.bind(this, selection.moderator) },
+                    _react2.default.createElement('img', { className: 'moderator-button', src: '/resource/moderator-button.png' })
                 ),
                 _react2.default.createElement(
                     'div',

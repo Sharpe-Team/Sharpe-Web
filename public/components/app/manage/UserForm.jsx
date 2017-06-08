@@ -227,7 +227,6 @@ class UserForm extends React.Component {
 		.then(function(response) {
 			if(response.status == 201) {
 				handleAPIResult(component, false, "");
-				alert("L'utilisateur a été ajouté avec succès !");
 				browserHistory.push('/admin');
 			} else {
 				handleAPIResult(component, true, "Une erreur est survenue lors de la création du nouvel utilisateur !");

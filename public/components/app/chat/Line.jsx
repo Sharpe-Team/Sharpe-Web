@@ -47,7 +47,7 @@ class Line extends React.Component {
 				<ul id="points" style={{height: "calc(100% - " + this.state.newPointHeight + "px"}}>
 					{
 						this.state.points.map(function(point) {
-							return <Point key={point.id} point={point} />
+							return <li><Point key={point.id} point={point} /></li>
 						}, this)
 					}
 				</ul>

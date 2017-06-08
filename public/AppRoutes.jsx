@@ -9,6 +9,7 @@ import CircleFormPage from './components/app/manage/CircleForm.jsx';
 import UserFormPage from './components/app/manage/UserForm.jsx';
 import NotFoundPage from './components/common/NotFoundPage.jsx';
 import NotAuthorizedPage from './components/common/NotAuthorizedPage.jsx';
+import Moderation from './components/app/moderator/Moderation.jsx';
 import { userType } from './components/common/Common.jsx';
 
 class AppRoutes extends React.Component {
@@ -22,6 +23,7 @@ class AppRoutes extends React.Component {
 				<Route path="/circleForm" component={requireAuth(CircleFormPage, userType.user)} />
 				<Route path="/userForm" component={requireAuth(UserFormPage, userType.admin)} />
                 <Route path="/admin" component={requireAuth(Admin, userType.admin)} />
+                <Route path="/moderation" component={requireAuth(Moderation, userType.user)} />
 				<Route path="/*" component={NotFoundPage} />
 			</Router>
 		);

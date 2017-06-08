@@ -20,25 +20,23 @@ class Point extends React.Component {
             pictureUrl = "/uploads/" + pictureUrl;
         }
 		return (
-			<li>
-                <div className="row align-top">
-                    <div className="imageLine column medium-1">
-                        <img className="userPicture" src={pictureUrl} />
+            <div className="row align-top">
+                <div className="imageLine column medium-1">
+                    <img className="userPicture" src={pictureUrl} />
+                </div>
+                <div className="column medium-11">
+                    <div className="row">
+                        <div className="userPoint column medium-6">
+                            <b>{this.props.point.user.firstname}</b>
+                            &nbsp;{this.props.point.user.lastname}
+                        </div>
+                        <div className="datePoint column medium-6">{this.renderDate(this.props.point.created)}</div>
                     </div>
-                    <div className="column medium-11">
-                        <div className="row">
-                            <div className="userPoint column medium-6">
-                                <b>{this.props.point.user.firstname}</b>
-                                &nbsp;{this.props.point.user.lastname}
-                            </div>
-                            <div className="datePoint column medium-6">{this.renderDate(this.props.point.created)}</div>
-                        </div>
-                        <div className="row">
-                            <div className="point column medium-12">{this.props.point.content}</div>
-                        </div>
+                    <div className="row">
+                        <div className="point column medium-12">{this.props.point.content}</div>
                     </div>
                 </div>
-			</li>
+            </div>
 		);
 	}
 

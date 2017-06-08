@@ -194,7 +194,7 @@ input, button {
     text-align: center
 }
 
-.home-button, .userform-button, .admin-button {
+.home-button, .userform-button, .admin-button, .point-button, .request-button {
     height: 50px;
     margin-top: 10px;
     margin-left: 10px;
@@ -299,7 +299,13 @@ input, button {
     vertical-align: bottom;
 }
 
-.not-found, .not-authorized, .admin-page {
+.not-found, .not-authorized {
+    background: url("resource/background.png");
+    height: 100%;
+    background-size: cover;
+}
+
+.admin-page, .moderation-page {
     background: url("resource/background.png");
     background-size: cover;
     background-attachment: fixed;
@@ -320,7 +326,7 @@ table {
     margin-top: 10px;
 }
 
-.admin-panel {
+.admin-panel, .moderation-panel {
     margin-left: 10px;
     margin-right: 10px;
 }

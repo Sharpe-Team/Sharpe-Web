@@ -13,6 +13,7 @@ class PointsModeration extends React.Component {
         }
         
         this.getAllUsers = this.getAllUsers.bind(this);
+        this.getAllModerators = this.getAllModerators.bind(this);
     }
     
     render() {
@@ -29,7 +30,7 @@ class PointsModeration extends React.Component {
                     </thead>
                     <tbody>
                         {
-                            this.state.users.map(function(user) {
+                            this.state.moderators.map(function(user) {
                                 return (
                                     <tr key={user.id}>
                                         <td>{user.firstname}</td>
@@ -72,6 +73,36 @@ class PointsModeration extends React.Component {
     
     componentDidMount() {
         this.getAllUsers();
+        this.getAllModerators();
+    }
+    
+    getAllModerators(){
+        let component = this;
+        
+        fetch(API_URL + 'rucs?role_id=' + 1 + "&circle_id" + this.props.circle.id, {
+			method: 'GET',
+			headers: {
+				'Authorization': 'Bearer ' + localStorage.getItem('token')
+			}
+		})
+		.then(function(response) {
+			return response.json();
+		})
+		.then(function(users) {
+			if(users) {
+				handleAPIResult(component, false, "");
+
+				component.setState({
+					users: users
+				});
+			} else {
+				handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des utilisateurs...");
+			}
+		})
+		.catch(function(error) {
+			console.log(error);
+			handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des utilisateurs...");
+		});   
     }
     
     getAllUsers(){

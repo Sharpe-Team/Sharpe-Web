@@ -23,7 +23,7 @@ class AppRoutes extends React.Component {
 				<Route path="/circleForm" component={requireAuth(CircleFormPage, userType.user)} />
 				<Route path="/userForm" component={requireAuth(UserFormPage, userType.admin)} />
                 <Route path="/admin" component={requireAuth(Admin, userType.admin)} />
-                <Route path="/moderation" component={requireAuth(Moderation, userType.user)} />
+                <Route path="/moderation/:circleId" component={requireAuth(Moderation, userType.user)} />
 				<Route path="/*" component={NotFoundPage} />
 			</Router>
 		);

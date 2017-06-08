@@ -6087,65 +6087,6 @@ function _resetWarned() {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright 2013-2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
-
-
-
-/**
- * Use invariant() to assert state which your program assumes to be true.
- *
- * Provide sprintf-style format (only %s is supported) and arguments
- * to provide information about what broke and what you were
- * expecting.
- *
- * The invariant message will be stripped in production, but the invariant
- * will remain to ensure logic does not differ in production.
- */
-
-var invariant = function(condition, format, a, b, c, d, e, f) {
-  if (process.env.NODE_ENV !== 'production') {
-    if (format === undefined) {
-      throw new Error('invariant requires an error message argument');
-    }
-  }
-
-  if (!condition) {
-    var error;
-    if (format === undefined) {
-      error = new Error(
-        'Minified exception occurred; use the non-minified dev environment ' +
-        'for the full error message and additional helpful warnings.'
-      );
-    } else {
-      var args = [a, b, c, d, e, f];
-      var argIndex = 0;
-      error = new Error(
-        format.replace(/%s/g, function() { return args[argIndex++]; })
-      );
-      error.name = 'Invariant Violation';
-    }
-
-    error.framesToPop = 1; // we don't care about invariant's own frame
-    throw error;
-  }
-};
-
-module.exports = invariant;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 
 
 exports.__esModule = true;
@@ -6304,27 +6245,66 @@ exports.hashHistory = _hashHistory3.default;
 exports.createMemoryHistory = _createMemoryHistory3.default;
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright 2013-2015, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
 
 
-var elliptic = exports;
 
-elliptic.version = __webpack_require__(247).version;
-elliptic.utils = __webpack_require__(246);
-elliptic.rand = __webpack_require__(111);
-elliptic.curve = __webpack_require__(57);
-elliptic.curves = __webpack_require__(238);
+/**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
 
-// Protocols
-elliptic.ec = __webpack_require__(239);
-elliptic.eddsa = __webpack_require__(242);
+var invariant = function(condition, format, a, b, c, d, e, f) {
+  if (process.env.NODE_ENV !== 'production') {
+    if (format === undefined) {
+      throw new Error('invariant requires an error message argument');
+    }
+  }
 
+  if (!condition) {
+    var error;
+    if (format === undefined) {
+      error = new Error(
+        'Minified exception occurred; use the non-minified dev environment ' +
+        'for the full error message and additional helpful warnings.'
+      );
+    } else {
+      var args = [a, b, c, d, e, f];
+      var argIndex = 0;
+      error = new Error(
+        format.replace(/%s/g, function() { return args[argIndex++]; })
+      );
+      error.name = 'Invariant Violation';
+    }
+
+    error.framesToPop = 1; // we don't care about invariant's own frame
+    throw error;
+  }
+};
+
+module.exports = invariant;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6436,6 +6416,26 @@ exports.displayLoading = displayLoading;
 exports.generateLoadingMessage = generateLoadingMessage;
 exports.userType = userType;
 exports.getUserFromStorage = getUserFromStorage;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var elliptic = exports;
+
+elliptic.version = __webpack_require__(247).version;
+elliptic.utils = __webpack_require__(246);
+elliptic.rand = __webpack_require__(111);
+elliptic.curve = __webpack_require__(57);
+elliptic.curves = __webpack_require__(238);
+
+// Protocols
+elliptic.ec = __webpack_require__(239);
+elliptic.eddsa = __webpack_require__(242);
+
 
 /***/ }),
 /* 16 */
@@ -8610,7 +8610,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Common = __webpack_require__(15);
+var _Common = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -9177,7 +9177,7 @@ exports.getParamNames = getParamNames;
 exports.getParams = getParams;
 exports.formatPattern = formatPattern;
 
-var _invariant = __webpack_require__(12);
+var _invariant = __webpack_require__(13);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -12306,7 +12306,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _invariant = __webpack_require__(12);
+var _invariant = __webpack_require__(13);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -18767,7 +18767,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _invariant = __webpack_require__(12);
+var _invariant = __webpack_require__(13);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -18818,7 +18818,7 @@ var _warning = __webpack_require__(19);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _invariant = __webpack_require__(12);
+var _invariant = __webpack_require__(13);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -22629,7 +22629,7 @@ var _routerWarning = __webpack_require__(11);
 
 var _routerWarning2 = _interopRequireDefault(_routerWarning);
 
-var _invariant = __webpack_require__(12);
+var _invariant = __webpack_require__(13);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -22806,7 +22806,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _invariant = __webpack_require__(12);
+var _invariant = __webpack_require__(13);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -26022,7 +26022,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(13);
+var _reactRouter = __webpack_require__(12);
 
 var _AuthenticationComponent = __webpack_require__(204);
 
@@ -26064,7 +26064,7 @@ var _Moderation = __webpack_require__(201);
 
 var _Moderation2 = _interopRequireDefault(_Moderation);
 
-var _Common = __webpack_require__(15);
+var _Common = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26096,7 +26096,7 @@ var AppRoutes = function (_React$Component) {
 				_react2.default.createElement(_reactRouter.Route, { path: '/circleForm', component: (0, _AuthenticationComponent2.default)(_CircleForm2.default, _Common.userType.user) }),
 				_react2.default.createElement(_reactRouter.Route, { path: '/userForm', component: (0, _AuthenticationComponent2.default)(_UserForm2.default, _Common.userType.admin) }),
 				_react2.default.createElement(_reactRouter.Route, { path: '/admin', component: (0, _AuthenticationComponent2.default)(_Admin2.default, _Common.userType.admin) }),
-				_react2.default.createElement(_reactRouter.Route, { path: '/moderation', component: (0, _AuthenticationComponent2.default)(_Moderation2.default, _Common.userType.user) }),
+				_react2.default.createElement(_reactRouter.Route, { path: '/moderation/:circleId', component: (0, _AuthenticationComponent2.default)(_Moderation2.default, _Common.userType.user) }),
 				_react2.default.createElement(_reactRouter.Route, { path: '/*', component: _NotFoundPage2.default })
 			);
 		}
@@ -26124,7 +26124,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(13);
+var _reactRouter = __webpack_require__(12);
 
 var _UsersAdmin = __webpack_require__(189);
 
@@ -26194,9 +26194,9 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(13);
+var _reactRouter = __webpack_require__(12);
 
-var _Common = __webpack_require__(15);
+var _Common = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26626,11 +26626,13 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Common = __webpack_require__(15);
+var _Common = __webpack_require__(14);
 
 var _Loading = __webpack_require__(34);
 
 var _Loading2 = _interopRequireDefault(_Loading);
+
+var _reactRouter = __webpack_require__(12);
 
 var _ErrorComponent = __webpack_require__(33);
 
@@ -26687,6 +26689,11 @@ var CircleList = function (_React$Component) {
 									'div',
 									{ key: circle.id, className: 'circleListItem' },
 									_react2.default.createElement(
+										_reactRouter.Link,
+										{ to: '/moderation/' + circle.id },
+										_react2.default.createElement('img', { className: 'moderation-button', src: '/resource/moderation-button.png' })
+									),
+									_react2.default.createElement(
 										'b',
 										null,
 										circle.name
@@ -26733,6 +26740,7 @@ var CircleList = function (_React$Component) {
 			var component = this;
 
 			(0, _Common.displayLoading)(this);
+
 			fetch(_Common.API_URL + 'circles/publics', {
 				method: 'GET',
 				headers: {
@@ -26834,7 +26842,7 @@ var _Point = __webpack_require__(110);
 
 var _Point2 = _interopRequireDefault(_Point);
 
-var _Common = __webpack_require__(15);
+var _Common = __webpack_require__(14);
 
 var _Loading = __webpack_require__(34);
 
@@ -27246,9 +27254,9 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(13);
+var _reactRouter = __webpack_require__(12);
 
-var _Common = __webpack_require__(15);
+var _Common = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27319,7 +27327,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(13);
+var _reactRouter = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27379,7 +27387,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Common = __webpack_require__(15);
+var _Common = __webpack_require__(14);
 
 var _Loading = __webpack_require__(34);
 
@@ -27581,9 +27589,9 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(13);
+var _reactRouter = __webpack_require__(12);
 
-var _Common = __webpack_require__(15);
+var _Common = __webpack_require__(14);
 
 var _Loading = __webpack_require__(34);
 
@@ -28000,7 +28008,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(13);
+var _reactRouter = __webpack_require__(12);
 
 var _Loading = __webpack_require__(34);
 
@@ -28010,7 +28018,7 @@ var _ErrorComponent = __webpack_require__(33);
 
 var _ErrorComponent2 = _interopRequireDefault(_ErrorComponent);
 
-var _Common = __webpack_require__(15);
+var _Common = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28392,7 +28400,9 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(13);
+var _reactRouter = __webpack_require__(12);
+
+var _Common = __webpack_require__(14);
 
 var _PointsModeration = __webpack_require__(203);
 
@@ -28416,23 +28426,25 @@ var selection = {
     moderator: 2
 };
 
-var Admin = function (_React$Component) {
-    _inherits(Admin, _React$Component);
+var Moderation = function (_React$Component) {
+    _inherits(Moderation, _React$Component);
 
-    function Admin(props) {
-        _classCallCheck(this, Admin);
+    function Moderation(props) {
+        _classCallCheck(this, Moderation);
 
-        var _this = _possibleConstructorReturn(this, (Admin.__proto__ || Object.getPrototypeOf(Admin)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Moderation.__proto__ || Object.getPrototypeOf(Moderation)).call(this, props));
 
         _this.state = {
-            selected: selection.point
+            selected: selection.point,
+            circle: null
         };
 
         _this.changeElement = _this.changeElement.bind(_this);
+        _this.getCircle = _this.getCircle.bind(_this);
         return _this;
     }
 
-    _createClass(Admin, [{
+    _createClass(Moderation, [{
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
@@ -28465,8 +28477,8 @@ var Admin = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'moderation-panel' },
-                    this.state.selected == selection.point && _react2.default.createElement(_PointsModeration2.default, null),
-                    this.state.selected == selection.moderator && _react2.default.createElement(_ModeratorsModeration2.default, null)
+                    this.state.selected == selection.point && _react2.default.createElement(_PointsModeration2.default, { circle: this.state.circle }),
+                    this.state.selected == selection.moderator && _react2.default.createElement(_ModeratorsModeration2.default, { circle: this.state.circle })
                 )
             );
         }
@@ -28477,12 +28489,44 @@ var Admin = function (_React$Component) {
                 selected: selection
             });
         }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.getCircle();
+        }
+    }, {
+        key: 'getCircle',
+        value: function getCircle() {
+            var component = this;
+
+            fetch(_Common.API_URL + 'circles/' + this.props.params.circleId, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(function (response) {
+                return response.json();
+            }).then(function (circle) {
+                if (circle) {
+                    (0, _Common.handleAPIResult)(component, false, "");
+
+                    component.setState({
+                        circle: circle
+                    });
+                } else {
+                    (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération du cercle...");
+                }
+            }).catch(function (error) {
+                console.log(error);
+                (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération du cercle...");
+            });
+        }
     }]);
 
-    return Admin;
+    return Moderation;
 }(_react2.default.Component);
 
-exports.default = Admin;
+exports.default = Moderation;
 
 /***/ }),
 /* 202 */
@@ -28501,9 +28545,9 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(13);
+var _reactRouter = __webpack_require__(12);
 
-var _Common = __webpack_require__(15);
+var _Common = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28527,6 +28571,7 @@ var PointsModeration = function (_React$Component) {
         };
 
         _this.getAllUsers = _this.getAllUsers.bind(_this);
+        _this.getAllModerators = _this.getAllModerators.bind(_this);
         return _this;
     }
 
@@ -28570,7 +28615,7 @@ var PointsModeration = function (_React$Component) {
                     _react2.default.createElement(
                         'tbody',
                         null,
-                        this.state.users.map(function (user) {
+                        this.state.moderators.map(function (user) {
                             return _react2.default.createElement(
                                 'tr',
                                 { key: user.id },
@@ -28670,6 +28715,34 @@ var PointsModeration = function (_React$Component) {
         key: 'componentDidMount',
         value: function componentDidMount() {
             this.getAllUsers();
+            this.getAllModerators();
+        }
+    }, {
+        key: 'getAllModerators',
+        value: function getAllModerators() {
+            var component = this;
+
+            fetch(_Common.API_URL + 'rucs?role_id=' + 1 + "&circle_id" + this.props.circle.id, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(function (response) {
+                return response.json();
+            }).then(function (users) {
+                if (users) {
+                    (0, _Common.handleAPIResult)(component, false, "");
+
+                    component.setState({
+                        users: users
+                    });
+                } else {
+                    (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des utilisateurs...");
+                }
+            }).catch(function (error) {
+                console.log(error);
+                (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des utilisateurs...");
+            });
         }
     }, {
         key: 'getAllUsers',
@@ -28722,13 +28795,13 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(13);
+var _reactRouter = __webpack_require__(12);
 
 var _Point = __webpack_require__(110);
 
 var _Point2 = _interopRequireDefault(_Point);
 
-var _Common = __webpack_require__(15);
+var _Common = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28747,7 +28820,8 @@ var PointsModeration = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (PointsModeration.__proto__ || Object.getPrototypeOf(PointsModeration)).call(this, props));
 
         _this.state = {
-            points: []
+            points: [],
+            circle: _this.props.circle
         };
 
         _this.getAllPoints = _this.getAllPoints.bind(_this);
@@ -28816,15 +28890,34 @@ var PointsModeration = function (_React$Component) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.getAllPoints(this.props.idLine);
+            this.getAllPoints();
+        }
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            if (nextProps.circle) {
+                this.setState({
+                    circle: nextProps.circle
+                });
+                this.getAllPoints(nextProps.circle.lines[0].id);
+            }
         }
     }, {
         key: 'getAllPoints',
         value: function getAllPoints(idLine) {
             var component = this;
 
-            idLine = 6;
-            //displayLoading(this);
+            if (!idLine) {
+                if (!this.state.circle) {
+                    this.setState({ points: [] });
+                    return;
+                } else {
+                    idLine = this.state.circle.lines[0].id;
+                }
+            } else if (idLine && this.state.circle && idLine == this.state.circle.lines[0].id) {
+                return;
+            }
+
             fetch(_Common.API_URL + 'points?idLine=' + idLine, {
                 method: 'GET',
                 headers: {
@@ -28839,9 +28932,12 @@ var PointsModeration = function (_React$Component) {
                         points[i].created = new Date(points[i].created);
                         points[i].updated = new Date(points[i].updated);
                     }
-                    component.setState({ points: points });
 
-                    component.scrollToBottom();
+                    component.setState({
+                        points: points
+                    });
+
+                    //component.scrollToBottom();
                 } else {
                     (0, _Common.handleAPIResult)(component, true, "Une erreur est apparue lors de la récupération des points...");
                 }
@@ -28873,9 +28969,9 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(13);
+var _reactRouter = __webpack_require__(12);
 
-var _Common = __webpack_require__(15);
+var _Common = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28993,7 +29089,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(13);
+var _reactRouter = __webpack_require__(12);
 
 var _passwordHash = __webpack_require__(279);
 
@@ -29007,7 +29103,7 @@ var _ErrorComponent = __webpack_require__(33);
 
 var _ErrorComponent2 = _interopRequireDefault(_ErrorComponent);
 
-var _Common = __webpack_require__(15);
+var _Common = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29225,7 +29321,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(13);
+var _reactRouter = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29312,7 +29408,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(13);
+var _reactRouter = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29373,7 +29469,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(13);
+var _reactRouter = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30187,7 +30283,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
 var createHmac = __webpack_require__(74)
 var crt = __webpack_require__(72)
-var EC = __webpack_require__(14).ec
+var EC = __webpack_require__(15).ec
 var BN = __webpack_require__(8)
 var parseKeys = __webpack_require__(61)
 var curves = __webpack_require__(121)
@@ -30338,7 +30434,7 @@ module.exports.makeKey = makeKey
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
 var BN = __webpack_require__(8)
-var EC = __webpack_require__(14).ec
+var EC = __webpack_require__(15).ec
 var parseKeys = __webpack_require__(61)
 var curves = __webpack_require__(121)
 
@@ -30426,7 +30522,7 @@ module.exports = verify
 /* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var elliptic = __webpack_require__(14);
+/* WEBPACK VAR INJECTION */(function(Buffer) {var elliptic = __webpack_require__(15);
 var BN = __webpack_require__(8);
 
 module.exports = function createECDH(curve) {
@@ -31779,7 +31875,7 @@ module.exports = {
 
 
 var BN = __webpack_require__(8);
-var elliptic = __webpack_require__(14);
+var elliptic = __webpack_require__(15);
 var utils = elliptic.utils;
 var getNAF = utils.getNAF;
 var getJSF = utils.getJSF;
@@ -32161,7 +32257,7 @@ BasePoint.prototype.dblp = function dblp(k) {
 
 
 var curve = __webpack_require__(57);
-var elliptic = __webpack_require__(14);
+var elliptic = __webpack_require__(15);
 var BN = __webpack_require__(8);
 var inherits = __webpack_require__(5);
 var Base = curve.base;
@@ -32605,7 +32701,7 @@ var BN = __webpack_require__(8);
 var inherits = __webpack_require__(5);
 var Base = curve.base;
 
-var elliptic = __webpack_require__(14);
+var elliptic = __webpack_require__(15);
 var utils = elliptic.utils;
 
 function MontCurve(conf) {
@@ -32788,7 +32884,7 @@ Point.prototype.getX = function getX() {
 
 
 var curve = __webpack_require__(57);
-var elliptic = __webpack_require__(14);
+var elliptic = __webpack_require__(15);
 var BN = __webpack_require__(8);
 var inherits = __webpack_require__(5);
 var Base = curve.base;
@@ -33735,7 +33831,7 @@ JPoint.prototype.isInfinity = function isInfinity() {
 var curves = exports;
 
 var hash = __webpack_require__(25);
-var elliptic = __webpack_require__(14);
+var elliptic = __webpack_require__(15);
 
 var assert = elliptic.utils.assert;
 
@@ -33946,7 +34042,7 @@ defineCurve('secp256k1', {
 
 var BN = __webpack_require__(8);
 var HmacDRBG = __webpack_require__(271);
-var elliptic = __webpack_require__(14);
+var elliptic = __webpack_require__(15);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
@@ -34192,7 +34288,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
 
 
 var BN = __webpack_require__(8);
-var elliptic = __webpack_require__(14);
+var elliptic = __webpack_require__(15);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
@@ -34319,7 +34415,7 @@ KeyPair.prototype.inspect = function inspect() {
 
 var BN = __webpack_require__(8);
 
-var elliptic = __webpack_require__(14);
+var elliptic = __webpack_require__(15);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
@@ -34460,7 +34556,7 @@ Signature.prototype.toDER = function toDER(enc) {
 
 
 var hash = __webpack_require__(25);
-var elliptic = __webpack_require__(14);
+var elliptic = __webpack_require__(15);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
@@ -34584,7 +34680,7 @@ EDDSA.prototype.isPoint = function isPoint(val) {
 "use strict";
 
 
-var elliptic = __webpack_require__(14);
+var elliptic = __webpack_require__(15);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
@@ -34688,7 +34784,7 @@ module.exports = KeyPair;
 
 
 var BN = __webpack_require__(8);
-var elliptic = __webpack_require__(14);
+var elliptic = __webpack_require__(15);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var cachedProperty = utils.cachedProperty;
@@ -37743,7 +37839,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _invariant = __webpack_require__(12);
+var _invariant = __webpack_require__(13);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -37992,7 +38088,7 @@ var _warning = __webpack_require__(19);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _invariant = __webpack_require__(12);
+var _invariant = __webpack_require__(13);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -48682,7 +48778,7 @@ var _routerWarning = __webpack_require__(11);
 
 var _routerWarning2 = _interopRequireDefault(_routerWarning);
 
-var _invariant = __webpack_require__(12);
+var _invariant = __webpack_require__(13);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -48752,7 +48848,7 @@ var _routerWarning = __webpack_require__(11);
 
 var _routerWarning2 = _interopRequireDefault(_routerWarning);
 
-var _invariant = __webpack_require__(12);
+var _invariant = __webpack_require__(13);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -48819,7 +48915,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _invariant = __webpack_require__(12);
+var _invariant = __webpack_require__(13);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -48890,7 +48986,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _invariant = __webpack_require__(12);
+var _invariant = __webpack_require__(13);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -49012,7 +49108,7 @@ var _useQueries = __webpack_require__(60);
 
 var _useQueries2 = _interopRequireDefault(_useQueries);
 
-var _invariant = __webpack_require__(12);
+var _invariant = __webpack_require__(13);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -49836,7 +49932,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _Actions = __webpack_require__(37);
 
-var _invariant = __webpack_require__(12);
+var _invariant = __webpack_require__(13);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -50242,7 +50338,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.default = withRouter;
 
-var _invariant = __webpack_require__(12);
+var _invariant = __webpack_require__(13);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 

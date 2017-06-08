@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { API_URL, handleAPIResult } from '../../common/Common.jsx';
 import PointsModeration from './PointsModeration.jsx';
 import ModeratorsModeration from './ModeratorsModeration.jsx';
 
@@ -9,16 +10,18 @@ const selection = {
     moderator : 2
 }
 
-class Admin extends React.Component {
+class Moderation extends React.Component {
 
     constructor(props){
         super(props);
         
         this.state = {
-            selected: selection.point
+            selected: selection.point,
+            circle: null
         }
         
         this.changeElement = this.changeElement.bind(this);
+        this.getCircle = this.getCircle.bind(this);
     }
     
     render() {
@@ -38,8 +41,8 @@ class Admin extends React.Component {
                 </div>
 
                 <div className="moderation-panel">
-                    { this.state.selected == selection.point && <PointsModeration />}
-                    { this.state.selected == selection.moderator && <ModeratorsModeration />}
+                    { this.state.selected == selection.point        && <PointsModeration circle={this.state.circle}/>}
+                    { this.state.selected == selection.moderator    && <ModeratorsModeration circle={this.state.circle}/>}
                 </div>
             </div>
         );
@@ -50,6 +53,40 @@ class Admin extends React.Component {
             selected: selection
         });
     }
+    
+    componentDidMount() {
+        this.getCircle();
+    }
+    
+    getCircle(){
+        let component = this;
+        
+		fetch(API_URL + 'circles/' + this.props.params.circleId, {
+			method: 'GET',
+			headers: {
+				'Authorization': 'Bearer ' + localStorage.getItem('token')
+			}
+		})
+		.then(function(response) {
+			return response.json();
+		})
+		.then(function(circle) {
+			if(circle) {
+				handleAPIResult(component, false, "");
+                
+				component.setState({
+					circle: circle
+				});
+
+			} else {
+				handleAPIResult(component, true, "Une erreur est survenue lors de la récupération du cercle...");
+			}
+		})
+		.catch(function(error) {
+			console.log(error);
+			handleAPIResult(component, true, "Une erreur est survenue lors de la récupération du cercle...");
+		});
+    }
 }
 
-export default Admin;
+export default Moderation;

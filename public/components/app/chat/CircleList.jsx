@@ -1,6 +1,7 @@
 import React from 'react';
 import { API_URL, hideError, handleAPIResult, displayLoading } from '../../common/Common.jsx';
 import Loading from '../../common/Loading.jsx';
+import { Link } from 'react-router';
 import ErrorComponent from '../../common/ErrorComponent.jsx';
 
 class CircleList extends React.Component {
@@ -40,6 +41,9 @@ class CircleList extends React.Component {
                                 if(this.props.selectedCircle && this.props.selectedCircle.id == circle.id) {
                                     return (
                                         <div key={circle.id} className="circleListItem">
+                                            <Link to={'/moderation/'+circle.id}>
+                                                <img className="moderation-button" src="/resource/moderation-button.png"/>
+                                            </Link>
                                             <b>{circle.name}</b>
                                             &nbsp;
                                             { circle.nbUnreadPoints > 0 &&
@@ -79,6 +83,7 @@ class CircleList extends React.Component {
 		let component = this;
 
 		displayLoading(this);
+        
 		fetch(API_URL + 'circles/publics', {
 			method: 'GET',
 			headers: {

@@ -9,7 +9,8 @@ class PointsModeration extends React.Component {
         super(props);
         
         this.state = {
-			points: []
+			points: [],
+            circle: this.props.circle
         }
         
         this.getAllPoints = this.getAllPoints.bind(this);
@@ -44,14 +45,32 @@ class PointsModeration extends React.Component {
     }
     
     componentDidMount() {
-        this.getAllPoints(this.props.idLine);
+        this.getAllPoints();
+    }
+    
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.circle){
+            this.setState({
+               circle: nextProps.circle 
+            });
+            this.getAllPoints(nextProps.circle.lines[0].id);   
+        }
     }
     
     getAllPoints(idLine) {
 		var component = this;
-
-        idLine = 6;
-        //displayLoading(this);
+        
+        if(!idLine) {
+			if(!this.state.circle) {
+				this.setState({points: []});
+				return;
+			} else {
+				idLine = this.state.circle.lines[0].id;
+			}
+		} else if(idLine && this.state.circle && idLine == this.state.circle.lines[0].id) {
+			return;
+		}
+        
 		fetch(API_URL + 'points?idLine=' + idLine, {
 			method: 'GET',
 			headers: {
@@ -68,9 +87,12 @@ class PointsModeration extends React.Component {
 					points[i].created = new Date(points[i].created);
 					points[i].updated = new Date(points[i].updated);
 				}
-				component.setState({points: points});
+                
+				component.setState({
+                    points: points
+                });
 
-				component.scrollToBottom();
+				//component.scrollToBottom();
 			} else {
             	handleAPIResult(component, true, "Une erreur est apparue lors de la récupération des points...");
 			}

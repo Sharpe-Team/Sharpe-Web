@@ -25972,6 +25972,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var TIME_BEFORE_REJECT = 5000;
+
 var Cube = function (_React$Component) {
 	_inherits(Cube, _React$Component);
 
@@ -25980,8 +25982,12 @@ var Cube = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (Cube.__proto__ || Object.getPrototypeOf(Cube)).call(this, props));
 
+		var userId = parseInt(localStorage.getItem("user-id"));
+
 		_this.state = {
-			user: undefined,
+			user: {
+				id: userId
+			},
 			isReceivingCall: false,
 			isCalling: false,
 			mediaConnection: undefined
@@ -26006,7 +26012,7 @@ var Cube = function (_React$Component) {
 				_react2.default.createElement(
 					"div",
 					{ className: "row" },
-					this.props.circle.type === 2 && _react2.default.createElement(
+					this.props.circle.type === 2 && this.props.circle.receiverUserId !== this.state.user.id && _react2.default.createElement(
 						"div",
 						{ className: "column" },
 						_react2.default.createElement(
@@ -26052,11 +26058,21 @@ var Cube = function (_React$Component) {
 			this.askMediaDevicesPermission(function (mediaStream) {
 				var mediaConnection = peer.call(component.props.circle.receiverUserId, mediaStream);
 				mediaConnection.on("stream", component.onReceiveStream);
+				mediaConnection.on("close", function () {
+					component.endCall();
+				});
 
 				component.setState({
 					isCalling: true,
 					mediaConnection: mediaConnection
 				});
+
+				setTimeout(function () {
+					// If the peer user has not answered to the call after 5 seconds, ends it
+					if (component.state.isCalling && component.state.mediaConnection && !component.state.mediaConnection.open) {
+						component.endCall();
+					}
+				}, TIME_BEFORE_REJECT);
 			});
 		}
 	}, {
@@ -26064,31 +26080,34 @@ var Cube = function (_React$Component) {
 		value: function endCall() {
 			if (this.state.isCalling && this.state.mediaConnection) {
 				this.state.mediaConnection.close();
-
-				this.setState({
-					isCalling: false,
-					mediaConnection: undefined
-				});
 			}
+
+			this.setState({
+				isCalling: false,
+				mediaConnection: undefined
+			});
 		}
 	}, {
 		key: "onReceiveCall",
 		value: function onReceiveCall(mediaConnection) {
 			var component = this;
 
-			console.log("in receive call");
-
 			this.setState({
 				isReceivingCall: true,
 				mediaConnection: mediaConnection
 			});
 
+			// If the caller ends the call before the user could answer it, close the connection
+			mediaConnection.on("close", function () {
+				component.rejectCall();
+			});
+
 			setTimeout(function () {
 				// If the user has not answered to the call after 5 seconds, rejects it
-				if (component.state.isReceivingCall && component.state.mediaConnection && component.state.mediaConnection.open()) {
+				if (component.state.isReceivingCall && component.state.mediaConnection && !component.state.mediaConnection.open) {
 					component.rejectCall();
 				}
-			}, 5000);
+			}, TIME_BEFORE_REJECT);
 		}
 	}, {
 		key: "answerCall",
@@ -26105,6 +26124,9 @@ var Cube = function (_React$Component) {
 				mediaConnection.answer(mediaStream);
 
 				mediaConnection.on("stream", component.onReceiveStream);
+				mediaConnection.on("close", function () {
+					component.endCall();
+				});
 			});
 		}
 	}, {
@@ -26899,7 +26921,7 @@ var UserList = function (_React$Component) {
 			var component = this;
 
 			var currentUserId = parseInt(localStorage.getItem('user-id'));
-			if (!currentUserId || currentUserId < 0 || this.props.selectedCircle.receiverUserId == user.id) {
+			if (!currentUserId || currentUserId < 0 || this.props.selectedCircle && this.props.selectedCircle.receiverUserId == user.id) {
 				return;
 			}
 

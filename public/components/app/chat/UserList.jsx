@@ -112,7 +112,7 @@ class UserList extends React.Component {
 		let currentUserId = parseInt(localStorage.getItem('user-id'));
 		if(!currentUserId
 			|| currentUserId < 0
-			|| this.props.selectedCircle.receiverUserId == user.id) {
+			|| (this.props.selectedCircle && this.props.selectedCircle.receiverUserId == user.id)) {
 			return;
 		}
 

@@ -1,12 +1,18 @@
 import React from 'react';
 
+const TIME_BEFORE_REJECT = 5000;
+
 class Cube extends React.Component {
 
 	constructor(props) {
 		super(props);
 
+		let userId = parseInt(localStorage.getItem("user-id"));
+
 		this.state = {
-			user: undefined,
+			user: {
+				id: userId
+			},
 			isReceivingCall: false,
 			isCalling: false,
 			mediaConnection: undefined
@@ -25,7 +31,7 @@ class Cube extends React.Component {
 		return (
 			<div id="cubes" className="column medium-2">
 				<div className="row">
-					{ this.props.circle.type === 2 &&
+					{ this.props.circle.type === 2 && this.props.circle.receiverUserId !== this.state.user.id &&
 						<div className="column">
 							<button type="button" className="button primary" disabled={this.state.isCalling || this.state.isReceivingCall} onClick={this.callPeer}>Appeler</button>
 							<button type="button" className="button alert" disabled={!this.state.isCalling || this.state.isReceivingCall} onClick={this.endCall}>Raccrocher</button>
@@ -54,43 +60,58 @@ class Cube extends React.Component {
 		this.askMediaDevicesPermission(function(mediaStream) {
 			let mediaConnection = peer.call(component.props.circle.receiverUserId, mediaStream);
 			mediaConnection.on("stream", component.onReceiveStream);
+			mediaConnection.on("close", function() {
+				component.endCall();
+			});
 
 			component.setState({
 				isCalling: true,
 				mediaConnection: mediaConnection
 			});
+
+			setTimeout(function() {
+				// If the peer user has not answered to the call after 5 seconds, ends it
+				if(component.state.isCalling
+					&& component.state.mediaConnection
+					&& !component.state.mediaConnection.open) {
+					component.endCall();
+				}
+			}, TIME_BEFORE_REJECT);
 		});
 	}
 
 	endCall() {
 		if(this.state.isCalling && this.state.mediaConnection) {
 			this.state.mediaConnection.close();
-
-			this.setState({
-				isCalling: false,
-				mediaConnection: undefined
-			});
 		}
+
+		this.setState({
+			isCalling: false,
+			mediaConnection: undefined
+		});
 	}
 
 	onReceiveCall(mediaConnection) {
 		let component = this;
-
-		console.log("in receive call");
 
 		this.setState({
 			isReceivingCall: true,
 			mediaConnection: mediaConnection
 		});
 
+		// If the caller ends the call before the user could answer it, close the connection
+		mediaConnection.on("close", function() {
+			component.rejectCall();
+		});
+
 		setTimeout(function() {
 			// If the user has not answered to the call after 5 seconds, rejects it
 			if(component.state.isReceivingCall
 				&& component.state.mediaConnection
-				&& component.state.mediaConnection.open()) {
+				&& !component.state.mediaConnection.open) {
 				component.rejectCall();
 			}
-		}, 5000);
+		}, TIME_BEFORE_REJECT);
 	}
 
 	answerCall() {
@@ -106,6 +127,9 @@ class Cube extends React.Component {
 			mediaConnection.answer(mediaStream);
 
 			mediaConnection.on("stream", component.onReceiveStream);
+			mediaConnection.on("close", function() {
+				component.endCall();
+			});
 		});
 	}
 

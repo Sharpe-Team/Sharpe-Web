@@ -100,6 +100,7 @@ class Cube extends React.Component {
 		});
 
 		// If the caller ends the call before the user could answer it, close the connection
+		// TODO: do something working... (to prevent the user to answer to a call that has been ended by the caller)
 		mediaConnection.on("close", function() {
 			component.rejectCall();
 		});

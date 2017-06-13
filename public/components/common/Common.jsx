@@ -1,7 +1,7 @@
 /**
  * URL of the API
  */
-let API_URL = "https://localhost:8443/";
+const API_URL = "https://localhost:8443/";
 
 /**
  * Function to hide the ErrorComponent by setting showError to false in the state
@@ -15,6 +15,11 @@ const hideError = function(component) {
 	});
 };
 
+const userType = {
+    user : 0,
+    admin : 1
+}
+    
 /**
  * Function to handle the result of an API request by updating the state
  * @param component the target component where the state should be updated
@@ -92,7 +97,8 @@ const getUserFromStorage = function() {
 		firstname: localStorage.getItem('user-firstname'),
 		lastname: localStorage.getItem('user-lastname'),
 		email: localStorage.getItem('user-email'),
-		profilePicture: localStorage.getItem('user-profile-picture')
+		profilePicture: localStorage.getItem('user-profile-picture'),
+		admin: localStorage.getItem('user-admin')
 	};
 
 	user.id = parseInt(user.id);
@@ -106,5 +112,6 @@ export {
 	handleAPIResult,
 	displayLoading,
     generateLoadingMessage,
-	getUserFromStorage
+    getUserFromStorage,
+	userType
 };

@@ -168,7 +168,7 @@ input, button {
 }
 
 .login-form-root {
-    background: url("resource/background-login.png");
+    background: url("resource/background.png");
     background-size: cover;
     height: 100%;
 }
@@ -299,17 +299,17 @@ input, button {
     vertical-align: bottom;
 }
 
-.not-found {
-    background: url("resource/background-not-found.png");
+.not-found, .not-authorized {
+    background: url("resource/background.png");
     background-size: cover;
     height: 100%;
 }
 
-.not-found-link {
+.not-found-link, .not-authorized-link {
     text-align: center;
 }
 
-.not-found-image {
+.not-found-image, .not-authorized-image {
     display: block;
     margin: 0 auto;
 }

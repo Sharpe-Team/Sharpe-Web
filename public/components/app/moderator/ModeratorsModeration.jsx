@@ -2,14 +2,15 @@ import React from 'react';
 import { Link } from 'react-router';
 import { API_URL, handleAPIResult } from '../../common/Common.jsx';
 
-class PointsModeration extends React.Component {
+class ModeratorsModeration extends React.Component {
  
     constructor(props){
         super(props);
         
         this.state = {
 			moderators: [],
-            users: []
+            users: [],
+            circl: this.props.circle
         }
         
         this.getAllUsers = this.getAllUsers.bind(this);
@@ -76,10 +77,30 @@ class PointsModeration extends React.Component {
         this.getAllModerators();
     }
     
-    getAllModerators(){
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.circle){
+            this.setState({
+               circle: nextProps.circle 
+            });
+            this.getAllPoints(nextProps.circle.id);   
+        }
+    }
+    
+    getAllModerators(idCircle){
         let component = this;
         
-        fetch(API_URL + 'ruc?role_id=' + 1 + "&circle_id=" + this.props.circle.id, {
+        if(!idCircle) {
+			if(!this.state.idCircle) {
+				this.setState({users: [], moderators: []});
+				return;
+			} else {
+				idCircle = this.state.circle.id;
+			}
+		} else if(idCircle && this.state.circle && idCircle == this.state.circle.id) {
+			return;
+		}
+        
+        fetch(API_URL + 'rucs?role_id=' + 1 + "&circle_id=" + idCircle, {
 			method: 'GET',
 			headers: {
 				'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -137,4 +158,4 @@ class PointsModeration extends React.Component {
     
 }
 
-export default PointsModeration;
+export default ModeratorsModeration;

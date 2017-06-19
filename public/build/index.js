@@ -28562,17 +28562,18 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var PointsModeration = function (_React$Component) {
-    _inherits(PointsModeration, _React$Component);
+var ModeratorsModeration = function (_React$Component) {
+    _inherits(ModeratorsModeration, _React$Component);
 
-    function PointsModeration(props) {
-        _classCallCheck(this, PointsModeration);
+    function ModeratorsModeration(props) {
+        _classCallCheck(this, ModeratorsModeration);
 
-        var _this = _possibleConstructorReturn(this, (PointsModeration.__proto__ || Object.getPrototypeOf(PointsModeration)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (ModeratorsModeration.__proto__ || Object.getPrototypeOf(ModeratorsModeration)).call(this, props));
 
         _this.state = {
             moderators: [],
-            users: []
+            users: [],
+            circl: _this.props.circle
         };
 
         _this.getAllUsers = _this.getAllUsers.bind(_this);
@@ -28580,7 +28581,7 @@ var PointsModeration = function (_React$Component) {
         return _this;
     }
 
-    _createClass(PointsModeration, [{
+    _createClass(ModeratorsModeration, [{
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
@@ -28723,11 +28724,32 @@ var PointsModeration = function (_React$Component) {
             this.getAllModerators();
         }
     }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            if (nextProps.circle) {
+                this.setState({
+                    circle: nextProps.circle
+                });
+                this.getAllPoints(nextProps.circle.id);
+            }
+        }
+    }, {
         key: 'getAllModerators',
-        value: function getAllModerators() {
+        value: function getAllModerators(idCircle) {
             var component = this;
 
-            fetch(_Common.API_URL + 'ruc?role_id=' + 1 + "&circle_id=" + this.props.circle.id, {
+            if (!idCircle) {
+                if (!this.state.idCircle) {
+                    this.setState({ users: [], moderators: [] });
+                    return;
+                } else {
+                    idCircle = this.state.circle.id;
+                }
+            } else if (idCircle && this.state.circle && idCircle == this.state.circle.id) {
+                return;
+            }
+
+            fetch(_Common.API_URL + 'rucs?role_id=' + 1 + "&circle_id=" + idCircle, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -28778,10 +28800,10 @@ var PointsModeration = function (_React$Component) {
         }
     }]);
 
-    return PointsModeration;
+    return ModeratorsModeration;
 }(_react2.default.Component);
 
-exports.default = PointsModeration;
+exports.default = ModeratorsModeration;
 
 /***/ }),
 /* 203 */

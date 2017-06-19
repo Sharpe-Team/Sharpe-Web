@@ -10,6 +10,7 @@ class UsersAdmin extends React.Component {
         }
         
         this.getAllUsers = this.getAllUsers.bind(this);
+        this.deleteUser = this.deleteUser.bind(this);
     }
     
     render() {
@@ -33,7 +34,7 @@ class UsersAdmin extends React.Component {
                                     <td>{user.lastname}</td>
                                     <td>{user.email}</td>
                                     <td>{user.admin}</td>
-                                    <td><button className="button">Supprimer</button></td>
+                                    <td><button onClick={this.deleteUser.bind(this, user.id)} className="button">Supprimer</button></td>
                                 </tr>
                             )
                         }, this)
@@ -74,6 +75,25 @@ class UsersAdmin extends React.Component {
 			console.log(error);
 			handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des utilisateurs...");
 		});   
+    }
+    
+    deleteUser(idUser){
+        var component = this;
+        
+        if(!idUser){
+            return;
+        }
+        
+        fetch(API_URL + 'users/' + idUser, {
+			method: 'DELETE',
+			headers: {
+				'Authorization': 'Bearer ' + localStorage.getItem('token')
+			}
+		});
+        
+        this.setState({users: this.state.users.filter(function(user) { 
+            return user.id !== idUser 
+        })});
     }
 }
 

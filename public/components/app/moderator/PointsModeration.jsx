@@ -14,6 +14,7 @@ class PointsModeration extends React.Component {
         }
         
         this.getAllPoints = this.getAllPoints.bind(this);
+        this.deletePoint = this.deletePoint.bind(this);
     }
     
     render() {
@@ -33,7 +34,7 @@ class PointsModeration extends React.Component {
                                 return (
                                     <tr key={point.id}>
                                         <td><Point point={point}/></td>
-                                        <td><button className="button">Supprimer</button></td>
+                                        <td><button onClick={this.deletePoint.bind(this, point.id)} className="button">Supprimer</button></td>
                                     </tr>
                                 )
                             }, this)
@@ -101,6 +102,21 @@ class PointsModeration extends React.Component {
         	handleAPIResult(component, true, "Une erreur est apparue lors de la récupération des points...");
 		});
 	}
+    
+    deletePoint(idPoint){
+        var component = this;
+        
+        if(!idPoint) {
+            return;
+		}
+        
+		fetch(API_URL + 'points/' + idPoint, {
+			method: 'DELETE',
+			headers: {
+				'Authorization': 'Bearer ' + localStorage.getItem('token')
+			}
+		});
+    }
 }
 
 export default PointsModeration;

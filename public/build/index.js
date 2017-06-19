@@ -26219,6 +26219,7 @@ var UsersAdmin = function (_React$Component) {
         };
 
         _this.getAllUsers = _this.getAllUsers.bind(_this);
+        _this.deleteUser = _this.deleteUser.bind(_this);
         return _this;
     }
 
@@ -26293,7 +26294,7 @@ var UsersAdmin = function (_React$Component) {
                                 null,
                                 _react2.default.createElement(
                                     'button',
-                                    { className: 'button' },
+                                    { onClick: this.deleteUser.bind(this, user.id), className: 'button' },
                                     'Supprimer'
                                 )
                             )
@@ -26333,6 +26334,26 @@ var UsersAdmin = function (_React$Component) {
                 console.log(error);
                 (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des utilisateurs...");
             });
+        }
+    }, {
+        key: 'deleteUser',
+        value: function deleteUser(idUser) {
+            var component = this;
+
+            if (!idUser) {
+                return;
+            }
+
+            fetch(_Common.API_URL + 'users/' + idUser, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            });
+
+            this.setState({ users: this.state.users.filter(function (user) {
+                    return user.id !== idUser;
+                }) });
         }
     }]);
 
@@ -28852,6 +28873,7 @@ var PointsModeration = function (_React$Component) {
         };
 
         _this.getAllPoints = _this.getAllPoints.bind(_this);
+        _this.deletePoint = _this.deletePoint.bind(_this);
         return _this;
     }
 
@@ -28904,7 +28926,7 @@ var PointsModeration = function (_React$Component) {
                                     null,
                                     _react2.default.createElement(
                                         'button',
-                                        { className: 'button' },
+                                        { onClick: this.deletePoint.bind(this, point.id), className: 'button' },
                                         'Supprimer'
                                     )
                                 )
@@ -28970,6 +28992,22 @@ var PointsModeration = function (_React$Component) {
                 }
             }).catch(function (error) {
                 (0, _Common.handleAPIResult)(component, true, "Une erreur est apparue lors de la récupération des points...");
+            });
+        }
+    }, {
+        key: 'deletePoint',
+        value: function deletePoint(idPoint) {
+            var component = this;
+
+            if (!idPoint) {
+                return;
+            }
+
+            fetch(_Common.API_URL + 'points/' + idPoint, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
             });
         }
     }]);

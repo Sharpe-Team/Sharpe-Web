@@ -29009,6 +29009,10 @@ var PointsModeration = function (_React$Component) {
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
                 }
             });
+
+            this.setState({ points: this.state.points.filter(function (point) {
+                    return point.id !== idPoint;
+                }) });
         }
     }]);
 

@@ -104,7 +104,7 @@ const getUserFromStorage = function() {
 	user.id = parseInt(user.id);
 
 	return user;
-}
+};
 
 export {
 	API_URL,

@@ -17896,10 +17896,9 @@ var ImageUploadItem = function (_React$Component) {
                         this.props.label
                     )
                 ),
-                _react2.default.createElement("div", { className: "colum medium-1" }),
                 _react2.default.createElement(
                     "div",
-                    { className: "column medium-7" },
+                    { className: "column medium-7 medium-offset-1" },
                     _react2.default.createElement(
                         "div",
                         { className: "row align-middle upload-row" },
@@ -17951,7 +17950,6 @@ var ImageUploadItem = function (_React$Component) {
                 });
             });
 
-            // Pas ajouté du tout
             siofu.addEventListener("complete", function (event) {
                 if (event.success) {
                     var currentName = event.file.name;
@@ -25841,7 +25839,7 @@ var Circle = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			var line;
+			var line = void 0;
 			if (this.state.selectedLine) {
 				line = _react2.default.createElement(_Line2.default, { line: this.state.selectedLine, circle: this.props.circle, updateUnreadPoints: this.props.updateUnreadPoints, style: { height: "100%" } });
 			} else {
@@ -27396,10 +27394,9 @@ var CircleForm = function (_React$Component) {
 											'Nom '
 										)
 									),
-									_react2.default.createElement('div', { className: 'colum medium-1' }),
 									_react2.default.createElement(
 										'div',
-										{ className: 'column medium-7' },
+										{ className: 'column medium-7 medium-offset-1' },
 										_react2.default.createElement('input', { type: 'text', id: 'circle-name', name: 'circleName', onChange: this.handleChange, required: true })
 									)
 								),
@@ -27417,10 +27414,9 @@ var CircleForm = function (_React$Component) {
 											'Liste des mod\xE9rateurs'
 										)
 									),
-									_react2.default.createElement('div', { className: 'colum medium-1' }),
 									_react2.default.createElement(
 										'div',
-										{ className: 'column medium-7' },
+										{ className: 'column medium-7 medium-offset-1' },
 										_react2.default.createElement(
 											'select',
 											{ id: 'moderators', name: 'moderators', onChange: this.handleMultipleSelectChange, 'aria-describedby': 'select-help', multiple: true, required: true },

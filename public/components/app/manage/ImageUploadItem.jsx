@@ -17,8 +17,7 @@ class ImageUploadItem extends React.Component {
                 <div className="column medium-4">
                     <label htmlFor="" className="text-right middle form-label">{this.props.label}</label>
                 </div>
-                <div className="colum medium-1"></div>
-                <div className="column medium-7">
+                <div className="column medium-7 medium-offset-1">
                     <div className="row align-middle upload-row">
                         <div className="column shrink">
                             <label htmlFor={this.props.id} className="button">{this.props.buttonLabel}</label>
@@ -35,8 +34,8 @@ class ImageUploadItem extends React.Component {
     }
     
     componentDidMount() {
-		var component = this;
-        var siofu = new SocketIOFileUpload(socket);
+		const component = this;
+        let siofu = new SocketIOFileUpload(socket);
 
         siofu.listenOnInput(document.getElementById(this.props.id));
         
@@ -49,18 +48,17 @@ class ImageUploadItem extends React.Component {
 
 		// Do something on upload progress:
 		siofu.addEventListener("progress", function(event) {
-		    var percent = event.bytesLoaded / event.file.size * 100;
+		    let percent = event.bytesLoaded / event.file.size * 100;
             component.setState({
                 percent: percent
             });
 		});
 
-        // Pas ajouté du tout
         siofu.addEventListener("complete", function(event) {
             if(event.success) {
-                var currentName = event.file.name;
-                var extension = currentName.substring(currentName.lastIndexOf("."));
-                var finalPath = component.state.image + extension;
+                let currentName = event.file.name;
+                let extension = currentName.substring(currentName.lastIndexOf("."));
+                let finalPath = component.state.image + extension;
 
                 // Call a function to parent to notify the picture is uploaded successfully
                 component.props.callback(finalPath);

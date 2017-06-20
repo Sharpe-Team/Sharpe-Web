@@ -8,7 +8,7 @@ class Circle extends React.Component {
 	constructor(props) {
 		super(props);
 
-		var selectedLine = null;
+		let selectedLine = null;
 
 		if(props.circle 
 			&& props.circle.lines 
@@ -26,7 +26,7 @@ class Circle extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		var selectedLine = null;
+		let selectedLine = null;
 
 		if(nextProps.circle 
 			&& nextProps.circle.lines 
@@ -40,7 +40,7 @@ class Circle extends React.Component {
 	}
 
 	render() {
-		var line;
+		let line;
 		if(this.state.selectedLine) {
 			line = (<Line line={this.state.selectedLine} circle={this.props.circle} updateUnreadPoints={this.props.updateUnreadPoints} style={{height: "100%"}}/>);
 		} else {

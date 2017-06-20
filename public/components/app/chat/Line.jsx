@@ -1,6 +1,6 @@
 import React from 'react';
 import Point from './Point.jsx';
-import { API_URL, hideError, handleAPIResult, displayLoading } from '../../common/Common.jsx';
+import { API_URL, hideError, handleAPIResult, getUserFromStorage } from '../../common/Common.jsx';
 import Loading from '../../common/Loading.jsx';
 import ErrorComponent from '../../common/ErrorComponent.jsx';
 //import MyEditor from './MyEditor.jsx';
@@ -29,10 +29,10 @@ class Line extends React.Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 
 		// Register functions
+		this.manageNewPoint = this.manageNewPoint.bind(this);
 		this.getAllPoints = this.getAllPoints.bind(this);
 		this.saveNewPoint = this.saveNewPoint.bind(this);
 		this.scrollToBottom = this.scrollToBottom.bind(this);
-		this.getUserFromStorage = this.getUserFromStorage.bind(this);
 	}
     
     render() {
@@ -71,23 +71,14 @@ class Line extends React.Component {
 
 		// Define events function from SocketIO
 		socket.on('new-point', function(point) {
-			// If the user is on the line where it is the new point, we display it
-			if(point.idLine == component.props.line.id) {
-				point.created = new Date(point.created);
-				var points = component.state.points;
-				points.push(point);
-				component.setState({
-					points: points,
-					pointAdded: true
-				});
-			} else {
-				// Increase the number of unread points on the circle of the line$
-				component.props.updateUnreadPoints(point.idLine);
-			}
+			component.manageNewPoint(point, false);
+		});
+
+		socket.on('new-private-point', function(point) {
+			component.manageNewPoint(point, true);
 		});
         
-        var user = this.getUserFromStorage();
-        user.id = parseInt(user.id);
+        var user = getUserFromStorage();
         
 		this.setState({
 			user: user
@@ -123,9 +114,7 @@ class Line extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
-		var points = this.state.points;
 		var text = this.state.newPoint.trim();
-
 		this.state.newPoint = "";
 
 		if(text.length !== 0) {
@@ -137,13 +126,20 @@ class Line extends React.Component {
 	*					FUNCTIONS 					*
 	*************************************************/
 
-	getUserFromStorage() {
-		return {
-			id: localStorage.getItem('user-id'),
-			firstname: localStorage.getItem('user-firstname'),
-			lastname: localStorage.getItem('user-lastname'),
-			email: localStorage.getItem('user-email'),
-			profilePicture: localStorage.getItem('user-profile-picture')
+	manageNewPoint(point, isPrivate) {
+		// If the user is on the line where it is the new point, we display it
+		if(point.idLine == this.props.line.id) {
+			// Display the new point
+			point.created = new Date(point.created);
+			var points = this.state.points;
+			points.push(point);
+			this.setState({
+				points: points,
+				pointAdded: true
+			});
+		} else {
+			// Increase the number of unread points on the circle of the line$
+			this.props.updateUnreadPoints(point, isPrivate);
 		}
 	}
 
@@ -153,6 +149,7 @@ class Line extends React.Component {
 		if(!idLine) {
 			if(!this.props.line) {
 				this.setState({points: []});
+				return;
 			} else {
 				idLine = this.props.line.id;
 			}
@@ -214,8 +211,14 @@ class Line extends React.Component {
 		.then(function(point) {
             if(point) {
             	handleAPIResult(component, false, "");
-                // Send the new point to the connected users
-                socket.emit('new-point', point);
+
+            	if(component.props.circle.type == 2) {
+            		// Send a private point to the receiver user
+            		socket.emit('new-private-point', point, component.props.circle.receiverUserId);
+            	} else {
+                	// Send the new point to the connected users
+                	socket.emit('new-point', point);
+            	}
             } else {
             	handleAPIResult(component, true, "Une erreur est apparue lors de l'ajout du point...");
             }

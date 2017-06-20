@@ -1,7 +1,29 @@
+/* colors :
+    dark blue : #334F81
+    light blue : #7f95be
+    orange : #f19132
+*/
+
+:root{
+    --main-color: #334F81;
+    --second-color: #7f95be;
+    --third-color: #f19132;
+}
+
+@font-face {
+    font-family: 'SharpeFont'; /*a name to be used later*/
+    src: url('./resource/font.ttf'); /*URL to font*/
+}
+
 html, body, #app, #div-app {
 	width: 100%;
 	min-height: 100%;
 	height: 100%;
+    font-family: SharpeFont, sans-serif;
+}
+
+.form-title {
+    font-family: SharpeFont, sans-serif;
 }
 
 * {
@@ -22,18 +44,13 @@ html, body, #app, #div-app {
 
 #left-column {
     height: 100%;
-    background-color: #A12C26;
-    padding: 10px;
+    background-color: var(--main-color);
+    padding: 5px;
 }
 
-#profile {
+#profile, #banner {
     height: 100%;
-    background-color: #550400
-}
-
-#banner {
-    height: 100%;
-    background-color: #550400;
+    background-color: var(--second-color);
 }
 
 #div-line {
@@ -64,8 +81,9 @@ html, body, #app, #div-app {
 }
 
 .point {
-    background-color: #f4f4f4;
+    background-color: #f7f7f7;
     padding: 5px;
+    color: #333333;
 }
 
 #main-content {
@@ -80,18 +98,15 @@ input, button {
 
 #cubes {
     height: 100%;
-    background-color: #A12C26;
+    background-color: #F4F4F4;
+    border-left: 3px solid #F4F4F4;
 }
 
 .circleListItem {
     color: #FFFFFF;
-    margin-bottom: 10px;
     font-size: 150%;
     cursor: pointer;
-}
-
-#search {
-    margin-bottom: 30px;
+    font-size: large;
 }
 
 .navigationList {
@@ -106,7 +121,8 @@ input, button {
 #banner {
     display:table-cell; 
     vertical-align:middle; 
-    text-align:center
+    text-align:center;
+    padding: 5px;
 }
 
 .bannerPicture {
@@ -114,11 +130,11 @@ input, button {
 }
 
 .circularImageContainer {
-    margin: 5px;
+    margin: 15px;
     display: inline-block;
     position: relative;
-    width: 90px;
-    height: 90px;
+    width: 70px;
+    height: 70px;
     overflow: hidden;
     border-radius: 50%;
 }
@@ -131,7 +147,8 @@ input, button {
 .circleTitle {
     line-height: 230%;
     text-align: center;
-    color: #FFFFFF
+    color: #FFFFFF;
+    font-family: SharpeFont, sans-serif;
 }
 
 .imageLine {
@@ -151,19 +168,19 @@ input, button {
 }
 
 .login-form-root {
-    background: url("resource/background-login.jpg");
+    background: url("resource/background.png");
     background-size: cover;
     height: 100%;
 }
 
 .user-form-root {
-    background: url("resource/background-user.jpg");
+    background: url("resource/background-user.png");
     background-size: cover;
     height: 100%;
 }
 
 .circle-form-root {
-    background: url("resource/background-circle.jpg");
+    background: url("resource/background-circle.png");
     background-size: cover;
     height: 100%;
 }
@@ -183,8 +200,9 @@ input, button {
     margin-left: 10px;
 }
 
-.user-form-button, .circle-form-button, .logout-form-button {
-    width: 100%;
+.nav-button {
+    height: 30px;
+    margin: 5px;
 }
 
 .logo {
@@ -195,8 +213,8 @@ input, button {
 
 .loadingMessage {
     text-align: center;
-    color: #FFFFFF;
-    font: italic 20px Georgia, serif
+    color: #555;
+    font: italic 20px Century Gothic, sans-serif;
 }
 
 .spinner {
@@ -211,7 +229,7 @@ input, button {
 }
 
 .spinner > div {
-    background-color: #FFFFFF;
+    background-color: #EEE;
     height: 100%;
     width: 6px;
     display: inline-block;
@@ -259,7 +277,7 @@ input, button {
     position: fixed;
     height: 100%;
     width: 100%;
-    background-color: #A12C26; 
+    background: url("resource/background-loading.png")
 }
 
 .upload-row {
@@ -281,3 +299,17 @@ input, button {
     vertical-align: bottom;
 }
 
+.not-found, .not-authorized {
+    background: url("resource/background.png");
+    background-size: cover;
+    height: 100%;
+}
+
+.not-found-link, .not-authorized-link {
+    text-align: center;
+}
+
+.not-found-image, .not-authorized-image {
+    display: block;
+    margin: 0 auto;
+}

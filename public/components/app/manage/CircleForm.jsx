@@ -70,7 +70,7 @@ class CircleForm extends React.Component {
                                 <ImageUploadItem id="profile-picture" name="profilePicture" label="Ajouter une photo de profil" buttonLabel="Photo de profil" callback={this.profilePictureHandler} />
                                 <ImageUploadItem id="banner-picture" name="bannerPicture" label="Ajouter une bannière" buttonLabel="Bannière" callback={this.bannerPictureHandler} />
 								<div className="row">
-									<div data-tooltip aria-haspopup="true" className="has-tip" title="Vous pouvez sélectionner plusieurs modérateurs. Vous pouvez taper les premières lettres du modérateur pour le retrouver plus facilement." className="column medium-4 form-label">
+									<div data-tooltip aria-haspopup="true" className="column medium-4 form-label has-tip" title="Vous pouvez sélectionner plusieurs modérateurs. Vous pouvez taper les premières lettres du modérateur pour le retrouver plus facilement.">
 										<label htmlFor="moderators" className="text-right middle">Liste des modérateurs</label>
 									</div>
                                     <div className="colum medium-1"></div>
@@ -168,7 +168,8 @@ class CircleForm extends React.Component {
 		})
 		.then(function(response) {
 			if(response.status == 201) {
-            	handleAPIResult(component, false, "");
+				handleAPIResult(component, false, "");
+				//alert("Le cercle a bien été ajouté !");
 				// redirect to main file 'App'
 				browserHistory.push('/app');
 			} else {
@@ -187,15 +188,15 @@ class CircleForm extends React.Component {
 		fetch(API_URL + 'users', {
 			method: 'GET',
 			headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
+				'Authorization': 'Bearer ' + localStorage.getItem('token')
+			}
 		})
 		.then(function(response) {
 			return response.json();
 		})
 		.then(function(users) {
 			if(users) {
-            	handleAPIResult(component, false, "");
+				handleAPIResult(component, false, "");
 				component.setState({users: users});
 			} else {
 				handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des utilisateurs !");

@@ -11,9 +11,12 @@
     "express": "^4.14.0",
     "njwt": "^0.4.0",
     "password-hash": "^1.2.2",
+    "peer": "^0.2.8",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-foundation": "^0.7.0",
     "react-router": "^2.6.1",
+    "react-toggle-switch": "^2.1.4",
     "socket.io": "^1.7.2",
     "socketio-file-upload": "^0.6.0",
     "webpack-dev-server": "^2.3.0"
@@ -25,6 +28,8 @@
     "webpack": "^2.2.1"
   },
   "scripts": {
-    "start": "webpack-dev-server --hot --watch"
+    "start-dev": "webpack-dev-server --hot --watch",
+    "start": "node server",
+    "build": "webpack"
   }
 }

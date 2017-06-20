@@ -10,6 +10,9 @@ var UPLOAD_DIRECTORY;
 
 var connectedUsersMap = new Map();
 
+/**
+ * 	Check if the user is in the list
+ */
 function isPresent(list, user) {
 	for (var i = 0; i < list.length; i++) {
 		if(list[i].id == user.id) {
@@ -33,6 +36,16 @@ function getDecodedToken(token) {
 	}
 }
 
+function getUserSocket(userId) {
+
+	for(var [key, value] of connectedUsersMap) {
+		if(value.user.id == userId) {
+			return value.socket;
+		}
+	}
+	return null;
+}
+
 function computeFileUpload(socket) {
 
 	// Make an instance of SocketIOFileUpload and listen on this socket:
@@ -51,7 +64,7 @@ function computeFileUpload(socket) {
     });
 }
 
-function onLogin(socket, token, loggedUser) {
+function onLogin(socket, token, loggedUser, callback) {
 	var decodedToken;
 
 	if(token && (decodedToken = getDecodedToken(token))) {
@@ -59,13 +72,15 @@ function onLogin(socket, token, loggedUser) {
 			// The current socket is the new socket of a previous connected user
 			// Assign to this new socket the previous data of the user
 			loggedUser = connectedUsersMap.get(token);
+			loggedUser.socket = socket;
 			loggedUser.disconnected = false;
 		} else {
 			// Add a new user in the list of connected users
 	    	loggedUser = {
 				token: token,
 				user: decodedToken.body.user,
-				disconnected: false
+				disconnected: false,
+				socket: socket
 			};
 			connectedUsersMap.set(token, loggedUser);
 			
@@ -73,10 +88,10 @@ function onLogin(socket, token, loggedUser) {
     		socket.broadcast.emit('new-connected-user', loggedUser.user);
 		}
 
-		console.log("login : " + loggedUser.user.email);
-
 		// Send info user to client
-		socket.emit('login-response', loggedUser.user);
+		if(callback) {
+			callback(loggedUser.user);
+		}
 	} else {
 		console.log("Unregistered user connected...");
 	}
@@ -118,6 +133,19 @@ function onLogout(socket, loggedUser) {
 	connectedUsersMap.delete(loggedUser.token);
 }
 
+function onNewPrivatePoint(socket, point, userId) {
+
+	// Get the socket for the user id, if the user is connected
+	var userSocket = getUserSocket(userId);
+	if(userSocket) {
+		userSocket.emit('new-private-point', point);
+
+		if(socket != userSocket) {
+			socket.emit('new-private-point', point);
+		}
+	}
+}
+
 function computeConnection(socket) {
 	/**
 	 * Logged user of the socket
@@ -125,13 +153,14 @@ function computeConnection(socket) {
 	var loggedUser = {
 		token: null,
 		user: null,
-		disconnected: false
+		disconnected: false,
+		socket: socket
 	};
 
 	computeFileUpload(socket);
 
-    socket.on('login', function(token) {
-    	loggedUser = onLogin(socket, token, loggedUser);
+    socket.on('login', function(token, callback) {
+    	loggedUser = onLogin(socket, token, loggedUser, callback);
     });
 
     socket.on('disconnect', function() {
@@ -143,11 +172,12 @@ function computeConnection(socket) {
     });
 
 	socket.on('new-point', function(point) {
-		// Add info of the point's sender
-		// point.user = loggedUser.user;
-
 		// Emit the new point to all connected users
 		io.emit('new-point', point);
+	});
+
+	socket.on('new-private-point', function(point, userId) {
+		onNewPrivatePoint(socket, point, userId);
 	});
 
 	socket.on('verify-token', function(token, callback) {

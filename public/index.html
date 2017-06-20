@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 	<head>
-		<title>SchoolSpeak</title>
+		<title>Sharpe</title>
 
 		<meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -17,12 +17,28 @@
 		<!--******************** JAVASCRIPT ********************-->
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="/siofu/client.js"></script>
+		<script src="http://cdn.peerjs.com/0.3/peer.js"></script>
 		<script>
 			// Global var for the app
 			var socket = io.connect();
+			var siofu = new SocketIOFileUpload(socket);
+			var peer = undefined;
+			let userId = localStorage.getItem("user-id");
 
 			// Send a login event to the server
 			socket.emit('login', localStorage.getItem('token'));
+
+			if(userId) {
+				peer = new Peer(userId, {
+					host: 'localhost', port: 3000, path: '/peerjs',
+					config: {'iceServers': [
+								{ url: 'stun:stun1.l.google.com:19302' },
+								{ url: 'turn:numb.viagenie.ca', credential: 'muazkh', username: 'webrtc@live.com' }
+							]
+					},
+					debug: 2
+				});
+			}
 		</script>
 		<script type="text/javascript" src="foundation/js/vendor/jquery.js"></script>
 		<script type="text/javascript" src="foundation/js/vendor/what-input.js"></script>

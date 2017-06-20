@@ -62,8 +62,7 @@ class CircleForm extends React.Component {
 									<div className="column medium-4">
 										<label htmlFor="circle-name" className="text-right middle form-label">Nom </label>
 									</div>
-                                    <div className="colum medium-1"></div>
-									<div className="column medium-7">
+									<div className="column medium-7 medium-offset-1">
 										<input type="text" id="circle-name" name="circleName" onChange={this.handleChange} required/>
 									</div>
 								</div>
@@ -71,8 +70,7 @@ class CircleForm extends React.Component {
 									<div className="column medium-4">
 										<label htmlFor="" className="text-right middle form-label">Ajouter une photo de profil </label>
 									</div>
-                                    <div className="colum medium-1"></div>
-									<div className="column medium-7">
+									<div className="column medium-7 medium-offset-1">
 										<div className="row align-middle upload-row">
                                         	<div className="column shrink">
                                             	<label htmlFor="profile-picture" className="button">Photo de profil</label>
@@ -89,8 +87,7 @@ class CircleForm extends React.Component {
 									<div className="column medium-4">
 										<label htmlFor="" className="text-right middle form-label">Ajouter une photo de bannière </label>
 									</div>
-                                    <div className="colum medium-1"></div>
-									<div className="column medium-7">
+									<div className="column medium-7 medium-offset-1">
 										<div className="row align-middle upload-row">
                                         	<div className="column shrink">
                                             	<label htmlFor="banner-picture" className="button">Bannière</label>
@@ -107,8 +104,7 @@ class CircleForm extends React.Component {
 									<div data-tooltip aria-haspopup="true" className="column medium-4 form-label has-tip" title="Vous pouvez sélectionner plusieurs modérateurs. Vous pouvez taper les premières lettres du modérateur pour le retrouver plus facilement.">
 										<label htmlFor="moderators" className="text-right middle">Liste des modérateurs</label>
 									</div>
-                                    <div className="colum medium-1"></div>
-									<div className="column medium-7">
+									<div className="column medium-7 medium-offset-1">
 										<select id="moderators" name="moderators" onChange={this.handleMultipleSelectChange} aria-describedby="select-help" multiple required>
 											{
 												this.state.users.map(function(user) {
@@ -133,8 +129,7 @@ class CircleForm extends React.Component {
 	}
 
 	componentDidMount() {
-
-		var component = this;
+		let component = this;
 
 		siofu.listenOnInput(document.getElementById("profile-picture"));
 	    siofu.listenOnInput(document.getElementById("banner-picture"));
@@ -146,7 +141,7 @@ class CircleForm extends React.Component {
 
 		// Do something on upload progress:
 		siofu.addEventListener("progress", function(event) {
-		    var percent = event.bytesLoaded / event.file.size * 100;
+		    let percent = event.bytesLoaded / event.file.size * 100;
             if(component.state.lastModifiedPicture == "profilePicture")
                 component.setState({profilePercent: percent});
             if(component.state.lastModifiedPicture == "bannerPicture")
@@ -174,10 +169,10 @@ class CircleForm extends React.Component {
 
 	saveFinalPathOfLastModifiedPicture(file) {
 
-		var finalName = this.state[this.state.lastModifiedPicture];
-		var currentName = file.name;
-		var extension = currentName.substring(currentName.indexOf("."));
-		var finalPath = finalName + extension;
+		let finalName = this.state[this.state.lastModifiedPicture];
+		let currentName = file.name;
+		let extension = currentName.substring(currentName.indexOf("."));
+		let finalPath = finalName + extension;
 
 		this.setState({
 			[this.state.lastModifiedPicture]: finalPath
@@ -189,10 +184,10 @@ class CircleForm extends React.Component {
 	}
 
 	handleMultipleSelectChange(event) {
-		var options = event.target.options;
-		var selectedOptions = [];
+		let options = event.target.options;
+		let selectedOptions = [];
 
-		for(var i=0; i<options.length; i++) {
+		for(let i=0; i<options.length; i++) {
 			if(options[i].selected) {
 				selectedOptions.push(options[i].value);
 			}
@@ -214,7 +209,7 @@ class CircleForm extends React.Component {
 	}
 
 	createCircle() {
-		var component = this;
+		const component = this;
 
         displayLoading(this);
 		fetch(API_URL + 'circles', {
@@ -256,7 +251,7 @@ class CircleForm extends React.Component {
 	}
 
 	getAllUsers() {
-		var component = this;
+		const component = this;
 
 		fetch(API_URL + 'users', {
 			method: 'GET',

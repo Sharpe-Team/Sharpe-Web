@@ -313,3 +313,18 @@ input, button {
     display: block;
     margin: 0 auto;
 }
+
+#moderators {
+    margin-bottom: 0rem;
+}
+
+#moderators-tooltip {
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+#insert-btn {
+    font-size: 1.5rem;
+    padding: 7px 12px 7px 12px;
+}
+

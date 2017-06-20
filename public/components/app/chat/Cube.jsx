@@ -47,6 +47,18 @@ class Cube extends React.Component {
 	}
 
 	componentDidMount() {
+		if(!peer) {
+			peer = new Peer(userId, {
+				host: 'localhost', port: 3000, path: '/peerjs',
+				config: {
+					'iceServers': [
+						{url: 'stun:stun1.l.google.com:19302'},
+						{url: 'turn:numb.viagenie.ca', credential: 'muazkh', username: 'webrtc@live.com'}
+					]
+				},
+				debug: 2
+			});
+		}
 		peer.on('call', this.onReceiveCall);
 	}
 

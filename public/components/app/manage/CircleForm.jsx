@@ -69,7 +69,7 @@ class CircleForm extends React.Component {
                                 <ImageUploadItem id="profile-picture" name="profilePicture" label="Ajouter une photo de profil" buttonLabel="Photo de profil" callback={this.profilePictureHandler} />
                                 <ImageUploadItem id="banner-picture" name="bannerPicture" label="Ajouter une bannière" buttonLabel="Bannière" callback={this.bannerPictureHandler} />
 								<div className="row">
-									<div data-tooltip aria-haspopup="true" className="column medium-4 form-label has-tip" title="Vous pouvez sélectionner plusieurs modérateurs. Vous pouvez taper les premières lettres du modérateur pour le retrouver plus facilement.">
+									<div className="column medium-4">
 										<label htmlFor="moderators" className="text-right middle">Liste des modérateurs</label>
 									</div>
 									<div className="column medium-7 medium-offset-1">
@@ -80,6 +80,9 @@ class CircleForm extends React.Component {
 												})
 											}
 										</select>
+										<div id="moderators-tooltip">
+											Vous pouvez sélectionner plusieurs modérateurs. Vous pouvez taper les premières lettres du modérateur pour le retrouver plus facilement.
+										</div>
 									</div>
 								</div>
 

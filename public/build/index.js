@@ -26253,6 +26253,15 @@ var Cube = function (_React$Component) {
 	}, {
 		key: "componentDidMount",
 		value: function componentDidMount() {
+			if (!peer) {
+				peer = new Peer(userId, {
+					host: 'localhost', port: 3000, path: '/peerjs',
+					config: {
+						'iceServers': [{ url: 'stun:stun1.l.google.com:19302' }, { url: 'turn:numb.viagenie.ca', credential: 'muazkh', username: 'webrtc@live.com' }]
+					},
+					debug: 2
+				});
+			}
 			peer.on('call', this.onReceiveCall);
 		}
 
@@ -26517,6 +26526,15 @@ var Line = function (_React$Component) {
 					_react2.default.createElement(
 						'div',
 						{ className: 'row', style: { borderTop: "4px solid #f4f4f4", paddingTop: "5px" } },
+						_react2.default.createElement(
+							'div',
+							{ className: 'column shrink' },
+							_react2.default.createElement(
+								'button',
+								{ type: 'button', id: 'insert-btn', className: 'button' },
+								'+'
+							)
+						),
 						_react2.default.createElement(
 							'div',
 							{ className: 'column', style: { padding: 0 } },
@@ -27407,7 +27425,7 @@ var CircleForm = function (_React$Component) {
 									{ className: 'row' },
 									_react2.default.createElement(
 										'div',
-										{ 'data-tooltip': true, 'aria-haspopup': 'true', className: 'column medium-4 form-label has-tip', title: 'Vous pouvez s\xE9lectionner plusieurs mod\xE9rateurs. Vous pouvez taper les premi\xE8res lettres du mod\xE9rateur pour le retrouver plus facilement.' },
+										{ className: 'column medium-4' },
 										_react2.default.createElement(
 											'label',
 											{ htmlFor: 'moderators', className: 'text-right middle' },
@@ -27429,6 +27447,11 @@ var CircleForm = function (_React$Component) {
 													user.lastname
 												);
 											})
+										),
+										_react2.default.createElement(
+											'div',
+											{ id: 'moderators-tooltip' },
+											'Vous pouvez s\xE9lectionner plusieurs mod\xE9rateurs. Vous pouvez taper les premi\xE8res lettres du mod\xE9rateur pour le retrouver plus facilement.'
 										)
 									)
 								),

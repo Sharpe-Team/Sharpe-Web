@@ -54,7 +54,10 @@ class Line extends React.Component {
 
 				<form onSubmit={this.handleSubmit}>
 					<div className="row" style={{borderTop: "4px solid #f4f4f4", paddingTop: "5px"}}>
-						<div className="column" style={{padding: 0}}>
+						<div className="column shrink">
+							<button type="button" id="insert-btn" className="button">+</button>
+						</div>
+						<div className="column" style={{padding: "1px"}}>
 							<input type="text" id="new-point" name="newPoint" value={this.state.newPoint} onChange={this.handleChange} autoComplete="off" placeholder="Ecrivez un message..." />
 						</div>
 						<div className="column shrink">

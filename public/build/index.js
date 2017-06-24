@@ -6409,7 +6409,8 @@ var getUserFromStorage = function getUserFromStorage() {
     lastname: localStorage.getItem('user-lastname'),
     email: localStorage.getItem('user-email'),
     profilePicture: localStorage.getItem('user-profile-picture'),
-    admin: localStorage.getItem('user-admin')
+    admin: localStorage.getItem('user-admin'),
+    ruc: localStorage.getItem('user-ruc')
   };
 
   user.id = parseInt(user.id);
@@ -26820,6 +26821,8 @@ var CircleList = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (CircleList.__proto__ || Object.getPrototypeOf(CircleList)).call(this, props));
 
+		console.log((0, _Common.getUserFromStorage)().ruc);
+
 		_this.state = {
 			circles: [],
 			error: {
@@ -29008,19 +29011,19 @@ var ModeratorsModeration = function (_React$Component) {
                 }
             }).then(function (response) {
                 return response.json();
-            }).then(function (users) {
-                if (users) {
+            }).then(function (moderators) {
+                if (moderators) {
                     (0, _Common.handleAPIResult)(component, false, "");
 
                     component.setState({
-                        users: users
+                        moderators: moderators
                     });
                 } else {
-                    (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des utilisateurs...");
+                    (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des modérateurs...");
                 }
             }).catch(function (error) {
                 console.log(error);
-                (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des utilisateurs...");
+                (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des modérateurs...");
             });
         }
     }, {
@@ -29295,6 +29298,7 @@ function requireAuth(Component, neededUserType) {
 			_this.checkAuth = _this.checkAuth.bind(_this);
 			_this.storeUserInStorage = _this.storeUserInStorage.bind(_this);
 			_this.redirectToLogin = _this.redirectToLogin.bind(_this);
+			_this.getRuc = _this.getRuc.bind(_this);
 			return _this;
 		}
 
@@ -29342,8 +29346,30 @@ function requireAuth(Component, neededUserType) {
 				}
 			}
 		}, {
+			key: 'getRuc',
+			value: function getRuc(idUser) {
+				fetch(_Common.API_URL + 'rucs?user_id=' + idUser, {
+					method: 'GET',
+					headers: {
+						'Authorization': 'Bearer ' + localStorage.getItem('token')
+					}
+				}).then(function (response) {
+					return response.json();
+				}).then(function (rucs) {
+					if (rucs) {
+						return rucs;
+					} else {
+						(0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des liens avec les cercles...");
+					}
+				}).catch(function (error) {
+					console.log(error);
+					(0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des liens avec les cercles...");
+				});
+			}
+		}, {
 			key: 'storeUserInStorage',
 			value: function storeUserInStorage(user) {
+				localStorage.setItem('user-ruc', this.getRuc(user.id));
 				localStorage.setItem('user-id', user.id);
 				localStorage.setItem('user-firstname', user.firstname);
 				localStorage.setItem('user-lastname', user.lastname);

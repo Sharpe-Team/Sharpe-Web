@@ -98,7 +98,8 @@ const getUserFromStorage = function() {
 		lastname: localStorage.getItem('user-lastname'),
 		email: localStorage.getItem('user-email'),
 		profilePicture: localStorage.getItem('user-profile-picture'),
-		admin: localStorage.getItem('user-admin')
+		admin: localStorage.getItem('user-admin'),
+        ruc: localStorage.getItem('user-ruc')
 	};
 
 	user.id = parseInt(user.id);

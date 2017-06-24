@@ -1,5 +1,5 @@
 import React from 'react';
-import { API_URL, hideError, handleAPIResult, displayLoading } from '../../common/Common.jsx';
+import { API_URL, hideError, handleAPIResult, displayLoading, getUserFromStorage } from '../../common/Common.jsx';
 import Loading from '../../common/Loading.jsx';
 import { Link } from 'react-router';
 import ErrorComponent from '../../common/ErrorComponent.jsx';
@@ -8,6 +8,8 @@ class CircleList extends React.Component {
 
 	constructor(props) {
 		super(props);
+        
+        console.log(getUserFromStorage().ruc);
 
 		this.state = {
 			circles: [],

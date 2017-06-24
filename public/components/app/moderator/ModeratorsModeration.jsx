@@ -109,20 +109,20 @@ class ModeratorsModeration extends React.Component {
 		.then(function(response) {
 			return response.json();
 		})
-		.then(function(users) {
-			if(users) {
+		.then(function(moderators) {
+			if(moderators) {
 				handleAPIResult(component, false, "");
 
 				component.setState({
-					users: users
+					moderators: moderators
 				});
 			} else {
-				handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des utilisateurs...");
+				handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des modérateurs...");
 			}
 		})
 		.catch(function(error) {
 			console.log(error);
-			handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des utilisateurs...");
+			handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des modérateurs...");
 		});   
     }
     

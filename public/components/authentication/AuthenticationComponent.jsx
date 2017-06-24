@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { userType } from '../common/Common.jsx';
+import { userType, API_URL, handleAPIResult } from '../common/Common.jsx';
 
 function requireAuth(Component, neededUserType) {
 
@@ -14,6 +14,7 @@ function requireAuth(Component, neededUserType) {
 			this.checkAuth = this.checkAuth.bind(this);
 			this.storeUserInStorage = this.storeUserInStorage.bind(this);
 			this.redirectToLogin = this.redirectToLogin.bind(this);
+            this.getRuc = this.getRuc.bind(this);
 		}
 
 		render() {
@@ -55,8 +56,32 @@ function requireAuth(Component, neededUserType) {
 				this.redirectToLogin();
 			}
 		}
+        
+        getRuc(idUser){
+            fetch(API_URL + 'rucs?user_id=' + idUser, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(rucs) {
+                if(rucs) {
+                    return rucs;
+                } else {
+                    handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des liens avec les cercles...");
+                }
+            })
+            .catch(function(error) {
+                console.log(error);
+                handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des liens avec les cercles...");
+            });  
+        }
 
 		storeUserInStorage(user) {
+            localStorage.setItem('user-ruc', this.getRuc(user.id));
 			localStorage.setItem('user-id', user.id);
 			localStorage.setItem('user-firstname', user.firstname);
 			localStorage.setItem('user-lastname', user.lastname);

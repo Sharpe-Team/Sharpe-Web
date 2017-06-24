@@ -79,7 +79,6 @@ class Line extends React.Component {
 		});
         
         var user = getUserFromStorage();
-        user.id = parseInt(user.id);
         
 		this.setState({
 			user: user

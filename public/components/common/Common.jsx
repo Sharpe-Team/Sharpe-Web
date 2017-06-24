@@ -1,7 +1,7 @@
 /**
  * URL of the API
  */
-let API_URL = "https://localhost:8443/";
+const API_URL = "https://localhost:8443/";
 
 /**
  * Function to hide the ErrorComponent by setting showError to false in the state
@@ -87,15 +87,23 @@ const generateLoadingMessage = function(componentName) {
     return choosenMessage;
 };
 
+/**
+ * Get user information from localStorage of the browser
+ * @returns {{id, firstname, lastname, email, profilePicture}}
+ */
 const getUserFromStorage = function() {
-    return {
-        id: localStorage.getItem('user-id'),
-        firstname: localStorage.getItem('user-firstname'),
-        lastname: localStorage.getItem('user-lastname'),
-        email: localStorage.getItem('user-email'),
-        profilePicture: localStorage.getItem('user-profile-picture'),
-        admin: localStorage.getItem('user-admin')
-    }
+	let user = {
+		id: localStorage.getItem('user-id'),
+		firstname: localStorage.getItem('user-firstname'),
+		lastname: localStorage.getItem('user-lastname'),
+		email: localStorage.getItem('user-email'),
+		profilePicture: localStorage.getItem('user-profile-picture'),
+		admin: localStorage.getItem('user-admin')
+	};
+
+	user.id = parseInt(user.id);
+
+	return user;
 };
 
 export {
@@ -104,6 +112,6 @@ export {
 	handleAPIResult,
 	displayLoading,
     generateLoadingMessage,
-    userType,
-    getUserFromStorage
+    getUserFromStorage,
+	userType
 };

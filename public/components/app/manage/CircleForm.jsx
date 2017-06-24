@@ -3,6 +3,7 @@ import {Link, browserHistory} from 'react-router';
 import { API_URL, hideError, handleAPIResult, displayLoading } from '../../common/Common.jsx';
 import Loading from '../../common/Loading.jsx';
 import ErrorComponent from '../../common/ErrorComponent.jsx';
+import ImageUploadItem from './ImageUploadItem.jsx';
 
 class CircleForm extends React.Component {
 
@@ -18,18 +19,17 @@ class CircleForm extends React.Component {
 				message: ""
 			},
             displayLoading: false,
-            profilePercent: 0,
-            bannerPercent: 0
 		};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleMultipleSelectChange = this.handleMultipleSelectChange.bind(this);
-		this.handleFileUpload = this.handleFileUpload.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+        
+        this.profilePictureHandler = this.profilePictureHandler.bind(this);
+        this.bannerPictureHandler = this.bannerPictureHandler.bind(this);
 
 		this.getAllUsers = this.getAllUsers.bind(this);
 		this.createCircle = this.createCircle.bind(this);
-		this.saveFinalPathOfLastModifiedPicture = this.saveFinalPathOfLastModifiedPicture.bind(this);
 	}
 
 	render() {
@@ -62,53 +62,17 @@ class CircleForm extends React.Component {
 									<div className="column medium-4">
 										<label htmlFor="circle-name" className="text-right middle form-label">Nom </label>
 									</div>
-                                    <div className="colum medium-1"></div>
-									<div className="column medium-7">
+									<div className="column medium-7 medium-offset-1">
 										<input type="text" id="circle-name" name="circleName" onChange={this.handleChange} required/>
 									</div>
 								</div>
-								<div className="row">
-									<div className="column medium-4">
-										<label htmlFor="" className="text-right middle form-label">Ajouter une photo de profil </label>
-									</div>
-                                    <div className="colum medium-1"></div>
-									<div className="column medium-7">
-										<div className="row align-middle upload-row">
-                                        	<div className="column shrink">
-                                            	<label htmlFor="profile-picture" className="button">Photo de profil</label>
-                                            	<input type="file" id="profile-picture" name="profilePicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
-                                            </div>
-                                            <div className="column progress-div">
-                                           		<progress max="100" value={this.state.profilePercent}></progress>
-                                           	</div>
-                                            <div className="column shrink">{this.state.profilePercent}%</div>
-                                        </div>
-									</div>
-								</div>
-								<div className="row">
-									<div className="column medium-4">
-										<label htmlFor="" className="text-right middle form-label">Ajouter une photo de bannière </label>
-									</div>
-                                    <div className="colum medium-1"></div>
-									<div className="column medium-7">
-										<div className="row align-middle upload-row">
-                                        	<div className="column shrink">
-                                            	<label htmlFor="banner-picture" className="button">Bannière</label>
-                                           		<input type="file" id="banner-picture" name="bannerPicture" className="show-for-sr" accept="image/*" onChange={this.handleFileUpload}/>
-                                            </div>
-                                            <div className="column progress-div">
-                                            	<progress max="100" value={this.state.bannerPercent}></progress>
-                                            </div>
-                                            <div className="column shrink">{this.state.bannerPercent}%</div>
-                                        </div>
-									</div>
-								</div>
+                                <ImageUploadItem id="profile-picture" name="profilePicture" label="Ajouter une photo de profil" buttonLabel="Photo de profil" callback={this.profilePictureHandler} />
+                                <ImageUploadItem id="banner-picture" name="bannerPicture" label="Ajouter une bannière" buttonLabel="Bannière" callback={this.bannerPictureHandler} />
 								<div className="row">
 									<div data-tooltip aria-haspopup="true" className="column medium-4 form-label has-tip" title="Vous pouvez sélectionner plusieurs modérateurs. Vous pouvez taper les premières lettres du modérateur pour le retrouver plus facilement.">
 										<label htmlFor="moderators" className="text-right middle">Liste des modérateurs</label>
 									</div>
-                                    <div className="colum medium-1"></div>
-									<div className="column medium-7">
+									<div className="column medium-7 medium-offset-1">
 										<select id="moderators" name="moderators" onChange={this.handleMultipleSelectChange} aria-describedby="select-help" multiple required>
 											{
 												this.state.users.map(function(user) {
@@ -133,55 +97,10 @@ class CircleForm extends React.Component {
 	}
 
 	componentDidMount() {
-
-		var component = this;
-
-		siofu.listenOnInput(document.getElementById("profile-picture"));
-	    siofu.listenOnInput(document.getElementById("banner-picture"));
-
-	    siofu.addEventListener("load", function(event) {
-	    	// Save the name given by the server to the current picture
-	    	component.setState({[component.state.lastModifiedPicture]: event.name});
-	    });
-
-		// Do something on upload progress:
-		siofu.addEventListener("progress", function(event) {
-		    var percent = event.bytesLoaded / event.file.size * 100;
-            if(component.state.lastModifiedPicture == "profilePicture")
-                component.setState({profilePercent: percent});
-            if(component.state.lastModifiedPicture == "bannerPicture")
-                component.setState({bannerPercent: percent});
-		});
-
-		// Do something when a file is uploaded:
-		siofu.addEventListener("complete", function(event) {
-			if(event.success) {
-				// Save the final path of the latest modified picture
-				component.saveFinalPathOfLastModifiedPicture(event.file);
-			} else {
-				component.setState({
-					[component.state.lastModifiedPicture]: undefined
-				});
-				alert("Une erreur est survenue lors de l'envoi des images...");
-			}
-		});
 	}
 
 	componentWillMount() {
-
 		this.getAllUsers();
-	}
-
-	saveFinalPathOfLastModifiedPicture(file) {
-
-		var finalName = this.state[this.state.lastModifiedPicture];
-		var currentName = file.name;
-		var extension = currentName.substring(currentName.indexOf("."));
-		var finalPath = finalName + extension;
-
-		this.setState({
-			[this.state.lastModifiedPicture]: finalPath
-		});
 	}
 
 	handleChange(event) {
@@ -189,10 +108,10 @@ class CircleForm extends React.Component {
 	}
 
 	handleMultipleSelectChange(event) {
-		var options = event.target.options;
-		var selectedOptions = [];
+		let options = event.target.options;
+		let selectedOptions = [];
 
-		for(var i=0; i<options.length; i++) {
+		for(let i=0; i<options.length; i++) {
 			if(options[i].selected) {
 				selectedOptions.push(options[i].value);
 			}
@@ -201,9 +120,15 @@ class CircleForm extends React.Component {
 		this.setState({[event.target.name]: selectedOptions});
 	}
 
-	handleFileUpload(event) {
+	profilePictureHandler(pictureName) {
 		this.setState({
-			lastModifiedPicture: event.target.name
+			profilePicture: pictureName
+		});
+	}
+
+	bannerPictureHandler(pictureName) {
+		this.setState({
+			bannerPicture: pictureName
 		});
 	}
 
@@ -214,7 +139,7 @@ class CircleForm extends React.Component {
 	}
 
 	createCircle() {
-		var component = this;
+		const component = this;
 
         displayLoading(this);
 		fetch(API_URL + 'circles', {
@@ -242,7 +167,7 @@ class CircleForm extends React.Component {
 		.then(function(response) {
 			if(response.status == 201) {
 				handleAPIResult(component, false, "");
-				alert("Le cercle a bien été ajouté !");
+				//alert("Le cercle a bien été ajouté !");
 				// redirect to main file 'App'
 				browserHistory.push('/app');
 			} else {
@@ -256,7 +181,7 @@ class CircleForm extends React.Component {
 	}
 
 	getAllUsers() {
-		var component = this;
+		const component = this;
 
 		fetch(API_URL + 'users', {
 			method: 'GET',

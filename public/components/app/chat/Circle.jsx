@@ -1,13 +1,14 @@
 import React from 'react';
 import Line from './Line.jsx';
 import CircleHeader from './CircleHeader.jsx';
+import Cube from './Cube.jsx';
 
 class Circle extends React.Component {
 
 	constructor(props) {
 		super(props);
 
-		var selectedLine = null;
+		let selectedLine = null;
 
 		if(props.circle 
 			&& props.circle.lines 
@@ -25,7 +26,7 @@ class Circle extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		var selectedLine = null;
+		let selectedLine = null;
 
 		if(nextProps.circle 
 			&& nextProps.circle.lines 
@@ -39,7 +40,7 @@ class Circle extends React.Component {
 	}
 
 	render() {
-		var line;
+		let line;
 		if(this.state.selectedLine) {
 			line = (<Line line={this.state.selectedLine} circle={this.props.circle} updateUnreadPoints={this.props.updateUnreadPoints} style={{height: "100%"}}/>);
 		} else {
@@ -55,8 +56,7 @@ class Circle extends React.Component {
 				<CircleHeader circle={this.props.circle} navbarHeight={this.state.navbarHeight}/>
 				<div className="row" style={{height: "calc(100% - " + this.state.navbarHeight + "px"}}>
 					{line}
-					<div id="cubes" className="column medium-2">
-					</div>
+					<Cube circle={this.props.circle} />
 				</div>
 			</div>
 		);

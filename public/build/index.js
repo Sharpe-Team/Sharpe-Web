@@ -27576,7 +27576,7 @@ var CircleForm = function (_React$Component) {
 		_this.state = {
 			circleName: "",
 			users: [],
-			lastModifiedPicture: undefined,
+			moderators: [],
 			error: {
 				showError: false,
 				message: ""
@@ -27773,7 +27773,7 @@ var CircleForm = function (_React$Component) {
 				},
 				body: JSON.stringify({
 					name: component.state.circleName,
-					//moderators: component.state.moderators,
+					moderatorsId: component.state.moderators,
 					pictureUrl: component.state.profilePicture,
 					bannerPictureUrl: component.state.bannerPicture,
 					type: 1

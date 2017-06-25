@@ -13,7 +13,7 @@ class CircleForm extends React.Component {
 		this.state = {
 			circleName: "",
 			users: [],
-			lastModifiedPicture: undefined,
+			moderators: [],
             error: {
 				showError: false,
 				message: ""
@@ -151,7 +151,7 @@ class CircleForm extends React.Component {
 			},
 			body: JSON.stringify({
 				name: component.state.circleName,
-				//moderators: component.state.moderators,
+				moderatorsId: component.state.moderators,
 				pictureUrl: component.state.profilePicture,
 				bannerPictureUrl: component.state.bannerPicture,
 				type: 1

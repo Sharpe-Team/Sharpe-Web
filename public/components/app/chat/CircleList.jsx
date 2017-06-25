@@ -8,8 +8,6 @@ class CircleList extends React.Component {
 
 	constructor(props) {
 		super(props);
-        
-        console.log(getUserFromStorage().ruc);
 
 		this.state = {
 			circles: [],
@@ -43,9 +41,12 @@ class CircleList extends React.Component {
                                 if(this.props.selectedCircle && this.props.selectedCircle.id == circle.id) {
                                     return (
                                         <div key={circle.id} className="circleListItem">
-                                            <Link to={'/moderation/'+circle.id}>
-                                                <img className="moderation-button" src="/resource/moderation-button.png"/>
-                                            </Link>
+                                            {   circle['userRole'] == 2 && 
+                                                <Link to={'/moderation/'+circle.id}>
+                                                    <img className="moderation-button" src="/resource/moderation-button.png"/>
+                                                </Link>
+                                            }
+                                            
                                             <b>{circle.name}</b>
                                             &nbsp;
                                             { circle.nbUnreadPoints > 0 &&
@@ -56,9 +57,11 @@ class CircleList extends React.Component {
                                 }
                                 return (
                                     <div key={circle.id} onClick={this.selectCircle.bind(this, circle)} className="circleListItem" aria-describedby={"badge_" + circle.id}>
-                                        <Link to={'/moderation/'+circle.id}>
-                                            <img className="moderation-button" src="/resource/moderation-button.png"/>
-                                        </Link>
+                                        {   circle['userRole'] == 2 && 
+                                            <Link to={'/moderation/'+circle.id}>
+                                                <img className="moderation-button" src="/resource/moderation-button.png"/>
+                                            </Link>
+                                        }
                                         {circle.name}
                                         &nbsp;
                                         { circle.nbUnreadPoints > 0 &&
@@ -107,6 +110,16 @@ class CircleList extends React.Component {
 				for(let i=0; i<circles.length; i++) {
 					circles[i]['nbUnreadPoints'] = 0;
 				}
+                
+                var rucs = getUserFromStorage().ruc;
+                
+                for(let i=0; i<circles.length; i++) {
+                    for(let j=0; j<rucs.length; j++){
+                        if(rucs[j].idCircle == circles[i].id){
+                            circles[i]['userRole'] = rucs[j].idRole;
+                        }
+                    }
+                }
 
 				component.setState({
 					circles: circles

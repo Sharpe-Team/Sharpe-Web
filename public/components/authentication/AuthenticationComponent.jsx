@@ -57,7 +57,9 @@ function requireAuth(Component, neededUserType) {
 			}
 		}
         
-        getRuc(idUser){
+        getRuc(idUser) {
+            const component = this;
+            
             fetch(API_URL + 'rucs?user_id=' + idUser, {
                 method: 'GET',
                 headers: {
@@ -69,19 +71,19 @@ function requireAuth(Component, neededUserType) {
             })
             .then(function(rucs) {
                 if(rucs) {
-                    return rucs;
+                    handleAPIResult(component, false, "");
+                    localStorage.setItem('user-ruc', JSON.stringify(rucs));
                 } else {
                     handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des liens avec les cercles...");
                 }
             })
             .catch(function(error) {
-                console.log(error);
                 handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des liens avec les cercles...");
             });  
         }
 
 		storeUserInStorage(user) {
-            localStorage.setItem('user-ruc', this.getRuc(user.id));
+            this.getRuc(user.id);
 			localStorage.setItem('user-id', user.id);
 			localStorage.setItem('user-firstname', user.firstname);
 			localStorage.setItem('user-lastname', user.lastname);

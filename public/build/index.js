@@ -6415,6 +6415,8 @@ var getUserFromStorage = function getUserFromStorage() {
 
   user.id = parseInt(user.id);
 
+  if (user.ruc) user.ruc = JSON.parse(user.ruc);
+
   return user;
 };
 
@@ -26821,8 +26823,6 @@ var CircleList = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (CircleList.__proto__ || Object.getPrototypeOf(CircleList)).call(this, props));
 
-		console.log((0, _Common.getUserFromStorage)().ruc);
-
 		_this.state = {
 			circles: [],
 			error: {
@@ -26857,7 +26857,7 @@ var CircleList = function (_React$Component) {
 								return _react2.default.createElement(
 									'div',
 									{ key: circle.id, className: 'circleListItem' },
-									_react2.default.createElement(
+									circle['userRole'] == 2 && _react2.default.createElement(
 										_reactRouter.Link,
 										{ to: '/moderation/' + circle.id },
 										_react2.default.createElement('img', { className: 'moderation-button', src: '/resource/moderation-button.png' })
@@ -26878,7 +26878,7 @@ var CircleList = function (_React$Component) {
 							return _react2.default.createElement(
 								'div',
 								{ key: circle.id, onClick: this.selectCircle.bind(this, circle), className: 'circleListItem', 'aria-describedby': "badge_" + circle.id },
-								_react2.default.createElement(
+								circle['userRole'] == 2 && _react2.default.createElement(
 									_reactRouter.Link,
 									{ to: '/moderation/' + circle.id },
 									_react2.default.createElement('img', { className: 'moderation-button', src: '/resource/moderation-button.png' })
@@ -26930,6 +26930,17 @@ var CircleList = function (_React$Component) {
 
 					for (var i = 0; i < circles.length; i++) {
 						circles[i]['nbUnreadPoints'] = 0;
+					}
+
+					var rucs = (0, _Common.getUserFromStorage)().ruc;
+
+					for (var _i = 0; _i < circles.length; _i++) {
+						for (var j = 0; j < rucs.length; j++) {
+							if (rucs[j].idCircle == circles[_i].id) {
+								circles[_i]['userRole'] = rucs[j].idRole;
+								console.log(circles[_i]);
+							}
+						}
 					}
 
 					component.setState({
@@ -29348,6 +29359,8 @@ function requireAuth(Component, neededUserType) {
 		}, {
 			key: 'getRuc',
 			value: function getRuc(idUser) {
+				var component = this;
+
 				fetch(_Common.API_URL + 'rucs?user_id=' + idUser, {
 					method: 'GET',
 					headers: {
@@ -29357,19 +29370,19 @@ function requireAuth(Component, neededUserType) {
 					return response.json();
 				}).then(function (rucs) {
 					if (rucs) {
-						return rucs;
+						(0, _Common.handleAPIResult)(component, false, "");
+						localStorage.setItem('user-ruc', JSON.stringify(rucs));
 					} else {
 						(0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des liens avec les cercles...");
 					}
 				}).catch(function (error) {
-					console.log(error);
 					(0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des liens avec les cercles...");
 				});
 			}
 		}, {
 			key: 'storeUserInStorage',
 			value: function storeUserInStorage(user) {
-				localStorage.setItem('user-ruc', this.getRuc(user.id));
+				this.getRuc(user.id);
 				localStorage.setItem('user-id', user.id);
 				localStorage.setItem('user-firstname', user.firstname);
 				localStorage.setItem('user-lastname', user.lastname);

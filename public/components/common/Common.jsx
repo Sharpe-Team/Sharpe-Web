@@ -103,6 +103,9 @@ const getUserFromStorage = function() {
 	};
 
 	user.id = parseInt(user.id);
+    
+    if(user.ruc)
+        user.ruc = JSON.parse(user.ruc);
 
 	return user;
 };

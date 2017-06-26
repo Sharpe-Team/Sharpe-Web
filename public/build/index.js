@@ -26938,7 +26938,6 @@ var CircleList = function (_React$Component) {
 						for (var j = 0; j < rucs.length; j++) {
 							if (rucs[j].idCircle == circles[_i].id) {
 								circles[_i]['userRole'] = rucs[j].idRole;
-								console.log(circles[_i]);
 							}
 						}
 					}

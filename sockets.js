@@ -96,7 +96,6 @@ function onLogin(socket, token, loggedUser, callback) {
 		console.log("Unregistered user connected...");
 	}
 
-	console.log(connectedUsersMap.size);
 	return loggedUser;
 }
 
@@ -128,7 +127,6 @@ function onGetConnectedUsers(socket, callback) {
 }
 
 function onLogout(socket, loggedUser) {
-	console.log("logout : " + loggedUser.user.email);
 	socket.broadcast.emit('disconnected-user', loggedUser.user);
 	connectedUsersMap.delete(loggedUser.token);
 }

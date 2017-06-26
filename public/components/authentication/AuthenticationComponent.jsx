@@ -35,7 +35,6 @@ function requireAuth(Component, neededUserType) {
 		}
 
 		checkAuth() {
-			//console.log(localStorage.getItem("token"));
 
 			if(localStorage.getItem("token") != null) {
                 var component = this;

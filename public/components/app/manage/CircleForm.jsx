@@ -13,7 +13,7 @@ class CircleForm extends React.Component {
 		this.state = {
 			circleName: "",
 			users: [],
-			lastModifiedPicture: undefined,
+			moderators: [],
             error: {
 				showError: false,
 				message: ""

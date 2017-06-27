@@ -28071,7 +28071,7 @@ var CircleForm = function (_React$Component) {
 		_this.state = {
 			circleName: "",
 			users: [],
-			lastModifiedPicture: undefined,
+			moderators: [],
 			error: {
 				showError: false,
 				message: ""

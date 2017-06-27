@@ -10,11 +10,13 @@ class ModeratorsModeration extends React.Component {
         this.state = {
 			moderators: [],
             users: [],
-            circl: this.props.circle
+            firstRequestIsFinished: false,
+            circle: this.props.circle
         }
         
         this.getAllUsers = this.getAllUsers.bind(this);
         this.getAllModerators = this.getAllModerators.bind(this);
+        this.addAsModerator = this.addAsModerator.bind(this);
     }
     
     render() {
@@ -61,7 +63,7 @@ class ModeratorsModeration extends React.Component {
                                         <td>{user.firstname}</td>
                                         <td>{user.lastname}</td>
                                         <td>{user.email}</td>
-                                        <td><button className="button">Ajouter</button></td>
+                                        <td><button className="button" onClick={this.addAsModerator.bind(this, user.id)}>Ajouter</button></td>
                                     </tr>
                                 )
                             }, this)
@@ -90,8 +92,8 @@ class ModeratorsModeration extends React.Component {
         let component = this;
         
         if(!idCircle) {
-			if(!this.state.idCircle) {
-				this.setState({users: [], moderators: []});
+			if(!this.state.circle.id) {
+				this.setState({moderators: []});
 				return;
 			} else {
 				idCircle = this.state.circle.id;
@@ -100,7 +102,7 @@ class ModeratorsModeration extends React.Component {
 			return;
 		}
         
-        fetch(API_URL + 'rucs?role_id=' + 1 + "&circle_id=" + idCircle, {
+        fetch(API_URL + 'rucs?role_id=' + 2 + "&circle_id=" + idCircle, {
 			method: 'GET',
 			headers: {
 				'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -116,6 +118,13 @@ class ModeratorsModeration extends React.Component {
 				component.setState({
 					moderators: moderators
 				});
+                
+                if(component.state.firstRequestIsFinished){
+                    component.filterUsers();
+                } else {
+                    component.setState({firstRequestIsFinished: true});
+                }
+                
 			} else {
 				handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des modérateurs...");
 			}
@@ -123,11 +132,13 @@ class ModeratorsModeration extends React.Component {
 		.catch(function(error) {
 			console.log(error);
 			handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des modérateurs...");
-		});   
+		});
     }
     
     getAllUsers(){
         let component = this;
+        
+        this.setState({users: []});
         
         fetch(API_URL + 'users', {
 			method: 'GET',
@@ -145,6 +156,13 @@ class ModeratorsModeration extends React.Component {
 				component.setState({
 					users: users
 				});
+                
+                if(component.state.firstRequestIsFinished){
+                    component.filterUsers();
+                } else {
+                    component.setState({firstRequestIsFinished: true});
+                }
+                
 			} else {
 				handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des utilisateurs...");
 			}
@@ -152,10 +170,55 @@ class ModeratorsModeration extends React.Component {
 		.catch(function(error) {
 			console.log(error);
 			handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des utilisateurs...");
-		});   
+		});
     }
     
+    addAsModerator(idUser) {
+        let component = this;
+        
+        fetch(API_URL + 'rucs?user_id=' + idUser + "&circle_id=" + this.state.circle.id + "&role_name=MODERATOR", {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        })
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(ruc){
+            if(!ruc){
+                handleAPIResult(component, true, "Une erreur est survenue l'ajout du modérateur...");
+            } else {
+                var changedUser = component.state.users.find(function(user){
+                    return user.id == idUser;                            
+                });
+                
+                component.setState({users: component.state.users.filter(function(user) { 
+                    return user.id !== idUser;
+                })});
+                
+                var newModerators = component.state.moderators;
+                newModerators.push(changedUser);
+                component.setState({moderators: newModerators});
+            }
+        })
+        .catch(function(error) {
+            console.log(error);
+            handleAPIResult(component, true, "Une erreur est survenue l'ajout du modérateur...");
+        });
+    }
     
+    filterUsers(){
+        const component = this;
+        
+        this.setState({users: this.state.users.filter(function(user) {
+            for(let i = 0; i < component.state.moderators.length; i++){
+                if(component.state.moderators[i].id == user.id)
+                    return false;
+            }
+            return true;
+        })});
+    }
 }
 
 export default ModeratorsModeration;

@@ -28838,11 +28838,13 @@ var ModeratorsModeration = function (_React$Component) {
         _this.state = {
             moderators: [],
             users: [],
-            circl: _this.props.circle
+            firstRequestIsFinished: false,
+            circle: _this.props.circle
         };
 
         _this.getAllUsers = _this.getAllUsers.bind(_this);
         _this.getAllModerators = _this.getAllModerators.bind(_this);
+        _this.addAsModerator = _this.addAsModerator.bind(_this);
         return _this;
     }
 
@@ -28972,7 +28974,7 @@ var ModeratorsModeration = function (_React$Component) {
                                     null,
                                     _react2.default.createElement(
                                         'button',
-                                        { className: 'button' },
+                                        { className: 'button', onClick: this.addAsModerator.bind(this, user.id) },
                                         'Ajouter'
                                     )
                                 )
@@ -29004,8 +29006,8 @@ var ModeratorsModeration = function (_React$Component) {
             var component = this;
 
             if (!idCircle) {
-                if (!this.state.idCircle) {
-                    this.setState({ users: [], moderators: [] });
+                if (!this.state.circle.id) {
+                    this.setState({ moderators: [] });
                     return;
                 } else {
                     idCircle = this.state.circle.id;
@@ -29014,7 +29016,7 @@ var ModeratorsModeration = function (_React$Component) {
                 return;
             }
 
-            fetch(_Common.API_URL + 'rucs?role_id=' + 1 + "&circle_id=" + idCircle, {
+            fetch(_Common.API_URL + 'rucs?role_id=' + 2 + "&circle_id=" + idCircle, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -29028,6 +29030,12 @@ var ModeratorsModeration = function (_React$Component) {
                     component.setState({
                         moderators: moderators
                     });
+
+                    if (component.state.firstRequestIsFinished) {
+                        component.filterUsers();
+                    } else {
+                        component.setState({ firstRequestIsFinished: true });
+                    }
                 } else {
                     (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des modérateurs...");
                 }
@@ -29040,6 +29048,8 @@ var ModeratorsModeration = function (_React$Component) {
         key: 'getAllUsers',
         value: function getAllUsers() {
             var component = this;
+
+            this.setState({ users: [] });
 
             fetch(_Common.API_URL + 'users', {
                 method: 'GET',
@@ -29055,6 +29065,12 @@ var ModeratorsModeration = function (_React$Component) {
                     component.setState({
                         users: users
                     });
+
+                    if (component.state.firstRequestIsFinished) {
+                        component.filterUsers();
+                    } else {
+                        component.setState({ firstRequestIsFinished: true });
+                    }
                 } else {
                     (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des utilisateurs...");
                 }
@@ -29062,6 +29078,51 @@ var ModeratorsModeration = function (_React$Component) {
                 console.log(error);
                 (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des utilisateurs...");
             });
+        }
+    }, {
+        key: 'addAsModerator',
+        value: function addAsModerator(idUser) {
+            var component = this;
+
+            fetch(_Common.API_URL + 'rucs?user_id=' + idUser + "&circle_id=" + this.state.circle.id + "&role_name=MODERATOR", {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(function (response) {
+                return response.json();
+            }).then(function (ruc) {
+                if (!ruc) {
+                    (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue l'ajout du modérateur...");
+                } else {
+                    var changedUser = component.state.users.find(function (user) {
+                        return user.id == idUser;
+                    });
+
+                    component.setState({ users: component.state.users.filter(function (user) {
+                            return user.id !== idUser;
+                        }) });
+
+                    var newModerators = component.state.moderators;
+                    newModerators.push(changedUser);
+                    component.setState({ moderators: newModerators });
+                }
+            }).catch(function (error) {
+                console.log(error);
+                (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue l'ajout du modérateur...");
+            });
+        }
+    }, {
+        key: 'filterUsers',
+        value: function filterUsers() {
+            var component = this;
+
+            this.setState({ users: this.state.users.filter(function (user) {
+                    for (var i = 0; i < component.state.moderators.length; i++) {
+                        if (component.state.moderators[i].id == user.id) return false;
+                    }
+                    return true;
+                }) });
         }
     }]);
 
@@ -29334,7 +29395,6 @@ function requireAuth(Component, neededUserType) {
 		}, {
 			key: 'checkAuth',
 			value: function checkAuth() {
-				//console.log(localStorage.getItem("token"));
 
 				if (localStorage.getItem("token") != null) {
 					var component = this;

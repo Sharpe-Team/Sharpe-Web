@@ -315,7 +315,7 @@ input, button {
     background-size: cover;
 }
 
-.admin-page, .moderation-page {
+.admin-page, .moderation-page, .circle-searcher-page {
     background: url("resource/background.png");
     background-size: cover;
     background-attachment: fixed;
@@ -330,4 +330,8 @@ input, button {
 .not-found-image, .not-authorized-image {
     display: block;
     margin: 0 auto;
+}
+
+.circle-search-input {
+    margin-top: 15px;
 }

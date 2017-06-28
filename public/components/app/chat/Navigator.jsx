@@ -1,6 +1,6 @@
 import React from 'react';
 import NavigatorMenu from './NavigatorMenu.jsx';
-import NavigatorSearch from './NavigatorSearch.jsx';
+import Searcher from './Searcher.jsx';
 import CircleList from './CircleList.jsx';
 import UserList from './UserList.jsx';
 
@@ -30,7 +30,7 @@ class Navigator extends React.Component {
 			<div id="left-column" className="column medium-2">
                 <NavigatorMenu/>
                 <hr/>
-                <NavigatorSearch action={this.searchHandler}/>
+                <Searcher action={this.searchHandler}/>
 				<CircleList search={this.state.search} updateSelectedCircle={this.props.updateSelectedCircle} selectedCircle={this.props.selectedCircle} ref={ (instance) => { this.circleListRef = instance; }}/>
 				<hr/>
 				<UserList search={this.state.search} updateSelectedCircle={this.props.updateSelectedCircle} selectedCircle={this.props.selectedCircle} ref={ (instance) => { this.userListRef = instance; }}/>

@@ -16,6 +16,7 @@ class UsersAdmin extends React.Component {
     render() {
         return (
             <table className="unstriped">
+                <caption>Liste des utilisateurs</caption>
                 <thead>
                     <tr>
                         <th>Prénom</th>

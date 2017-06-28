@@ -28746,7 +28746,7 @@ var Moderation = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'moderation-panel', style: { height: "300px" } },
+                    { className: 'moderation-panel' },
                     this.state.selected == selection.point && _react2.default.createElement(_PointsModeration2.default, { circle: this.state.circle }),
                     this.state.selected == selection.moderator && _react2.default.createElement(_ModeratorsModeration2.default, { circle: this.state.circle })
                 )
@@ -29364,8 +29364,6 @@ function requireAuth(Component, neededUserType, moderation) {
 
             var _this = _possibleConstructorReturn(this, (AuthenticationComponent.__proto__ || Object.getPrototypeOf(AuthenticationComponent)).call(this, props));
 
-            console.log(moderation);
-
             _this.state = { isAuthorized: false };
 
             _this.checkAuth = _this.checkAuth.bind(_this);
@@ -29406,7 +29404,7 @@ function requireAuth(Component, neededUserType, moderation) {
                         if (user) {
                             if (moderation == true) {
                                 if (!component.checkModeration(user)) {
-                                    component.redirectToLogin();
+                                    component.redirectToNotAuthorized();
                                 }
                             } else if (neededUserType == _Common.userType.admin && user.admin != 1) {
                                 component.props.router.push('/notAuthorized');
@@ -29425,8 +29423,12 @@ function requireAuth(Component, neededUserType, moderation) {
         }, {
             key: 'checkModeration',
             value: function checkModeration(user) {
-                console.log(user.circlesRole);
-                return true;
+                for (var key in user.circlesRole) {
+                    if (key == this.props.params.circleId && user.circlesRole[key] == "MODERATOR") {
+                        return true;
+                    }
+                }
+                return false;
             }
         }, {
             key: 'getRuc',
@@ -29472,6 +29474,11 @@ function requireAuth(Component, neededUserType, moderation) {
                 var redirect = location.pathname + location.search;
 
                 this.props.router.push('/?redirect=' + redirect);
+            }
+        }, {
+            key: 'redirectToNotAuthorized',
+            value: function redirectToNotAuthorized() {
+                this.props.router.push('/notAuthorized');
             }
         }]);
 

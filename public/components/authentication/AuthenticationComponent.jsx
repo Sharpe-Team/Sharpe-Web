@@ -8,8 +8,6 @@ function requireAuth(Component, neededUserType, moderation) {
 
 		constructor(props) {
 			super(props);
-            
-            console.log(moderation)
 
 			this.state = {isAuthorized: false};
 
@@ -46,7 +44,7 @@ function requireAuth(Component, neededUserType, moderation) {
 					if(user) {
                         if(moderation == true){
                             if(!component.checkModeration(user)){
-                                component.redirectToLogin();
+                                component.redirectToNotAuthorized();
                             }
                         } else if(neededUserType == userType.admin && user.admin != 1){
                             component.props.router.push('/notAuthorized');
@@ -64,8 +62,13 @@ function requireAuth(Component, neededUserType, moderation) {
 		}
         
         checkModeration(user) {
-            console.log(user.circlesRole);
-            return true;
+            for (var key in user.circlesRole) {
+                if(key == this.props.params.circleId && user.circlesRole[key] == "MODERATOR"){
+                    return true;
+                }
+                    
+            }
+            return false;
         }
         
         getRuc(idUser) {
@@ -112,6 +115,10 @@ function requireAuth(Component, neededUserType, moderation) {
 
 			this.props.router.push('/?redirect=' + redirect);
 		}
+        
+        redirectToNotAuthorized() {
+            this.props.router.push('/notAuthorized');
+        }
 	}
 
 	return withRouter(AuthenticationComponent);

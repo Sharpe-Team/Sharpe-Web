@@ -2,16 +2,19 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { userType, API_URL, handleAPIResult } from '../common/Common.jsx';
 
-function requireAuth(Component, neededUserType) {
+function requireAuth(Component, neededUserType, moderation) {
 
 	class AuthenticationComponent extends React.Component {
 
 		constructor(props) {
 			super(props);
+            
+            console.log(moderation)
 
 			this.state = {isAuthorized: false};
 
 			this.checkAuth = this.checkAuth.bind(this);
+            this.checkModeration = this.checkModeration.bind(this);
 			this.storeUserInStorage = this.storeUserInStorage.bind(this);
 			this.redirectToLogin = this.redirectToLogin.bind(this);
             this.getRuc = this.getRuc.bind(this);
@@ -31,30 +34,39 @@ function requireAuth(Component, neededUserType) {
 				}
 			});
 
-			this.checkAuth();
+            this.checkAuth();
 		}
 
 		checkAuth() {
-
 			if(localStorage.getItem("token") != null) {
                 var component = this;
 
 				socket.emit('verify-token', localStorage.getItem("token"), function(user) {
 					// Callback from server
 					if(user) {
-                        component.storeUserInStorage(user);
-                        if(neededUserType == userType.admin && user.admin != 1){
+                        if(moderation == true){
+                            if(!component.checkModeration(user)){
+                                component.redirectToLogin();
+                            }
+                        } else if(neededUserType == userType.admin && user.admin != 1){
                             component.props.router.push('/notAuthorized');
                         }
-                   		component.setState({isAuthorized: true});
+                
+                        component.storeUserInStorage(user);
+                        component.setState({isAuthorized: true});
 					} else {
-                		component.redirectToLogin();
+                        component.redirectToLogin();
 					}
 				});
 			} else {
-				this.redirectToLogin();
+                this.redirectToLogin();
 			}
 		}
+        
+        checkModeration(user) {
+            console.log(user.circlesRole);
+            return true;
+        }
         
         getRuc(idUser) {
             const component = this;

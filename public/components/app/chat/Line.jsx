@@ -44,7 +44,7 @@ class Line extends React.Component {
 				{this.state.error.showError &&
 					<ErrorComponent message={this.state.error.message} hideError={hideError.bind(this, this)} />
 				}
-				<ul id="points" style={{height: "calc(100% - " + this.state.newPointHeight + "px"}}>
+				<ul id="points" style={{height: "calc(100% - " + this.state.newPointHeight + "px)"}}>
 					{
 						this.state.points.map(function(point) {
 							return <li key={point.id}><Point  point={point} /></li>

@@ -41,8 +41,8 @@ class Moderation extends React.Component {
                 </div>
 
                 <div className="moderation-panel">
-                    { this.state.selected == selection.point        && <PointsModeration circle={this.state.circle}/>}
-                    { this.state.selected == selection.moderator    && <ModeratorsModeration circle={this.state.circle}/>}
+                    { this.state.selected == selection.point        && <PointsModeration circle={this.state.circle} />}
+                    { this.state.selected == selection.moderator    && <ModeratorsModeration circle={this.state.circle} />}
                 </div>
             </div>
         );

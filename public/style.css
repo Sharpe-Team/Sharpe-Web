@@ -330,17 +330,3 @@ input, button {
     display: block;
     margin: 0 auto;
 }
-
-table {
-    margin-bottom: 0px !important;
-    margin-top: 10px;
-}
-
-.admin-panel, .moderation-panel {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-.moderation-menu-bar {
-    margin-bottom: 10px;
-}

@@ -14,7 +14,7 @@ var connectedUsersMap = new Map();
  * 	Check if the user is in the list
  */
 function isPresent(list, user) {
-	for (var i = 0; i < list.length; i++) {
+	for (let i = 0; i < list.length; i++) {
 		if(list[i].id == user.id) {
 			return true;
 		}
@@ -36,14 +36,16 @@ function getDecodedToken(token) {
 	}
 }
 
-function getUserSocket(userId) {
+function getUserSockets(userId) {
+	let sockets = [];
 
 	for(var [key, value] of connectedUsersMap) {
 		if(value.user.id == userId) {
-			return value.socket;
+			sockets.push(value.socket);
 		}
 	}
-	return null;
+
+	return sockets;
 }
 
 function computeFileUpload(socket) {
@@ -134,11 +136,14 @@ function onLogout(socket, loggedUser) {
 function onNewPrivatePoint(socket, point, userId) {
 
 	// Get the socket for the user id, if the user is connected
-	var userSocket = getUserSocket(userId);
-	if(userSocket) {
-		userSocket.emit('new-private-point', point);
+	var userSockets = getUserSockets(userId);
+	if(userSockets.length > 0) {
+		for(let i=0; i<userSockets.length; i++) {
+			userSockets[i].emit('new-private-point', point);
+		}
 
-		if(socket != userSocket) {
+		// If the sender and the receiver are not the same user, send the message to the sender
+		if(!userSockets.includes(socket)) {
 			socket.emit('new-private-point', point);
 		}
 	}

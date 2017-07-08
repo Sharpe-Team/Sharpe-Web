@@ -26633,6 +26633,8 @@ var Line = function (_React$Component) {
 		_this.state = {
 			user: null,
 			points: [],
+			cubes: [],
+			concatArray: [],
 			newPoint: "",
 			newPointHeight: 50,
 			pointAdded: true,
@@ -26640,9 +26642,7 @@ var Line = function (_React$Component) {
 				showError: false,
 				message: ""
 			},
-			displayLoading: false,
-			cubes: [],
-			concatArray: []
+			displayLoading: false
 		};
 
 		// Register handler functions
@@ -26657,6 +26657,7 @@ var Line = function (_React$Component) {
 		_this.saveNewPoint = _this.saveNewPoint.bind(_this);
 		_this.scrollToBottom = _this.scrollToBottom.bind(_this);
 		_this.updateState = _this.updateState.bind(_this);
+		_this.concatArrays = _this.concatArrays.bind(_this);
 		return _this;
 	}
 
@@ -26671,11 +26672,8 @@ var Line = function (_React$Component) {
 				_react2.default.createElement(
 					'ul',
 					{ id: 'points', style: { height: "calc(100% - " + this.state.newPointHeight + "px" } },
-					this.state.points.map(function (point) {
-						return _react2.default.createElement(_Point2.default, { key: point.id, point: point });
-					}, this),
-					this.state.cubes.map(function (cube) {
-						return _react2.default.createElement(_Point2.default, { key: cube.id, point: cube });
+					this.state.concatArray.map(function (object, index) {
+						return _react2.default.createElement(_Point2.default, { key: index, point: object });
 					}, this)
 				),
 				_react2.default.createElement(
@@ -26845,11 +26843,15 @@ var Line = function (_React$Component) {
 			}).then(function (points) {
 				if (points) {
 					(0, _Common.handleAPIResult)(component, false, "");
+
 					for (var i = 0; i < points.length; i++) {
 						points[i].created = new Date(points[i].created);
 						points[i].updated = new Date(points[i].updated);
 					}
+
 					component.setState({ points: points });
+					component.concatArrays(points, component.state.cubes);
+
 					component.scrollToBottom();
 				} else {
 					(0, _Common.handleAPIResult)(component, true, "Une erreur est apparue lors de la récupération des points...");
@@ -26892,6 +26894,7 @@ var Line = function (_React$Component) {
 						cubes[i].updated = new Date(cubes[i].updated);
 					}
 					component.setState({ cubes: cubes });
+					component.concatArrays(component.state.points, cubes);
 					component.scrollToBottom();
 				} else {
 					(0, _Common.handleAPIResult)(component, true, "Une erreur est apparue lors de la récupération des cubes...");
@@ -26953,6 +26956,18 @@ var Line = function (_React$Component) {
 			this.setState({
 				error: error,
 				displayLoading: displayLoading
+			});
+		}
+	}, {
+		key: 'concatArrays',
+		value: function concatArrays(points, cubes) {
+			var result = points.concat(cubes);
+			result.sort(function (a, b) {
+				return a.created.getTime() - b.created.getTime();
+			});
+
+			this.setState({
+				concatArray: result
 			});
 		}
 	}]);

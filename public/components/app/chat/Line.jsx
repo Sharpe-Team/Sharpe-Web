@@ -15,6 +15,8 @@ class Line extends React.Component {
 		this.state = {
 			user: null,
 			points: [],
+			cubes: [],
+			concatArray: [],
 			newPoint: "",
 			newPointHeight: 50,
 			pointAdded: true,
@@ -22,9 +24,7 @@ class Line extends React.Component {
 				showError: false,
 				message: ""
 			},
-            displayLoading: false,
-			cubes: [],
-			concatArray: []
+            displayLoading: false
 		};
 
 		// Register handler functions
@@ -39,6 +39,7 @@ class Line extends React.Component {
 		this.saveNewPoint = this.saveNewPoint.bind(this);
 		this.scrollToBottom = this.scrollToBottom.bind(this);
 		this.updateState = this.updateState.bind(this);
+		this.concatArrays = this.concatArrays.bind(this);
 	}
     
     render() {
@@ -52,14 +53,8 @@ class Line extends React.Component {
 				}
 				<ul id="points" style={{height: "calc(100% - " + this.state.newPointHeight + "px"}}>
 					{
-						this.state.points.map(function(point) {
-							return <Point key={point.id} point={point} />
-						}, this)
-					}
-
-					{
-						this.state.cubes.map(function(cube) {
-							return <Point key={cube.id} point={cube} />
+						this.state.concatArray.map(function(object, index) {
+							return <Point key={index} point={object} />
 						}, this)
 					}
 				</ul>
@@ -210,11 +205,15 @@ class Line extends React.Component {
 		.then(function(points) {
 			if(points) {
             	handleAPIResult(component, false, "");
+
 				for(let i=0; i<points.length; i++) {
 					points[i].created = new Date(points[i].created);
 					points[i].updated = new Date(points[i].updated);
 				}
+
 				component.setState({points: points});
+				component.concatArrays(points, component.state.cubes);
+
 				component.scrollToBottom();
 			} else {
             	handleAPIResult(component, true, "Une erreur est apparue lors de la récupération des points...");
@@ -259,6 +258,7 @@ class Line extends React.Component {
 					cubes[i].updated = new Date(cubes[i].updated);
 				}
 				component.setState({cubes: cubes});
+				component.concatArrays(component.state.points, cubes);
 				component.scrollToBottom();
 			} else {
 				handleAPIResult(component, true, "Une erreur est apparue lors de la récupération des cubes...");
@@ -321,6 +321,17 @@ class Line extends React.Component {
 		this.setState({
 			error: error,
 			displayLoading: displayLoading
+		});
+	}
+
+	concatArrays(points, cubes) {
+		let result = points.concat(cubes);
+		result.sort(function(a, b) {
+			return a.created.getTime() - b.created.getTime();
+		});
+
+		this.setState({
+			concatArray: result
 		});
 	}
 }

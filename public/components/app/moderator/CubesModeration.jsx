@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import Point from '../chat/Point.jsx';
 import { API_URL, handleAPIResult } from '../../common/Common.jsx';
 
 class CubesModeration extends React.Component {
@@ -71,7 +72,7 @@ class CubesModeration extends React.Component {
 			return;
 		}
         
-		fetch(API_URL + 'cubes?idLine=' + idLine, {
+		fetch(API_URL + 'cubes?line_id=' + idLine, {
 			method: 'GET',
 			headers: {
 				'Authorization': 'Bearer ' + localStorage.getItem('token')

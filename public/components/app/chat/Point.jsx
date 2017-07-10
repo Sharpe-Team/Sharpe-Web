@@ -5,20 +5,24 @@ class Point extends React.Component {
 	constructor(props) {
 		super(props);
 	}
-    
-    renderDate(date) {
-        var minutes = date.getMinutes();
-        minutes = minutes < 10 ? '0'+minutes : minutes;
-        return date.getHours()+":"+minutes;
-    }
 
 	render() {
-        var pictureUrl = (this.props.point.user.profilePicture);
+        let pictureUrl = this.props.point.user.profilePicture;
         if(!pictureUrl) {
             pictureUrl = "/resource/unknown-person.png";
         } else {
             pictureUrl = "/uploads/" + pictureUrl;
         }
+
+        let displayedPoint;
+        if(this.props.point.url) {
+			displayedPoint = (
+				<img src={"/uploads/" + this.props.point.url} style={{height: "200px"}} />
+			);
+		} else {
+        	displayedPoint = this.props.point.content;
+		}
+
 		return (
             <div className="row align-top">
                 <div className="imageLine column medium-1">
@@ -33,7 +37,7 @@ class Point extends React.Component {
                         <div className="datePoint column medium-6">{this.renderDate(this.props.point.created)}</div>
                     </div>
                     <div className="row">
-                        <div className="point column medium-12">{this.props.point.content}</div>
+                        <div className="point column medium-12">{displayedPoint}</div>
                     </div>
                 </div>
             </div>
@@ -41,7 +45,12 @@ class Point extends React.Component {
 	}
 
 	componentDidMount() {
+	}
 
+	renderDate(date) {
+		let minutes = date.getMinutes();
+		minutes = minutes < 10 ? '0' + minutes : minutes;
+		return date.getHours() + ":" + minutes;
 	}
 }
 

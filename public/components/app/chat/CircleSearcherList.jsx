@@ -1,5 +1,5 @@
 import React from 'react';
-import { API_URL, handleAPIResult } from '../../common/Common.jsx';
+import { API_URL, handleAPIResult, getUserFromStorage } from '../../common/Common.jsx';
 
 class CircleSearcherList extends React.Component {
 
@@ -12,19 +12,33 @@ class CircleSearcherList extends React.Component {
 		};
 
 		this.getAllCircles = this.getAllCircles.bind(this);
+        this.isNotLinked = this.isNotLinked.bind(this);
     }
     
     render() {
 		return (
 			<div>
-				<ul >
+				<ul id="circle-search">
 					{
 						this.state.circles.map(function(circle) {
                             if(circle.name.toLowerCase().includes(this.state.search.toLowerCase())) {
                                 return (
-                                    <div key={circle.id}>
-                                        {circle.name}
-                                    </div>
+                                    <li id="circle-search-item" key={circle.id}>
+                                        <div className="row">
+                                            <div className="column medium-1">
+                                                <div className="circularImageContainer-search">
+                                                    { circle.pictureUrl &&
+                                                        <img className="search-picture" src={'uploads/' + circle.pictureUrl}/>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className="column medium-10">{circle.name}</div>
+                                            {
+                                                this.isNotLinked(circle.id) &&
+                                                <a className="button tiny join-button column medium-1">Rejoindre</a>
+                                            }
+                                        </div>
+                                    </li>
                                 )   
                             }
 						}, this)
@@ -73,6 +87,18 @@ class CircleSearcherList extends React.Component {
 			handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des cercles...");
 		});
 	}
+    
+    isNotLinked(idCircle){
+        var rucs = getUserFromStorage().ruc;
+        
+        for(let i=0; i<rucs.length; i++){
+            if(rucs[i].idCircle == idCircle){
+                return false;
+            }
+        }
+        
+        return true;
+    }
 }
 
 export default CircleSearcherList;

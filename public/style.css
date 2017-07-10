@@ -76,6 +76,20 @@ html, body, #app, #div-app {
 	padding: 5px;
 }
 
+#circle-search {
+	list-style: none;
+	/*list-style-type: none;*/
+	overflow: scroll;
+    margin-right: 2rem;
+    margin-left: 2rem;
+}
+
+#circle-search-item {
+    margin-bottom: 1px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.5)
+}
+
 #points li {
 	margin-bottom: 10px;
 }
@@ -139,9 +153,10 @@ input, button {
     border-radius: 50%;
 }
 
-.circularImageContainer img {
-    width: 100%;
-    height: 100%;
+.circularImageContainer-search img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
 }
 
 .circleTitle {
@@ -194,7 +209,7 @@ input, button {
     text-align: center
 }
 
-.home-button, .userform-button, .admin-button, .point-button, .request-button, .moderator-button {
+.home-button, .userform-button, .admin-button, .point-button, .request-button, .moderator-button, .cube-button {
     height: 50px;
     margin-top: 10px;
     margin-left: 10px;
@@ -317,9 +332,6 @@ input, button {
 
 .admin-page, .moderation-page, .circle-searcher-page {
     background: url("resource/background.png");
-    background-size: cover;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
     height: 100%;
 }
 
@@ -334,4 +346,12 @@ input, button {
 
 .circle-search-input {
     margin-top: 15px;
+}
+
+.circle-search-item {
+    background-color: #FFFFFF
+}
+
+.join-button {
+    margin-bottom: 0px !important;
 }

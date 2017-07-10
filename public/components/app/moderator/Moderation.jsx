@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { API_URL, handleAPIResult } from '../../common/Common.jsx';
 import PointsModeration from './PointsModeration.jsx';
+import CubesModeration from './CubesModeration.jsx';
 import ModeratorsModeration from './ModeratorsModeration.jsx';
 
 const selection = {
@@ -32,6 +33,9 @@ class Moderation extends React.Component {
                     <button onClick={this.changeElement.bind(this, selection.point)}>
                         <img className="point-button" src="/resource/point-button.png"/>
                     </button>
+                    <button onClick={this.changeElement.bind(this, selection.cube)}>
+                        <img className="cube-button" src="/resource/cube-button.png"/>
+                    </button>
                     <button onClick={this.changeElement.bind(this, selection.request)}>
                         <img className="request-button" src="/resource/request-button.png"/>
                     </button>
@@ -42,6 +46,7 @@ class Moderation extends React.Component {
 
                 <div className="moderation-panel">
                     { this.state.selected == selection.point        && <PointsModeration circle={this.state.circle} />}
+                    { this.state.selected == selection.cube         && <CubesModeration circle={this.state.circle} />}
                     { this.state.selected == selection.moderator    && <ModeratorsModeration circle={this.state.circle} />}
                 </div>
             </div>

@@ -7,6 +7,7 @@ class AnnouncementModeration extends React.Component {
         
         this.state = {
             announcementMessage : this.props.circle.lines[0].announcement,
+            modified : false
         }
         
         this.handleChange = this.handleChange.bind(this);
@@ -17,7 +18,14 @@ class AnnouncementModeration extends React.Component {
         return (
             <div className="announcement-moderation">
                 <textarea id="announcement-input" rows="5" value={this.state.announcementMessage} onChange={this.handleChange} placeholder="Saisir un message d'annonce ..." />
-                <button onClick={this.handleSubmit} className="button">Modifier le message d'annonce</button>
+                <div className="row">
+                    <button data-open="exampleModal1" onClick={this.handleSubmit} className="button column medium-2">Modifier le message d'annonce</button>
+                    {
+                        this.state.modified &&
+                        <p className="column medium-offset-7 medium-3">Message d'annonce modifié <img  className="check-icon" src="/resource/check.png"/></p>
+                    }
+
+                </div>
             </div>
         );
     }
@@ -27,7 +35,13 @@ class AnnouncementModeration extends React.Component {
         
         var component = this;
         
-        console.log(this.state.announcementMessage);
+        this.setState({
+           modified: true
+        });
+        
+        setTimeout(() => { 
+            this.setState({modified: false}); 
+        }, 8000);
         
         fetch(API_URL + 'lines/' + this.props.circle.lines[0].id + '?announcement=' + this.state.announcementMessage, {
 			method: 'PUT',

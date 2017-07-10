@@ -165,6 +165,11 @@ input, button {
     height: 30px; 
 }
 
+.check-icon {
+    width: 30px;
+    height: 30px;
+}
+
 .circleTitle {
     line-height: 230%;
     text-align: center;

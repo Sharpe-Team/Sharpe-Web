@@ -1,8 +1,10 @@
 import React from 'react';
 import Point from './Point.jsx';
+import Announcement from './Announcement.jsx';
 import { API_URL, hideError, handleAPIResult, getUserFromStorage } from '../../common/Common.jsx';
 import Loading from '../../common/Loading.jsx';
 import ErrorComponent from '../../common/ErrorComponent.jsx';
+import InsertImageItem from './InsertImageItem.jsx';
 //import MyEditor from './MyEditor.jsx';
 //import {Editor, EditorState} from 'draft-js';
 
@@ -12,8 +14,11 @@ class Line extends React.Component {
 		super(props);
 
 		this.state = {
+            announcement: true,
 			user: null,
 			points: [],
+			cubes: [],
+			concatArray: [],
 			newPoint: "",
 			newPointHeight: 50,
 			pointAdded: true,
@@ -24,37 +29,55 @@ class Line extends React.Component {
             displayLoading: false
 		};
 
+        console.log(this.props.line.announcement);
+        
 		// Register handler functions
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 
 		// Register functions
 		this.manageNewPoint = this.manageNewPoint.bind(this);
+		this.manageNewCube = this.manageNewCube.bind(this);
 		this.getAllPoints = this.getAllPoints.bind(this);
+		this.getAllCubes = this.getAllCubes.bind(this);
 		this.saveNewPoint = this.saveNewPoint.bind(this);
 		this.scrollToBottom = this.scrollToBottom.bind(this);
+		this.updateState = this.updateState.bind(this);
+		this.concatArrays = this.concatArrays.bind(this);
+        this.hideAnnouncement = this.hideAnnouncement.bind(this);
 	}
     
     render() {
 		return (
 			<div id="div-line" className="column">
-				{this.state.displayLoading && 
+				{
+                    this.state.displayLoading && 
                 	<Loading />
                 }
-				{this.state.error.showError &&
+				{
+                    this.state.error.showError &&
 					<ErrorComponent message={this.state.error.message} hideError={hideError.bind(this, this)} />
 				}
+                {
+                    this.state.announcement && 
+                    this.props.line.announcement &&    
+                    <Announcement message={this.props.line.announcement} hideAnnouncement={this.hideAnnouncement.bind(this, this)}/>
+                }
+                
 				<ul id="points" style={{height: "calc(100% - " + this.state.newPointHeight + "px)"}}>
 					{
-						this.state.points.map(function(point) {
-							return <li key={point.id}><Point  point={point} /></li>
+						this.state.concatArray.map(function(object, index) {
+                            return <li key={index}><Point point={object}></Point></li>
 						}, this)
 					}
 				</ul>
 
 				<form onSubmit={this.handleSubmit}>
 					<div className="row" style={{borderTop: "4px solid #f4f4f4", paddingTop: "5px"}}>
-						<div className="column" style={{padding: 0}}>
+						<div className="column shrink">
+							<InsertImageItem circle={this.props.circle} idLine={this.props.line.id} idUser={this.state.user.id} updateParentState={this.updateState} />
+						</div>
+						<div className="column" style={{padding: "1px"}}>
 							<input type="text" id="new-point" name="newPoint" value={this.state.newPoint} onChange={this.handleChange} autoComplete="off" placeholder="Ecrivez un message..." />
 						</div>
 						<div className="column shrink">
@@ -67,7 +90,7 @@ class Line extends React.Component {
 	}
 
 	componentWillMount() {
-		var component = this;
+		const component = this;
 
 		// Define events function from SocketIO
 		socket.on('new-point', function(point) {
@@ -77,19 +100,26 @@ class Line extends React.Component {
 		socket.on('new-private-point', function(point) {
 			component.manageNewPoint(point, true);
 		});
+
+		socket.on('new-cube', function(cube) {
+			component.manageNewCube(cube, false);
+		});
+
+		socket.on('new-private-cube', function(cube) {
+			component.manageNewCube(cube, true);
+		});
         
-        var user = getUserFromStorage();
-        
+        let user = getUserFromStorage();
 		this.setState({
 			user: user
 		});
 
-		// Get all points of this line from DB
+		// Get all points and cubes of this line from DB
 		this.getAllPoints();
+		this.getAllCubes();
 	}
 
 	componentDidMount() {
-		this.scrollToBottom();
 	}
 
 	componentDidUpdate() {
@@ -98,9 +128,19 @@ class Line extends React.Component {
 			this.setState({pointAdded: false});
 		}
 	}
+    
+    hideAnnouncement() {
+        this.setState({
+            announcement: false
+        });
+    };
 
 	componentWillReceiveProps(nextProps) {
 		this.getAllPoints(nextProps.line.id);
+		this.getAllCubes(nextProps.line.id);
+        this.setState({
+            announcement: true
+        })
 	}
 
 	/************************************************
@@ -114,7 +154,7 @@ class Line extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
-		var text = this.state.newPoint.trim();
+		let text = this.state.newPoint.trim();
 		this.state.newPoint = "";
 
 		if(text.length !== 0) {
@@ -127,11 +167,11 @@ class Line extends React.Component {
 	*************************************************/
 
 	manageNewPoint(point, isPrivate) {
-		// If the user is on the line where it is the new point, we display it
+		// If the user is on the line where the new point belongs to, we display it
 		if(point.idLine == this.props.line.id) {
 			// Display the new point
 			point.created = new Date(point.created);
-			var points = this.state.points;
+			let points = this.state.points;
 			points.push(point);
 			this.setState({
 				points: points,
@@ -143,8 +183,25 @@ class Line extends React.Component {
 		}
 	}
 
+	manageNewCube(cube, isPrivate) {
+		// If the user is on the line where the new cube belongs to, we display it
+		if(cube.idLine == this.props.line.id) {
+			// Display the new cube
+			cube.created = new Date(cube.created);
+			let cubes = this.state.cubes;
+			cubes.push(cube);
+			this.setState({
+				cubes: cubes,
+				pointAdded: true
+			});
+		} else {
+			// Increase the number of unread points on the circle of the line$
+			this.props.updateUnreadPoints(cube, isPrivate);
+		}
+	}
+
 	getAllPoints(idLine) {
-		var component = this;
+		const component = this;
 
 		if(!idLine) {
 			if(!this.props.line) {
@@ -170,15 +227,18 @@ class Line extends React.Component {
 		.then(function(points) {
 			if(points) {
             	handleAPIResult(component, false, "");
-				for(var i=0; i<points.length; i++) {
+
+				for(let i=0; i<points.length; i++) {
 					points[i].created = new Date(points[i].created);
 					points[i].updated = new Date(points[i].updated);
 				}
+
 				component.setState({points: points});
+				component.concatArrays(points, component.state.cubes);
 
 				component.scrollToBottom();
 			} else {
-            	handleAPIResult(component, true, "Une erreur est apparue lors de l'ajout du point...");
+            	handleAPIResult(component, true, "Une erreur est apparue lors de la récupération des points...");
 			}
 		})
 		.catch(function(error) {
@@ -187,8 +247,53 @@ class Line extends React.Component {
 		});
 	}
 
+	getAllCubes(idLine) {
+		const component = this;
+
+		if(!idLine) {
+			if(!this.props.line) {
+				this.setState({cubes: []});
+				return;
+			} else {
+				idLine = this.props.line.id;
+			}
+		} else if(idLine && idLine == this.props.line.id) {
+			return;
+		}
+
+		//displayLoading(this);
+		fetch(API_URL + 'cubes?line_id=' + idLine, {
+			method: 'GET',
+			headers: {
+				'Authorization': 'Bearer ' + localStorage.getItem('token')
+			}
+		})
+		.then(function(response) {
+			return response.json();
+		})
+		.then(function(cubes) {
+			if(cubes) {
+				handleAPIResult(component, false, "");
+
+				for(let i=0; i<cubes.length; i++) {
+					cubes[i].created = new Date(cubes[i].created);
+					cubes[i].updated = new Date(cubes[i].updated);
+				}
+				component.setState({cubes: cubes});
+				component.concatArrays(component.state.points, cubes);
+				component.scrollToBottom();
+			} else {
+				handleAPIResult(component, true, "Une erreur est apparue lors de la récupération des cubes...");
+			}
+		})
+		.catch(function(error) {
+			console.log(error);
+			handleAPIResult(component, true, "Une erreur est apparue lors de la récupération des cubes...");
+		});
+	}
+
 	saveNewPoint(text) {
-		var component = this;
+		const component = this;
 
         //displayLoading(this);
 		fetch(API_URL + 'points', {
@@ -230,8 +335,26 @@ class Line extends React.Component {
 	}
 
 	scrollToBottom() {
-		var pointsDiv = document.getElementById("points");
+		const pointsDiv = document.getElementById("points");
 		pointsDiv.scrollTop = pointsDiv.scrollHeight;
+	}
+
+	updateState(error, displayLoading) {
+		this.setState({
+			error: error,
+			displayLoading: displayLoading
+		});
+	}
+
+	concatArrays(points, cubes) {
+		let result = points.concat(cubes);
+		result.sort(function(a, b) {
+			return a.created.getTime() - b.created.getTime();
+		});
+
+		this.setState({
+			concatArray: result
+		});
 	}
 }
 

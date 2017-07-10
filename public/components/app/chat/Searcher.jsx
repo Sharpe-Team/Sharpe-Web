@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
 
-class NavigatorSearch extends React.Component {
+class Searcher extends React.Component {
     constructor(props){
         super(props);
         
@@ -21,4 +21,4 @@ class NavigatorSearch extends React.Component {
 	}
 }
 
-export default NavigatorSearch;
+export default Searcher;

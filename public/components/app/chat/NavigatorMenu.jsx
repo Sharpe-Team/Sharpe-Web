@@ -15,6 +15,7 @@ class NavigatorMenu extends React.Component {
                     <Link  to="/admin"><img className="nav-button" src="/resource/admin.png"></img></Link>
                 }
                 <Link  to="/circleform"><img className="nav-button" src="/resource/circle.png"></img></Link>
+                <Link  to="/circlesearch"><img className="nav-button" src="/resource/circlesearch.png"></img></Link>
                 <Link  to="/logout"><img className="nav-button" src="/resource/logout.png"></img></Link>
             </div>
         );

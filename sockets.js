@@ -149,6 +149,19 @@ function onNewPrivatePoint(socket, point, userId) {
 	}
 }
 
+function onNewPrivateCube(socket, cube, userId) {
+
+	// Get the socket for the user id, if the user is connected
+	let userSocket = getUserSocket(userId);
+	if(userSocket) {
+		userSocket.emit('new-private-cube', cube);
+
+		if(socket != userSocket) {
+			socket.emit('new-private-cube', cube);
+		}
+	}
+}
+
 function computeConnection(socket) {
 	/**
 	 * Logged user of the socket
@@ -181,6 +194,15 @@ function computeConnection(socket) {
 
 	socket.on('new-private-point', function(point, userId) {
 		onNewPrivatePoint(socket, point, userId);
+	});
+
+	socket.on('new-cube', function(cube) {
+		// Emit the new cube to all connected users
+		io.emit('new-cube', cube);
+	});
+
+	socket.on('new-private-cube', function(cube, userId) {
+		onNewPrivateCube(socket, cube, userId);
 	});
 
 	socket.on('verify-token', function(token, callback) {

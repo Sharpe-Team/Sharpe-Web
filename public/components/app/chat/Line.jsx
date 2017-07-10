@@ -1,5 +1,6 @@
 import React from 'react';
 import Point from './Point.jsx';
+import Announcement from './Announcement.jsx';
 import { API_URL, hideError, handleAPIResult, getUserFromStorage } from '../../common/Common.jsx';
 import Loading from '../../common/Loading.jsx';
 import ErrorComponent from '../../common/ErrorComponent.jsx';
@@ -13,6 +14,7 @@ class Line extends React.Component {
 		super(props);
 
 		this.state = {
+            announcement: true,
 			user: null,
 			points: [],
 			cubes: [],
@@ -27,6 +29,8 @@ class Line extends React.Component {
             displayLoading: false
 		};
 
+        console.log(this.props.line.announcement);
+        
 		// Register handler functions
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,17 +44,26 @@ class Line extends React.Component {
 		this.scrollToBottom = this.scrollToBottom.bind(this);
 		this.updateState = this.updateState.bind(this);
 		this.concatArrays = this.concatArrays.bind(this);
+        this.hideAnnouncement = this.hideAnnouncement.bind(this);
 	}
     
     render() {
 		return (
 			<div id="div-line" className="column">
-				{this.state.displayLoading && 
+				{
+                    this.state.displayLoading && 
                 	<Loading />
                 }
-				{this.state.error.showError &&
+				{
+                    this.state.error.showError &&
 					<ErrorComponent message={this.state.error.message} hideError={hideError.bind(this, this)} />
 				}
+                {
+                    this.state.announcement && 
+                    this.props.line.announcement &&    
+                    <Announcement message={this.props.line.announcement} hideAnnouncement={this.hideAnnouncement.bind(this, this)}/>
+                }
+                
 				<ul id="points" style={{height: "calc(100% - " + this.state.newPointHeight + "px)"}}>
 					{
 						this.state.concatArray.map(function(object, index) {
@@ -115,10 +128,19 @@ class Line extends React.Component {
 			this.setState({pointAdded: false});
 		}
 	}
+    
+    hideAnnouncement() {
+        this.setState({
+            announcement: false
+        });
+    };
 
 	componentWillReceiveProps(nextProps) {
 		this.getAllPoints(nextProps.line.id);
 		this.getAllCubes(nextProps.line.id);
+        this.setState({
+            announcement: true
+        })
 	}
 
 	/************************************************

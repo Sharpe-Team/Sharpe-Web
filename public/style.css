@@ -62,6 +62,7 @@ html, body, #app, #div-app {
 	height: 100%;
 	font-size: 1.0em;
 	padding: 5px;
+    width: inherit; 
 }
 
 #div-line input, #div-line button, tr button {
@@ -159,6 +160,11 @@ input, button {
     border-radius: 50%;
 }
 
+.request-icon {
+    width: 30px;
+    height: 30px; 
+}
+
 .circleTitle {
     line-height: 230%;
     text-align: center;
@@ -209,7 +215,7 @@ input, button {
     text-align: center
 }
 
-.home-button, .userform-button, .admin-button, .point-button, .request-button, .moderator-button, .cube-button {
+.home-button, .userform-button, .admin-button, .point-button, .request-button, .moderator-button, .cube-button, .announcement-button {
     height: 50px;
     margin-top: 10px;
     margin-left: 10px;
@@ -344,7 +350,6 @@ input, button {
     margin: 0 auto;
 }
 
-<<<<<<< HEAD
 .circle-search-input {
     margin-top: 15px;
 }
@@ -372,3 +377,29 @@ input, button {
     margin: 0 !important;
 }
 
+.announcement {
+    position: fixed !important;
+    width: inherit; 
+    z-index: 2;
+    opacity: 0.95;
+}
+
+.announcement-p {
+    font-size: 0.8em;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.announcement-icon {
+    height: 30px;
+}
+
+.announcement-moderation {
+    margin: 20px;
+}
+
+.moderation-title {
+    font-family: SharpeFont, sans-serif;
+}

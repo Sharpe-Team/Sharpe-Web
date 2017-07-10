@@ -4,11 +4,15 @@ import { API_URL, handleAPIResult } from '../../common/Common.jsx';
 import PointsModeration from './PointsModeration.jsx';
 import CubesModeration from './CubesModeration.jsx';
 import ModeratorsModeration from './ModeratorsModeration.jsx';
+import AnnouncementModeration from './AnnouncementModeration.jsx';
+import RequestModeration from './RequestModeration.jsx';
 
 const selection = {
     point : 0,
-    request : 1,
-    moderator : 2
+    cube: 1,
+    request : 2,
+    moderator : 3,
+    announcement : 4
 }
 
 class Moderation extends React.Component {
@@ -28,26 +32,37 @@ class Moderation extends React.Component {
     render() {
         return (
             <div className="moderation-page">
-                <div className="moderation-menu-bar">
-                    <Link to="/app"><img className="home-button" src="/resource/home-button.png"/></Link>
-                    <button onClick={this.changeElement.bind(this, selection.point)}>
-                        <img className="point-button" src="/resource/point-button.png"/>
-                    </button>
-                    <button onClick={this.changeElement.bind(this, selection.cube)}>
-                        <img className="cube-button" src="/resource/cube-button.png"/>
-                    </button>
-                    <button onClick={this.changeElement.bind(this, selection.request)}>
-                        <img className="request-button" src="/resource/request-button.png"/>
-                    </button>
-                    <button onClick={this.changeElement.bind(this, selection.moderator)}>
-                        <img className="moderator-button" src="/resource/moderator-button.png"/>
-                    </button>
+                <div className="row">
+                    <div className="moderation-menu-bar medium-6">
+                        <Link to="/app"><img className="home-button" src="/resource/home-button.png"/></Link>
+                        <button onClick={this.changeElement.bind(this, selection.point)}>
+                            <img className="point-button" src="/resource/point-button.png"/>
+                        </button>
+                        <button onClick={this.changeElement.bind(this, selection.cube)}>
+                            <img className="cube-button" src="/resource/cube-button.png"/>
+                        </button>
+                        <button onClick={this.changeElement.bind(this, selection.request)}>
+                            <img className="request-button" src="/resource/request-button.png"/>
+                        </button>
+                        <button onClick={this.changeElement.bind(this, selection.moderator)}>
+                            <img className="moderator-button" src="/resource/moderator-button.png"/>
+                        </button>
+                        <button onClick={this.changeElement.bind(this, selection.announcement)}>
+                            <img className="announcement-button" src="/resource/announcement-button.png"/>
+                        </button>
+                    </div>
+                    {
+                        this.state.circle &&
+                        <h1 className="medium-6 moderation-title">{this.state.circle.name}</h1>
+                    }
                 </div>
 
                 <div className="moderation-panel">
                     { this.state.selected == selection.point        && <PointsModeration circle={this.state.circle} />}
                     { this.state.selected == selection.cube         && <CubesModeration circle={this.state.circle} />}
+                    { this.state.selected == selection.request      && <RequestModeration circle={this.state.circle} />}
                     { this.state.selected == selection.moderator    && <ModeratorsModeration circle={this.state.circle} />}
+                    { this.state.selected == selection.announcement && <AnnouncementModeration circle={this.state.circle} />}
                 </div>
             </div>
         );

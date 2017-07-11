@@ -19,7 +19,6 @@ function requireAuth(Component, neededUserType, moderation) {
 		}
 
 		render() {
-
 			return this.state.isAuthorized ? <Component { ...this.props } /> : null;
 		}
 
@@ -66,7 +65,6 @@ function requireAuth(Component, neededUserType, moderation) {
                 if(key == this.props.params.circleId && user.circlesRole[key] == "MODERATOR"){
                     return true;
                 }
-                    
             }
             return false;
         }

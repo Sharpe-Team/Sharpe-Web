@@ -86,6 +86,8 @@ class RequestModeration extends React.Component {
     }
     
     manageRequest(accepted){
+        let component = this;
+        
         fetch(API_URL + 'joining-requests/', {
 			method: 'DELETE',
 			headers: {
@@ -99,12 +101,12 @@ class RequestModeration extends React.Component {
 			if(requests) {
 				handleAPIResult(component, false, "");                
 			} else {
-				handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des demandes...");
+				handleAPIResult(component, true, "Une erreur est survenue lors de la validation de la demande...");
 			}
 		})
 		.catch(function(error) {
 			console.log(error);
-			handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des demandes...");
+			handleAPIResult(component, true, "Une erreur est survenue lors de la validation de la demande...");
 		});
     }
 }

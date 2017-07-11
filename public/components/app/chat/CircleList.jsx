@@ -113,16 +113,25 @@ class CircleList extends React.Component {
                 
                 var rucs = getUserFromStorage().ruc;
                 
-                for(let i=0; i<circles.length; i++) {
+                var filteredCircles = circles.filter(function(circle) {
                     for(let j=0; j<rucs.length; j++){
-                        if(rucs[j].idCircle == circles[i].id){
-                            circles[i]['userRole'] = rucs[j].idRole;
+                        if(rucs[j].idCircle == circle.id){
+                            return true;
+                        }
+                    }
+                    return false;
+                });
+                
+                for(let i=0; i<filteredCircles.length; i++) {
+                    for(let j=0; j<rucs.length; j++){
+                        if(rucs[j].idCircle == filteredCircles[i].id){
+                            filteredCircles[i]['userRole'] = rucs[j].idRole;
                         }
                     }
                 }
 
 				component.setState({
-					circles: circles
+					circles: filteredCircles
 				});
 
 				component.props.updateSelectedCircle(selectedCircle);

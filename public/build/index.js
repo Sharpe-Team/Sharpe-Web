@@ -27084,16 +27084,28 @@ var CircleList = function (_React$Component) {
 
 					var rucs = (0, _Common.getUserFromStorage)().ruc;
 
-					for (var _i = 0; _i < circles.length; _i++) {
+					console.log(rucs);
+
+					var filteredCircles = circles.filter(function (circle) {
 						for (var j = 0; j < rucs.length; j++) {
-							if (rucs[j].idCircle == circles[_i].id) {
-								circles[_i]['userRole'] = rucs[j].idRole;
+							console.log(circle.id);
+							if (rucs[j].idCircle == circle.id) {
+								return true;
+							}
+						}
+						return false;
+					});
+
+					for (var _i = 0; _i < filteredCircles.length; _i++) {
+						for (var j = 0; j < rucs.length; j++) {
+							if (rucs[j].idCircle == filteredCircles[_i].id) {
+								filteredCircles[_i]['userRole'] = rucs[j].idRole;
 							}
 						}
 					}
 
 					component.setState({
-						circles: circles
+						circles: filteredCircles
 					});
 
 					component.props.updateSelectedCircle(selectedCircle);
@@ -30435,6 +30447,7 @@ var RequestModeration = function (_React$Component) {
         };
 
         _this.getRequests = _this.getRequests.bind(_this);
+        _this.manageRequest = _this.manageRequest.bind(_this);
         return _this;
     }
 
@@ -30514,12 +30527,12 @@ var RequestModeration = function (_React$Component) {
                                 null,
                                 _react2.default.createElement(
                                     'button',
-                                    { className: 'button success request-validation-button' },
+                                    { onClick: this.manageRequest.bind(this, true), className: 'button success request-validation-button' },
                                     'Valider'
                                 ),
                                 _react2.default.createElement(
                                     'button',
-                                    { className: 'button alert request-validation-button' },
+                                    { onClick: this.manageRequest.bind(this, false), className: 'button alert request-validation-button' },
                                     'Refuser'
                                 )
                             )
@@ -30560,6 +30573,29 @@ var RequestModeration = function (_React$Component) {
             }).catch(function (error) {
                 console.log(error);
                 (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des demandes...");
+            });
+        }
+    }, {
+        key: 'manageRequest',
+        value: function manageRequest(accepted) {
+            var component = this;
+
+            fetch(_Common.API_URL + 'joining-requests/', {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(function (response) {
+                return response.json();
+            }).then(function (requests) {
+                if (requests) {
+                    (0, _Common.handleAPIResult)(component, false, "");
+                } else {
+                    (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la validation de la demande...");
+                }
+            }).catch(function (error) {
+                console.log(error);
+                (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la validation de la demande...");
             });
         }
     }]);

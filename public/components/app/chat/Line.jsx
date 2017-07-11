@@ -57,7 +57,7 @@ class Line extends React.Component {
 				}
                 {
                     this.state.announcement && 
-                    this.props.line.announcement &&    
+                    this.props.line.announcement &&
                     <Announcement message={this.props.line.announcement} hideAnnouncement={this.hideAnnouncement.bind(this, this)}/>
                 }
                 

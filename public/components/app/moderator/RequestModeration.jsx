@@ -37,8 +37,8 @@ class RequestModeration extends React.Component {
                                     <td>{user.email}</td>
                                     <td>{user.admin}</td>
                                     <td>
-                                        <button onClick={this.manageRequest.bind(this, true)} className="button success request-validation-button">Valider</button>
-                                        <button onClick={this.manageRequest.bind(this, false)} className="button alert request-validation-button">Refuser</button>
+                                        <button onClick={this.manageRequest.bind(this, user.id, true)} className="button success request-validation-button">Valider</button>
+                                        <button onClick={this.manageRequest.bind(this, user.id, false)} className="button alert request-validation-button">Refuser</button>
                                     </td>
                                 </tr>
                             )
@@ -55,8 +55,6 @@ class RequestModeration extends React.Component {
     
     getRequests(){
         let component = this;
-        
-        this.setState({users: []});
         
         fetch(API_URL + 'joining-requests/?circle_id=' + this.props.circle.id, {
 			method: 'GET',
@@ -85,21 +83,27 @@ class RequestModeration extends React.Component {
 		});
     }
     
-    manageRequest(accepted){
+    manageRequest(idUser, accepted){
         let component = this;
         
-        fetch(API_URL + 'joining-requests/', {
+        fetch(API_URL + 'joining-requests?user_id=' + idUser + '&circle_id=' + this.state.circle.id + '&accepted=' + accepted, {
 			method: 'DELETE',
 			headers: {
 				'Authorization': 'Bearer ' + localStorage.getItem('token')
 			}
 		})
 		.then(function(response) {
-			return response.json();
+			return response;
 		})
-		.then(function(requests) {
-			if(requests) {
-				handleAPIResult(component, false, "");                
+		.then(function(response) {
+			if(response) {
+				handleAPIResult(component, false, "");      
+                
+                component.setState({requests: component.state.requests.filter(function(request) {
+                    if(request.id == idUser)
+                        return false;
+                    return true;
+                })});
 			} else {
 				handleAPIResult(component, true, "Une erreur est survenue lors de la validation de la demande...");
 			}

@@ -105,8 +105,6 @@ class CircleList extends React.Component {
 			if(circles) {
 				handleAPIResult(component, false, "");
 
-				let selectedCircle = (circles.length > 0) ? circles[0] : null;
-
 				for(let i=0; i<circles.length; i++) {
 					circles[i]['nbUnreadPoints'] = 0;
 				}
@@ -129,6 +127,8 @@ class CircleList extends React.Component {
                         }
                     }
                 }
+                
+                let selectedCircle = (filteredCircles.length > 0) ? filteredCircles[0] : null;
 
 				component.setState({
 					circles: filteredCircles

@@ -344,6 +344,7 @@ input, button {
 .admin-page, .moderation-page, .circle-searcher-page {
     background: url("resource/background.png");
     height: 100%;
+    background-size: cover;
 }
 
 .not-found-link, .not-authorized-link {

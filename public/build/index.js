@@ -27076,19 +27076,14 @@ var CircleList = function (_React$Component) {
 				if (circles) {
 					(0, _Common.handleAPIResult)(component, false, "");
 
-					var selectedCircle = circles.length > 0 ? circles[0] : null;
-
 					for (var i = 0; i < circles.length; i++) {
 						circles[i]['nbUnreadPoints'] = 0;
 					}
 
 					var rucs = (0, _Common.getUserFromStorage)().ruc;
 
-					console.log(rucs);
-
 					var filteredCircles = circles.filter(function (circle) {
 						for (var j = 0; j < rucs.length; j++) {
-							console.log(circle.id);
 							if (rucs[j].idCircle == circle.id) {
 								return true;
 							}
@@ -27103,6 +27098,8 @@ var CircleList = function (_React$Component) {
 							}
 						}
 					}
+
+					var selectedCircle = filteredCircles.length > 0 ? filteredCircles[0] : null;
 
 					component.setState({
 						circles: filteredCircles
@@ -30527,12 +30524,12 @@ var RequestModeration = function (_React$Component) {
                                 null,
                                 _react2.default.createElement(
                                     'button',
-                                    { onClick: this.manageRequest.bind(this, true), className: 'button success request-validation-button' },
+                                    { onClick: this.manageRequest.bind(this, user.id, true), className: 'button success request-validation-button' },
                                     'Valider'
                                 ),
                                 _react2.default.createElement(
                                     'button',
-                                    { onClick: this.manageRequest.bind(this, false), className: 'button alert request-validation-button' },
+                                    { onClick: this.manageRequest.bind(this, user.id, false), className: 'button alert request-validation-button' },
                                     'Refuser'
                                 )
                             )
@@ -30550,8 +30547,6 @@ var RequestModeration = function (_React$Component) {
         key: 'getRequests',
         value: function getRequests() {
             var component = this;
-
-            this.setState({ users: [] });
 
             fetch(_Common.API_URL + 'joining-requests/?circle_id=' + this.props.circle.id, {
                 method: 'GET',
@@ -30577,19 +30572,24 @@ var RequestModeration = function (_React$Component) {
         }
     }, {
         key: 'manageRequest',
-        value: function manageRequest(accepted) {
+        value: function manageRequest(idUser, accepted) {
             var component = this;
 
-            fetch(_Common.API_URL + 'joining-requests/', {
+            fetch(_Common.API_URL + 'joining-requests/?user_id=' + idUser + '&circle_id=' + this.state.circle.id + '&accepted=' + accepted, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
                 }
             }).then(function (response) {
-                return response.json();
-            }).then(function (requests) {
-                if (requests) {
+                return response;
+            }).then(function (response) {
+                if (response) {
                     (0, _Common.handleAPIResult)(component, false, "");
+
+                    component.setState({ requests: component.state.requests.filter(function (request) {
+                            if (request.id == idUser) return false;
+                            return true;
+                        }) });
                 } else {
                     (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la validation de la demande...");
                 }

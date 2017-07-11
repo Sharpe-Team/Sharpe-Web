@@ -1,9 +1,12 @@
 import React from 'react';
+import CubeIcon from "./CubeIcon.jsx";
 
 class Point extends React.Component {
 
 	constructor(props) {
 		super(props);
+
+		this.getDisplayedCube = this.getDisplayedCube.bind(this);
 	}
 
 	render() {
@@ -16,9 +19,7 @@ class Point extends React.Component {
 
         let displayedPoint;
         if(this.props.point.url) {
-			displayedPoint = (
-				<img src={"/uploads/" + this.props.point.url} style={{height: "200px"}} />
-			);
+			displayedPoint = this.getDisplayedCube(this.props.point.url);
 		} else {
         	displayedPoint = this.props.point.content;
 		}
@@ -51,6 +52,35 @@ class Point extends React.Component {
 		let minutes = date.getMinutes();
 		minutes = minutes < 10 ? '0' + minutes : minutes;
 		return date.getHours() + ":" + minutes;
+	}
+
+	getDisplayedCube(url) {
+		const image = ["jpg", "jpeg", "png", "bmp", "gif"];
+		const audio = ["mp3", "flac", "ogg", "wave"];
+		const video = ["mp4"];
+		let extension = url.split(".").pop();
+
+		if(image.includes(extension)) {
+			return (
+				<a href={"/uploads/" + this.props.point.url} target="_blank">
+					<img src={"/uploads/" + this.props.point.url} style={{height: "200px"}} />
+				</a>
+			);
+		} else if(audio.includes(extension)) {
+			return (<audio src={"/uploads/" + this.props.point.url} controls />);
+		} else if(video.includes(extension)) {
+			return (<video src={"/uploads/" + this.props.point.url} controls style={{height: "200px"}} />);
+		} else {
+			let filename = url.split("/").pop();
+			let name = filename.substring(0, filename.lastIndexOf("."));
+
+			return (
+				<div>
+					<CubeIcon cube={this.props.point} />
+					<a href={"/uploads/" + this.props.point.url} target="_blank">{name}</a>
+				</div>
+			);
+		}
 	}
 }
 

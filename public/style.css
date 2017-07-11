@@ -62,7 +62,7 @@ html, body, #app, #div-app {
 	height: 100%;
 	font-size: 1.0em;
 	padding: 5px;
-    width: inherit; 
+    position: relative;
 }
 
 #div-line input, #div-line button, tr button {
@@ -83,6 +83,7 @@ html, body, #app, #div-app {
 	overflow: scroll;
     margin-right: 2rem;
     margin-left: 2rem;
+    margin-bottom: 0px;
 }
 
 #circle-search-item {
@@ -217,7 +218,7 @@ input, button {
 
 .form-title {
     color: white;
-    text-align: center
+    text-align: center;
 }
 
 .home-button, .userform-button, .admin-button, .point-button, .request-button, .moderator-button, .cube-button, .announcement-button {
@@ -225,7 +226,6 @@ input, button {
     margin-top: 10px;
     margin-left: 10px;
     cursor: pointer;
-    cursor: hand;
 }
 
 .moderation-button {
@@ -233,7 +233,6 @@ input, button {
     margin-left: 5px;
     margin-right: 5px;
     cursor: pointer;
-    cursor: hand;
 }
 
 .nav-button {
@@ -384,18 +383,18 @@ input, button {
 }
 
 .announcement {
-    position: fixed !important;
-    width: inherit; 
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 98%;
+    margin: 1% !important;
     z-index: 2;
     opacity: 0.95;
 }
 
 .announcement-p {
     font-size: 0.8em;
-    margin-top: 10px;
-    margin-bottom: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
+    margin: 10px 0px 0px;
 }
 
 .announcement-icon {

@@ -412,3 +412,26 @@ input, button {
 .request-validation-button {
     margin-right: 5px !important;
 }
+
+.cube-title {
+    text-align: center;
+    color: #334F81;
+    font-family: SharpeFont, sans-serif;
+}
+
+.cube-space-separator {
+    margin-top: 5px !important;
+    margin-bottom :5px !important;
+}
+
+.cube-space-icon {
+    height: 30px;
+    margin: 5px;
+}
+
+.cube-space-cubes {
+    list-style: none;
+	overflow: scroll;
+    padding: 5px;
+    margin: 0px;
+}

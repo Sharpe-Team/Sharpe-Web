@@ -2,6 +2,7 @@ import React from 'react';
 import Line from './Line.jsx';
 import CircleHeader from './CircleHeader.jsx';
 import Cube from './Cube.jsx';
+import CubeSpace from './CubeSpace.jsx';
 
 class Circle extends React.Component {
 
@@ -50,13 +51,24 @@ class Circle extends React.Component {
 				</div>
 			);
 		}
+        
+        let cubeSpace;
+        if(this.state.selectedLine) {
+            cubeSpace = (<CubeSpace line={this.state.selectedLine}/>);
+        } else {
+            cubeSpace = (
+                <div id="div-line" className="column">
+					<h3>Aucune ligne existante pour le cercle selectionné...</h3>
+				</div>
+            )
+        }
 
 		return (
 			<div className="column medium-10" style={{height: "100%"}}>
 				<CircleHeader circle={this.props.circle} navbarHeight={this.state.navbarHeight}/>
 				<div className="row" style={{height: "calc(100% - " + this.state.navbarHeight + "px"}}>
 					{line}
-					<Cube circle={this.props.circle} />
+					{cubeSpace}
 				</div>
 			</div>
 		);

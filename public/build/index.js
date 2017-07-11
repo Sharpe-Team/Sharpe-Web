@@ -27986,8 +27986,6 @@ var Line = function (_React$Component) {
 			displayLoading: false
 		};
 
-		console.log(_this.props.line.announcement);
-
 		// Register handler functions
 		_this.handleChange = _this.handleChange.bind(_this);
 		_this.handleSubmit = _this.handleSubmit.bind(_this);
@@ -29454,11 +29452,8 @@ var AnnouncementModeration = function (_React$Component) {
             });
 
             setTimeout(function () {
-                console.log("5000");
                 _this2.setState({ modified: false });
-            }, 5000);
-
-            console.log(this.state.announcementMessage);
+            }, 8000);
 
             fetch(_Common.API_URL + 'lines/' + this.props.circle.lines[0].id + '?announcement=' + this.state.announcementMessage, {
                 method: 'PUT',
@@ -30416,6 +30411,8 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _Common = __webpack_require__(10);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -30445,9 +30442,90 @@ var RequestModeration = function (_React$Component) {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
-                'div',
-                null,
-                'A compl\xE9ter'
+                'table',
+                { className: 'unstriped' },
+                _react2.default.createElement(
+                    'caption',
+                    null,
+                    'Liste des demandes'
+                ),
+                _react2.default.createElement(
+                    'thead',
+                    null,
+                    _react2.default.createElement(
+                        'tr',
+                        null,
+                        _react2.default.createElement(
+                            'th',
+                            null,
+                            'Pr\xE9nom'
+                        ),
+                        _react2.default.createElement(
+                            'th',
+                            null,
+                            'Nom'
+                        ),
+                        _react2.default.createElement(
+                            'th',
+                            null,
+                            'Email'
+                        ),
+                        _react2.default.createElement(
+                            'th',
+                            null,
+                            'Administrateur'
+                        ),
+                        _react2.default.createElement(
+                            'th',
+                            null,
+                            'Valider / Refuser'
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    'tbody',
+                    null,
+                    this.state.requests.map(function (user) {
+                        return _react2.default.createElement(
+                            'tr',
+                            { key: user.id },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                user.firstname
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                user.lastname
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                user.email
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                user.admin
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement(
+                                    'button',
+                                    { className: 'button success request-validation-button' },
+                                    'Valider'
+                                ),
+                                _react2.default.createElement(
+                                    'button',
+                                    { className: 'button alert request-validation-button' },
+                                    'Refuser'
+                                )
+                            )
+                        );
+                    }, this)
+                )
             );
         }
     }, {
@@ -30462,7 +30540,7 @@ var RequestModeration = function (_React$Component) {
 
             this.setState({ users: [] });
 
-            fetch(API_URL + 'joining-requests/?circle_id=' + this.state.circle.id, {
+            fetch(_Common.API_URL + 'joining-requests/?circle_id=' + this.props.circle.id, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -30471,17 +30549,17 @@ var RequestModeration = function (_React$Component) {
                 return response.json();
             }).then(function (requests) {
                 if (requests) {
-                    handleAPIResult(component, false, "");
+                    (0, _Common.handleAPIResult)(component, false, "");
 
                     component.setState({
                         requests: requests
                     });
                 } else {
-                    handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des demandes...");
+                    (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des demandes...");
                 }
             }).catch(function (error) {
                 console.log(error);
-                handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des demandes...");
+                (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des demandes...");
             });
         }
     }]);

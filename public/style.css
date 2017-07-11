@@ -408,3 +408,8 @@ input, button {
 .moderation-title {
     font-family: SharpeFont, sans-serif;
 }
+
+.request-validation-button {
+    margin-left: 5px !important;
+    margin-right: 5px !important;
+}

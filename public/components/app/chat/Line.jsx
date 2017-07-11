@@ -28,8 +28,6 @@ class Line extends React.Component {
 			},
             displayLoading: false
 		};
-
-        console.log(this.props.line.announcement);
         
 		// Register handler functions
 		this.handleChange = this.handleChange.bind(this);

@@ -26,6 +26,7 @@ class InsertImageItem extends React.Component {
 
 	componentDidMount() {
 		const component = this;
+		let siofu = new SocketIOFileUpload(socket);
 
 		siofu.listenOnInput(document.getElementById("new-image"));
 

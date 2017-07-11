@@ -18105,6 +18105,7 @@ var ImageUploadItem = function (_React$Component) {
         key: "componentDidMount",
         value: function componentDidMount() {
             var component = this;
+            var siofu = new SocketIOFileUpload(socket);
 
             siofu.listenOnInput(document.getElementById(this.props.id));
 
@@ -27354,6 +27355,7 @@ var InsertImageItem = function (_React$Component) {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 			var component = this;
+			var siofu = new SocketIOFileUpload(socket);
 
 			siofu.listenOnInput(document.getElementById("new-image"));
 

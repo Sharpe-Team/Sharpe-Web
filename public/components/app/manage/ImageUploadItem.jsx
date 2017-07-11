@@ -8,7 +8,7 @@ class ImageUploadItem extends React.Component {
         this.state = {
             percent: 0,
             image: ""
-        }
+        };
     }
     
     render() {
@@ -35,6 +35,7 @@ class ImageUploadItem extends React.Component {
     
     componentDidMount() {
 		const component = this;
+		let siofu = new SocketIOFileUpload(socket);
 
         siofu.listenOnInput(document.getElementById(this.props.id));
         

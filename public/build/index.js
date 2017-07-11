@@ -28001,7 +28001,6 @@ var Line = function (_React$Component) {
 
 		// Register functions
 		_this.manageNewPoint = _this.manageNewPoint.bind(_this);
-		_this.manageNewCube = _this.manageNewCube.bind(_this);
 		_this.getAllPoints = _this.getAllPoints.bind(_this);
 		_this.getAllCubes = _this.getAllCubes.bind(_this);
 		_this.saveNewPoint = _this.saveNewPoint.bind(_this);
@@ -28076,11 +28075,11 @@ var Line = function (_React$Component) {
 			});
 
 			socket.on('new-cube', function (cube) {
-				component.manageNewCube(cube, false);
+				component.manageNewPoint(cube, false);
 			});
 
 			socket.on('new-private-cube', function (cube) {
-				component.manageNewCube(cube, true);
+				component.manageNewPoint(cube, true);
 			});
 
 			var user = (0, _Common.getUserFromStorage)();
@@ -28153,33 +28152,15 @@ var Line = function (_React$Component) {
 			if (point.idLine == this.props.line.id) {
 				// Display the new point
 				point.created = new Date(point.created);
-				var points = this.state.points;
-				points.push(point);
+				var concatArray = this.state.concatArray;
+				concatArray.push(point);
 				this.setState({
-					points: points,
+					concatArray: concatArray,
 					pointAdded: true
 				});
 			} else {
 				// Increase the number of unread points on the circle of the line$
 				this.props.updateUnreadPoints(point, isPrivate);
-			}
-		}
-	}, {
-		key: 'manageNewCube',
-		value: function manageNewCube(cube, isPrivate) {
-			// If the user is on the line where the new cube belongs to, we display it
-			if (cube.idLine == this.props.line.id) {
-				// Display the new cube
-				cube.created = new Date(cube.created);
-				var cubes = this.state.cubes;
-				cubes.push(cube);
-				this.setState({
-					cubes: cubes,
-					pointAdded: true
-				});
-			} else {
-				// Increase the number of unread points on the circle of the line$
-				this.props.updateUnreadPoints(cube, isPrivate);
 			}
 		}
 	}, {
@@ -30575,7 +30556,7 @@ var RequestModeration = function (_React$Component) {
         value: function manageRequest(idUser, accepted) {
             var component = this;
 
-            fetch(_Common.API_URL + 'joining-requests/?user_id=' + idUser + '&circle_id=' + this.state.circle.id + '&accepted=' + accepted, {
+            fetch(_Common.API_URL + 'joining-requests?user_id=' + idUser + '&circle_id=' + this.state.circle.id + '&accepted=' + accepted, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('token')

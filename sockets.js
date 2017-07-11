@@ -136,7 +136,7 @@ function onLogout(socket, loggedUser) {
 function onNewPrivatePoint(socket, point, userId) {
 
 	// Get the socket for the user id, if the user is connected
-	var userSockets = getUserSockets(userId);
+	let userSockets = getUserSockets(userId);
 	if(userSockets.length > 0) {
 		for(let i=0; i<userSockets.length; i++) {
 			userSockets[i].emit('new-private-point', point);

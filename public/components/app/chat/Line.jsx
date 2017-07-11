@@ -35,7 +35,6 @@ class Line extends React.Component {
 
 		// Register functions
 		this.manageNewPoint = this.manageNewPoint.bind(this);
-		this.manageNewCube = this.manageNewCube.bind(this);
 		this.getAllPoints = this.getAllPoints.bind(this);
 		this.getAllCubes = this.getAllCubes.bind(this);
 		this.saveNewPoint = this.saveNewPoint.bind(this);
@@ -100,11 +99,11 @@ class Line extends React.Component {
 		});
 
 		socket.on('new-cube', function(cube) {
-			component.manageNewCube(cube, false);
+			component.manageNewPoint(cube, false);
 		});
 
 		socket.on('new-private-cube', function(cube) {
-			component.manageNewCube(cube, true);
+			component.manageNewPoint(cube, true);
 		});
         
         let user = getUserFromStorage();
@@ -169,32 +168,15 @@ class Line extends React.Component {
 		if(point.idLine == this.props.line.id) {
 			// Display the new point
 			point.created = new Date(point.created);
-			let points = this.state.points;
-			points.push(point);
+			let concatArray = this.state.concatArray;
+			concatArray.push(point);
 			this.setState({
-				points: points,
+				concatArray: concatArray,
 				pointAdded: true
 			});
 		} else {
 			// Increase the number of unread points on the circle of the line$
 			this.props.updateUnreadPoints(point, isPrivate);
-		}
-	}
-
-	manageNewCube(cube, isPrivate) {
-		// If the user is on the line where the new cube belongs to, we display it
-		if(cube.idLine == this.props.line.id) {
-			// Display the new cube
-			cube.created = new Date(cube.created);
-			let cubes = this.state.cubes;
-			cubes.push(cube);
-			this.setState({
-				cubes: cubes,
-				pointAdded: true
-			});
-		} else {
-			// Increase the number of unread points on the circle of the line$
-			this.props.updateUnreadPoints(cube, isPrivate);
 		}
 	}
 

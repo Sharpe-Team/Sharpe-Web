@@ -43,7 +43,9 @@ class Navigator extends React.Component {
 
 	updateUnreadPointsBadge(point, isPrivate) {
 		if(isPrivate) {
-			this.userListRef.updateUnreadPointsUser(point.user.id, false);
+			if(this.userListRef) {
+				this.userListRef.updateUnreadPointsUser(point.user.id, false);
+			}
 		} else {
 			if(this.circleListRef) {
 				this.circleListRef.updateUnreadPointsCircleFromPoint(point, false);

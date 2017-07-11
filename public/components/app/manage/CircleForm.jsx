@@ -100,9 +100,6 @@ class CircleForm extends React.Component {
 	}
 
 	componentDidMount() {
-	}
-
-	componentWillMount() {
 		this.getAllUsers();
 	}
 

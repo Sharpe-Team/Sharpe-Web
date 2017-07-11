@@ -26476,10 +26476,12 @@ var CircleList = function (_React$Component) {
 			search: _this.props.search
 		};
 
+		_this.getRucs = _this.getRucs.bind(_this);
 		_this.getAllCircles = _this.getAllCircles.bind(_this);
 		_this.updateUnreadPointsCircle = _this.updateUnreadPointsCircle.bind(_this);
 		_this.updateUnreadPointsCircleFromPoint = _this.updateUnreadPointsCircleFromPoint.bind(_this);
 		_this.selectCircle = _this.selectCircle.bind(_this);
+		_this.getFilteredCircles = _this.getFilteredCircles.bind(_this);
 		return _this;
 	}
 
@@ -26542,6 +26544,7 @@ var CircleList = function (_React$Component) {
 	}, {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
+			var idUser = (0, _Common.getUserFromStorage)().id;
 			this.getAllCircles();
 		}
 	}, {
@@ -26549,6 +26552,31 @@ var CircleList = function (_React$Component) {
 		value: function componentWillReceiveProps(nextProps) {
 			this.setState({
 				search: nextProps.search
+			});
+		}
+	}, {
+		key: 'getRucs',
+		value: function getRucs(idUser) {
+			var component = this;
+
+			fetch(_Common.API_URL + 'rucs?user_id=' + idUser, {
+				method: 'GET',
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('token')
+				}
+			}).then(function (response) {
+				return response.json();
+			}).then(function (rucs) {
+				if (rucs) {
+					(0, _Common.handleAPIResult)(component, false, "");
+					localStorage.setItem('user-ruc', JSON.stringify(rucs));
+
+					component.getAllCircles();
+				} else {
+					(0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des liens avec les cercles...");
+				}
+			}).catch(function (error) {
+				(0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des liens avec les cercles...");
 			});
 		}
 	}, {
@@ -26569,29 +26597,8 @@ var CircleList = function (_React$Component) {
 				if (circles) {
 					(0, _Common.handleAPIResult)(component, false, "");
 
-					for (var i = 0; i < circles.length; i++) {
-						circles[i]['nbUnreadPoints'] = 0;
-					}
-
 					var rucs = (0, _Common.getUserFromStorage)().ruc;
-
-					var filteredCircles = circles.filter(function (circle) {
-						for (var j = 0; j < rucs.length; j++) {
-							if (rucs[j].idCircle == circle.id) {
-								return true;
-							}
-						}
-						return false;
-					});
-
-					for (var _i = 0; _i < filteredCircles.length; _i++) {
-						for (var j = 0; j < rucs.length; j++) {
-							if (rucs[j].idCircle == filteredCircles[_i].id) {
-								filteredCircles[_i]['userRole'] = rucs[j].idRole;
-							}
-						}
-					}
-
+					var filteredCircles = component.getFilteredCircles(circles, rucs);
 					var selectedCircle = filteredCircles.length > 0 ? filteredCircles[0] : null;
 
 					component.setState({
@@ -26606,6 +26613,25 @@ var CircleList = function (_React$Component) {
 				console.log(error);
 				(0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des cercles...");
 			});
+		}
+	}, {
+		key: 'getFilteredCircles',
+		value: function getFilteredCircles(allCircles, rucs) {
+			var filteredCircles = [];
+
+			for (var i = 0; i < allCircles.length; i++) {
+				for (var j = 0; j < rucs.length; j++) {
+					if (rucs[j].idCircle == allCircles[i].id) {
+						var circle = allCircles[i];
+						circle['userRole'] = rucs[j].idRole;
+						circle['nbUnreadPoints'] = 0;
+
+						filteredCircles.push(circle);
+					}
+				}
+			}
+
+			return filteredCircles;
 		}
 	}, {
 		key: 'selectCircle',
@@ -27910,7 +27936,9 @@ var Navigator = function (_React$Component) {
 		key: 'updateUnreadPointsBadge',
 		value: function updateUnreadPointsBadge(point, isPrivate) {
 			if (isPrivate) {
-				this.userListRef.updateUnreadPointsUser(point.user.id, false);
+				if (this.userListRef) {
+					this.userListRef.updateUnreadPointsUser(point.user.id, false);
+				}
 			} else {
 				if (this.circleListRef) {
 					this.circleListRef.updateUnreadPointsCircleFromPoint(point, false);
@@ -28401,10 +28429,7 @@ var CircleForm = function (_React$Component) {
 		}
 	}, {
 		key: 'componentDidMount',
-		value: function componentDidMount() {}
-	}, {
-		key: 'componentWillMount',
-		value: function componentWillMount() {
+		value: function componentDidMount() {
 			this.getAllUsers();
 		}
 	}, {
@@ -30087,7 +30112,7 @@ exports.default = RequestModeration;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+	value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -30109,136 +30134,143 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 function requireAuth(Component, neededUserType, moderation) {
-    var AuthenticationComponent = function (_React$Component) {
-        _inherits(AuthenticationComponent, _React$Component);
+	var AuthenticationComponent = function (_React$Component) {
+		_inherits(AuthenticationComponent, _React$Component);
 
-        function AuthenticationComponent(props) {
-            _classCallCheck(this, AuthenticationComponent);
+		function AuthenticationComponent(props) {
+			_classCallCheck(this, AuthenticationComponent);
 
-            var _this = _possibleConstructorReturn(this, (AuthenticationComponent.__proto__ || Object.getPrototypeOf(AuthenticationComponent)).call(this, props));
+			var _this = _possibleConstructorReturn(this, (AuthenticationComponent.__proto__ || Object.getPrototypeOf(AuthenticationComponent)).call(this, props));
 
-            _this.state = { isAuthorized: false };
+			_this.state = {
+				isAuthorized: false
+			};
 
-            _this.checkAuth = _this.checkAuth.bind(_this);
-            _this.checkModeration = _this.checkModeration.bind(_this);
-            _this.storeUserInStorage = _this.storeUserInStorage.bind(_this);
-            _this.redirectToLogin = _this.redirectToLogin.bind(_this);
-            _this.getRuc = _this.getRuc.bind(_this);
-            return _this;
-        }
+			_this.checkAuth = _this.checkAuth.bind(_this);
+			_this.checkModeration = _this.checkModeration.bind(_this);
+			_this.storeUserInStorage = _this.storeUserInStorage.bind(_this);
+			_this.redirectToLogin = _this.redirectToLogin.bind(_this);
+			_this.getRuc = _this.getRuc.bind(_this);
+			return _this;
+		}
 
-        _createClass(AuthenticationComponent, [{
-            key: 'render',
-            value: function render() {
+		_createClass(AuthenticationComponent, [{
+			key: 'render',
+			value: function render() {
+				return this.state.isAuthorized ? _react2.default.createElement(Component, this.props) : null;
+			}
+		}, {
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				var component = this;
 
-                return this.state.isAuthorized ? _react2.default.createElement(Component, this.props) : null;
-            }
-        }, {
-            key: 'componentWillMount',
-            value: function componentWillMount() {
-                var component = this;
+				socket.on('disconnected-user', function (user) {
+					if (!localStorage.getItem('user-id')) {
+						component.redirectToLogin(component.props);
+					}
+				});
 
-                socket.on('disconnected-user', function (user) {
-                    if (!localStorage.getItem('user-id')) {
-                        component.redirectToLogin(component.props);
-                    }
-                });
+				this.checkAuth();
+			}
+		}, {
+			key: 'checkAuth',
+			value: function checkAuth() {
+				var component = this;
 
-                this.checkAuth();
-            }
-        }, {
-            key: 'checkAuth',
-            value: function checkAuth() {
-                if (localStorage.getItem("token") != null) {
-                    var component = this;
+				if (localStorage.getItem("token") != null) {
+					socket.emit('verify-token', localStorage.getItem("token"), function (userFromToken) {
+						// Callback from server
+						var user = (0, _Common.getUserFromStorage)();
+						if (!user || user.id != userFromToken.id) {
+							user = userFromToken;
+							component.storeUserInStorage(user);
+						}
 
-                    socket.emit('verify-token', localStorage.getItem("token"), function (user) {
-                        // Callback from server
-                        if (user) {
-                            if (moderation == true) {
-                                if (!component.checkModeration(user)) {
-                                    component.redirectToNotAuthorized();
-                                }
-                            } else if (neededUserType == _Common.userType.admin && user.admin != 1) {
-                                component.props.router.push('/notAuthorized');
-                            }
+						if (user) {
+							component.getRuc(user.id);
+						} else {
+							component.redirectToLogin();
+						}
+					});
+				} else {
+					this.redirectToLogin();
+				}
+			}
+		}, {
+			key: 'checkModeration',
+			value: function checkModeration(rucs) {
+				for (var i = 0; i < rucs.length; i++) {
+					if (rucs[i].idCircle == this.props.params.circleId && rucs[i].idRole == 2) {
+						return true;
+					}
+				}
+				return false;
+			}
+		}, {
+			key: 'getRuc',
+			value: function getRuc(idUser) {
+				var component = this;
 
-                            component.storeUserInStorage(user);
-                            component.setState({ isAuthorized: true });
-                        } else {
-                            component.redirectToLogin();
-                        }
-                    });
-                } else {
-                    this.redirectToLogin();
-                }
-            }
-        }, {
-            key: 'checkModeration',
-            value: function checkModeration(user) {
-                for (var key in user.circlesRole) {
-                    if (key == this.props.params.circleId && user.circlesRole[key] == "MODERATOR") {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }, {
-            key: 'getRuc',
-            value: function getRuc(idUser) {
-                var component = this;
+				fetch(_Common.API_URL + 'rucs?user_id=' + idUser, {
+					method: 'GET',
+					headers: {
+						'Authorization': 'Bearer ' + localStorage.getItem('token')
+					}
+				}).then(function (response) {
+					return response.json();
+				}).then(function (rucs) {
+					if (rucs) {
+						(0, _Common.handleAPIResult)(component, false, "");
+						localStorage.setItem('user-ruc', JSON.stringify(rucs));
 
-                fetch(_Common.API_URL + 'rucs?user_id=' + idUser, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('token')
-                    }
-                }).then(function (response) {
-                    return response.json();
-                }).then(function (rucs) {
-                    if (rucs) {
-                        (0, _Common.handleAPIResult)(component, false, "");
-                        localStorage.setItem('user-ruc', JSON.stringify(rucs));
-                    } else {
-                        (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des liens avec les cercles...");
-                    }
-                }).catch(function (error) {
-                    (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des liens avec les cercles...");
-                });
-            }
-        }, {
-            key: 'storeUserInStorage',
-            value: function storeUserInStorage(user) {
-                this.getRuc(user.id);
-                localStorage.setItem('user-id', user.id);
-                localStorage.setItem('user-firstname', user.firstname);
-                localStorage.setItem('user-lastname', user.lastname);
-                localStorage.setItem('user-email', user.email);
-                localStorage.setItem('user-profile-picture', user.profilePicture);
-                localStorage.setItem('user-admin', user.admin);
-            }
-        }, {
-            key: 'redirectToLogin',
-            value: function redirectToLogin() {
-                console.log("Not Authorized !");
-                localStorage.clear();
+						// CHECK USER RIGHTS
+						if (moderation && !component.checkModeration(rucs) || neededUserType == _Common.userType.admin && user.admin != 1) {
+							component.redirectToNotAuthorized();
+						}
 
-                var location = this.props.location;
-                var redirect = location.pathname + location.search;
+						component.setState({
+							isAuthorized: true
+						});
+					} else {
+						(0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des liens avec les cercles...");
+					}
+				}).catch(function (error) {
+					(0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des liens avec les cercles...");
+				});
+			}
+		}, {
+			key: 'storeUserInStorage',
+			value: function storeUserInStorage(user) {
+				//this.getRuc(user.id);
+				localStorage.setItem('user-id', user.id);
+				localStorage.setItem('user-firstname', user.firstname);
+				localStorage.setItem('user-lastname', user.lastname);
+				localStorage.setItem('user-email', user.email);
+				localStorage.setItem('user-profile-picture', user.profilePicture);
+				localStorage.setItem('user-admin', user.admin);
+			}
+		}, {
+			key: 'redirectToLogin',
+			value: function redirectToLogin() {
+				console.log("Not Authorized !");
+				localStorage.clear();
 
-                this.props.router.push('/?redirect=' + redirect);
-            }
-        }, {
-            key: 'redirectToNotAuthorized',
-            value: function redirectToNotAuthorized() {
-                this.props.router.push('/notAuthorized');
-            }
-        }]);
+				var location = this.props.location;
+				var redirect = location.pathname + location.search;
 
-        return AuthenticationComponent;
-    }(_react2.default.Component);
+				this.props.router.push('/?redirect=' + redirect);
+			}
+		}, {
+			key: 'redirectToNotAuthorized',
+			value: function redirectToNotAuthorized() {
+				this.props.router.push('/notAuthorized');
+			}
+		}]);
 
-    return (0, _reactRouter.withRouter)(AuthenticationComponent);
+		return AuthenticationComponent;
+	}(_react2.default.Component);
+
+	return (0, _reactRouter.withRouter)(AuthenticationComponent);
 }
 
 exports.default = requireAuth;
@@ -30429,6 +30461,7 @@ var LoginForm = function (_React$Component) {
 			localStorage.setItem('user-lastname', user.lastname);
 			localStorage.setItem('user-email', user.email);
 			localStorage.setItem('user-profile-picture', user.profilePicture);
+			localStorage.setItem('user-admin', user.admin);
 		}
 	}, {
 		key: 'clientConnection',
@@ -30447,9 +30480,9 @@ var LoginForm = function (_React$Component) {
 					password: hashedPassword
 				})
 			}).then(function (response) {
-				return response.status == 200 ? response : response.json();
+				return response.status === 200 ? response : response.json();
 			}).then(function (response) {
-				if (response.status == 200) {
+				if (response.status === 200) {
 					(0, _Common.handleAPIResult)(component, false, "");
 
 					var authorizationHeader = response.headers.get('Authorization');

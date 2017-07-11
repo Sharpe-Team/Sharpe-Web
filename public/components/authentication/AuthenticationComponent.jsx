@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { userType, API_URL, handleAPIResult } from '../common/Common.jsx';
+import { userType, API_URL, handleAPIResult, getUserFromStorage } from '../common/Common.jsx';
 
 function requireAuth(Component, neededUserType, moderation) {
 
@@ -9,7 +9,9 @@ function requireAuth(Component, neededUserType, moderation) {
 		constructor(props) {
 			super(props);
 
-			this.state = {isAuthorized: false};
+			this.state = {
+				isAuthorized: false
+			};
 
 			this.checkAuth = this.checkAuth.bind(this);
             this.checkModeration = this.checkModeration.bind(this);
@@ -19,12 +21,11 @@ function requireAuth(Component, neededUserType, moderation) {
 		}
 
 		render() {
-
 			return this.state.isAuthorized ? <Component { ...this.props } /> : null;
 		}
 
-		componentWillMount() {
-			var component = this;
+		componentDidMount() {
+			const component = this;
 			
 			socket.on('disconnected-user', function(user) {
 				if(!localStorage.getItem('user-id')) {
@@ -36,22 +37,19 @@ function requireAuth(Component, neededUserType, moderation) {
 		}
 
 		checkAuth() {
-			if(localStorage.getItem("token") != null) {
-                var component = this;
+			const component = this;
 
-				socket.emit('verify-token', localStorage.getItem("token"), function(user) {
+			if(localStorage.getItem("token") != null) {
+				socket.emit('verify-token', localStorage.getItem("token"), function(userFromToken) {
 					// Callback from server
+					let user = getUserFromStorage();
+					if(!user || user.id != userFromToken.id) {
+						user = userFromToken;
+						component.storeUserInStorage(user);
+					}
+
 					if(user) {
-                        if(moderation == true){
-                            if(!component.checkModeration(user)){
-                                component.redirectToNotAuthorized();
-                            }
-                        } else if(neededUserType == userType.admin && user.admin != 1){
-                            component.props.router.push('/notAuthorized');
-                        }
-                
-                        component.storeUserInStorage(user);
-                        component.setState({isAuthorized: true});
+                        component.getRuc(user.id);
 					} else {
                         component.redirectToLogin();
 					}
@@ -61,12 +59,11 @@ function requireAuth(Component, neededUserType, moderation) {
 			}
 		}
         
-        checkModeration(user) {
-            for (var key in user.circlesRole) {
-                if(key == this.props.params.circleId && user.circlesRole[key] == "MODERATOR"){
-                    return true;
-                }
-                    
+        checkModeration(rucs) {
+            for (let i=0; i<rucs.length; i++) {
+                if(rucs[i].idCircle == this.props.params.circleId && rucs[i].idRole == 2) {
+					return true;
+				}
             }
             return false;
         }
@@ -87,6 +84,16 @@ function requireAuth(Component, neededUserType, moderation) {
                 if(rucs) {
                     handleAPIResult(component, false, "");
                     localStorage.setItem('user-ruc', JSON.stringify(rucs));
+
+                    // CHECK USER RIGHTS
+					if((moderation && !component.checkModeration(rucs)) ||
+						(neededUserType == userType.admin && user.admin != 1)) {
+						component.redirectToNotAuthorized();
+					}
+
+					component.setState({
+						isAuthorized: true
+					});
                 } else {
                     handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des liens avec les cercles...");
                 }
@@ -97,7 +104,7 @@ function requireAuth(Component, neededUserType, moderation) {
         }
 
 		storeUserInStorage(user) {
-            this.getRuc(user.id);
+            //this.getRuc(user.id);
 			localStorage.setItem('user-id', user.id);
 			localStorage.setItem('user-firstname', user.firstname);
 			localStorage.setItem('user-lastname', user.lastname);

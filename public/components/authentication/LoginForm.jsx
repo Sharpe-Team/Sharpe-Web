@@ -106,10 +106,11 @@ class LoginForm extends React.Component {
 		localStorage.setItem('user-lastname', user.lastname);
 		localStorage.setItem('user-email', user.email);
 		localStorage.setItem('user-profile-picture', user.profilePicture);
+		localStorage.setItem('user-admin', user.admin);
 	}
 
 	clientConnection(email, hashedPassword) {
-		var component = this;
+		const component = this;
 
         displayLoading(this);
 		fetch(API_URL + 'login', {
@@ -124,14 +125,14 @@ class LoginForm extends React.Component {
 			})
 		})
 		.then(function(response) {
-			return (response.status == 200) ? response : response.json();
+			return (response.status === 200) ? response : response.json();
 		})
 		.then(function(response) {
-			if(response.status == 200) {
+			if(response.status === 200) {
 				handleAPIResult(component, false, "");
 
-				var authorizationHeader = response.headers.get('Authorization');
-				var token = authorizationHeader.split(" ")[1];
+				let authorizationHeader = response.headers.get('Authorization');
+				let token = authorizationHeader.split(" ")[1];
 
 				localStorage.setItem('token', token);
 				socket.emit('login', token, function(user) {

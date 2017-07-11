@@ -19,10 +19,12 @@ class CircleList extends React.Component {
             search: this.props.search
 		};
 
+		this.getRucs = this.getRucs.bind(this);
 		this.getAllCircles = this.getAllCircles.bind(this);
 		this.updateUnreadPointsCircle = this.updateUnreadPointsCircle.bind(this);
 		this.updateUnreadPointsCircleFromPoint = this.updateUnreadPointsCircleFromPoint.bind(this);
 		this.selectCircle = this.selectCircle.bind(this);
+		this.getFilteredCircles = this.getFilteredCircles.bind(this);
 	}
 
 	render() {
@@ -78,6 +80,7 @@ class CircleList extends React.Component {
 	}
 
 	componentDidMount() {
+		let idUser = getUserFromStorage().id;
 		this.getAllCircles();
 	}
     
@@ -86,6 +89,33 @@ class CircleList extends React.Component {
             search: nextProps.search
         });
     }
+
+	getRucs(idUser) {
+		const component = this;
+
+		fetch(API_URL + 'rucs?user_id=' + idUser, {
+			method: 'GET',
+			headers: {
+				'Authorization': 'Bearer ' + localStorage.getItem('token')
+			}
+		})
+		.then(function(response) {
+			return response.json();
+		})
+		.then(function(rucs) {
+			if(rucs) {
+				handleAPIResult(component, false, "");
+				localStorage.setItem('user-ruc', JSON.stringify(rucs));
+
+				component.getAllCircles();
+			} else {
+				handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des liens avec les cercles...");
+			}
+		})
+		.catch(function(error) {
+			handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des liens avec les cercles...");
+		});
+	}
 
 	getAllCircles() {
 		let component = this;
@@ -104,30 +134,9 @@ class CircleList extends React.Component {
 		.then(function(circles) {
 			if(circles) {
 				handleAPIResult(component, false, "");
-
-				for(let i=0; i<circles.length; i++) {
-					circles[i]['nbUnreadPoints'] = 0;
-				}
                 
-                var rucs = getUserFromStorage().ruc;
-                
-                var filteredCircles = circles.filter(function(circle) {
-                    for(let j=0; j<rucs.length; j++){
-                        if(rucs[j].idCircle == circle.id){
-                            return true;
-                        }
-                    }
-                    return false;
-                });
-                
-                for(let i=0; i<filteredCircles.length; i++) {
-                    for(let j=0; j<rucs.length; j++){
-                        if(rucs[j].idCircle == filteredCircles[i].id){
-                            filteredCircles[i]['userRole'] = rucs[j].idRole;
-                        }
-                    }
-                }
-                
+                let rucs = getUserFromStorage().ruc;
+				let filteredCircles = component.getFilteredCircles(circles, rucs);
                 let selectedCircle = (filteredCircles.length > 0) ? filteredCircles[0] : null;
 
 				component.setState({
@@ -143,6 +152,24 @@ class CircleList extends React.Component {
 			console.log(error);
 			handleAPIResult(component, true, "Une erreur est survenue lors de la récupération des cercles...");
 		});
+	}
+
+	getFilteredCircles(allCircles, rucs) {
+		let filteredCircles = [];
+
+		for(let i=0; i<allCircles.length; i++) {
+			for(let j=0; j<rucs.length; j++) {
+				if(rucs[j].idCircle == allCircles[i].id) {
+					let circle = allCircles[i];
+					circle['userRole'] = rucs[j].idRole;
+					circle['nbUnreadPoints'] = 0;
+
+					filteredCircles.push(circle);
+				}
+			}
+		}
+
+		return filteredCircles;
 	}
 
 	selectCircle(circle) {

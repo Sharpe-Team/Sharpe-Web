@@ -14,7 +14,7 @@ class CubeSpace extends React.Component {
             line: props.line,
 			circle: props.circle,
             cubes: [],
-			shouldDisplayVideoChat: (props.circle.type === 2 && props.circle.receiverUserId !== userId)
+			shouldDisplayVideoChat: (props.circle.type === 2 && props.circle.receiverUser.id !== userId)
         };
     }
     
@@ -31,7 +31,9 @@ class CubeSpace extends React.Component {
 				}
 
                 <div className="row">
-					<h3 className="cube-title">Cubes</h3>
+					<div className="column">
+						<h4 className="cube-title">Cubes</h4>
+					</div>
 				</div>
 
 				<div className="row">
@@ -74,7 +76,7 @@ class CubeSpace extends React.Component {
 		this.setState({
 			line: nextProps.line,
 			circle: nextProps.circle,
-			shouldDisplayVideoChat: (nextProps.circle.type === 2 && nextProps.circle.receiverUserId !== this.state.userId)
+			shouldDisplayVideoChat: (nextProps.circle.type === 2 && nextProps.circle.receiverUser.id !== this.state.userId)
 		});
 
 		this.getAllCubes(nextProps.line.id);

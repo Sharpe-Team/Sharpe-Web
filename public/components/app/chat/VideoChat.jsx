@@ -30,7 +30,7 @@ class VideoChat extends React.Component {
 	}
 
 	render() {
-		let greenBtnText = (this.state.isReceivingCall) ? "Répondre" : "Appeler";
+		//let greenBtnText = (this.state.isReceivingCall) ? "Répondre" : "Appeler";
 
 		return (
 			<div className="video-chat">
@@ -41,13 +41,24 @@ class VideoChat extends React.Component {
 					</div>
 				</div>
 				<div className="row align-spaced">
-					<div className="column medium-5">
-						<button type="button" className="button success" disabled={this.state.isCalling} onClick={this.onGreenBtnClick}>{greenBtnText}</button>
+					<div className="column medium-3" style={{textAlign: "center"}}>
+						<button type="button" disabled={this.state.isCalling} onClick={this.onGreenBtnClick}>
+							<img src="/resource/green-phone.png" width="40"/>
+						</button>
 					</div>
-					<div className="column medium-5">
-						<button type="button" className="button alert" disabled={!this.state.isCalling} onClick={this.onRedBtnClick}>Raccrocher</button>
+					<div className="column medium-3"  style={{textAlign: "center"}}>
+						<button type="button" disabled={!this.state.isCalling} onClick={this.onRedBtnClick}>
+							<img src="/resource/red-phone.png" width="40"/>
+						</button>
 					</div>
 				</div>
+				{ this.state.isReceivingCall &&
+					<div className="row">
+						<div className="column">
+							{this.props.circle.receiverUser.firstname} vous appelle...
+						</div>
+					</div>
+				}
 			</div>
 		);
 	}
@@ -92,7 +103,7 @@ class VideoChat extends React.Component {
 		let component = this;
 
 		this.askMediaDevicesPermission(function(mediaStream) {
-			let mediaConnection = peer.call(component.props.circle.receiverUserId, mediaStream);
+			let mediaConnection = peer.call(component.props.circle.receiverUser.id, mediaStream);
 			mediaConnection.on("stream", component.onReceiveStream);
 			mediaConnection.on("close", function() {
 				component.endCall();

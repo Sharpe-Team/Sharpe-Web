@@ -91,7 +91,7 @@ class InsertImageItem extends React.Component {
 
 				if(component.props.circle.type == 2) {
 					// Send a private cube to the receiver user
-					socket.emit('new-private-cube', cube, component.props.circle.receiverUserId);
+					socket.emit('new-private-cube', cube, component.props.circle.receiverUser.id);
 				} else {
 					// Send the new point to the connected users
 					socket.emit('new-cube', cube);

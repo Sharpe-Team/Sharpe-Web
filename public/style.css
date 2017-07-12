@@ -415,9 +415,9 @@ input, button {
 }
 
 .cube-title {
-    text-align: center;
     color: #334F81;
     font-family: SharpeFont, sans-serif;
+    margin-bottom: 0px;
 }
 
 .cube-space-separator {
@@ -435,7 +435,16 @@ input, button {
 	overflow: scroll;
     padding: 5px;
     margin: 0px;
-    overflow: auto;
+}
+
+.video-chat button {
+    margin-bottom: 5px !important;
+    cursor: pointer;
+}
+
+.video-chat button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
 }
 
 .no-circle {

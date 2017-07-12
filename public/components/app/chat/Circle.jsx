@@ -1,7 +1,7 @@
 import React from 'react';
 import Line from './Line.jsx';
 import CircleHeader from './CircleHeader.jsx';
-import Cube from './Cube.jsx';
+import Cube from './VideoChat.jsx';
 import CubeSpace from './CubeSpace.jsx';
 
 class Circle extends React.Component {
@@ -54,7 +54,7 @@ class Circle extends React.Component {
         
         let cubeSpace;
         if(this.state.selectedLine) {
-            cubeSpace = (<CubeSpace line={this.state.selectedLine}/>);
+            cubeSpace = (<CubeSpace line={this.state.selectedLine} circle={this.props.circle} />);
         } else {
             cubeSpace = (
                 <div id="div-line" className="column">

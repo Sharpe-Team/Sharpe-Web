@@ -435,3 +435,7 @@ input, button {
     padding: 5px;
     margin: 0px;
 }
+
+.video-chat button {
+    margin-bottom: 5px !important;
+}

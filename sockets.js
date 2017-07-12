@@ -152,11 +152,13 @@ function onNewPrivatePoint(socket, point, userId) {
 function onNewPrivateCube(socket, cube, userId) {
 
 	// Get the socket for the user id, if the user is connected
-	let userSocket = getUserSocket(userId);
-	if(userSocket) {
-		userSocket.emit('new-private-cube', cube);
+	let userSockets = getUserSockets(userId);
+	if(userSockets.length > 0) {
+		for(let i=0; i<userSockets.length; i++) {
+			userSockets[i].emit('new-private-cube', cube);
+		}
 
-		if(socket != userSocket) {
+		if(!userSockets.includes(socket)) {
 			socket.emit('new-private-cube', cube);
 		}
 	}
@@ -166,7 +168,7 @@ function computeConnection(socket) {
 	/**
 	 * Logged user of the socket
 	 */
-	var loggedUser = {
+	let loggedUser = {
 		token: null,
 		user: null,
 		disconnected: false,

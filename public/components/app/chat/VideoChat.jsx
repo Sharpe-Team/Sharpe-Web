@@ -2,7 +2,7 @@ import React from 'react';
 
 const TIME_BEFORE_REJECT = 5000;
 
-class Cube extends React.Component {
+class VideoChat extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -18,6 +18,8 @@ class Cube extends React.Component {
 			mediaConnection: undefined
 		};
 
+		this.onGreenBtnClick = this.onGreenBtnClick.bind(this);
+		this.onRedBtnClick = this.onRedBtnClick.bind(this);
 		this.callPeer = this.callPeer.bind(this);
 		this.endCall = this.endCall.bind(this);
 		this.onReceiveCall = this.onReceiveCall.bind(this);
@@ -28,19 +30,23 @@ class Cube extends React.Component {
 	}
 
 	render() {
+		let greenBtnText = (this.state.isReceivingCall) ? "Répondre" : "Appeler";
+
 		return (
-			<div id="cubes" className="column medium-2">
+			<div className="video-chat">
 				<div className="row">
-					{ this.props.circle.type === 2 && this.props.circle.receiverUserId !== this.state.user.id &&
-						<div className="column">
-							<button type="button" className="button primary" disabled={this.state.isCalling || this.state.isReceivingCall} onClick={this.callPeer}>Appeler</button>
-							<button type="button" className="button alert" disabled={!this.state.isCalling || this.state.isReceivingCall} onClick={this.endCall}>Raccrocher</button>
-							<button type="button" className="button success" disabled={!this.state.isReceivingCall} onClick={this.answerCall}>Répondre</button>
-							<button type="button" className="button alert" disabled={!this.state.isReceivingCall} onClick={this.rejectCall}>Annuler</button>
-							{/*<audio id="audioStream" controls></audio>*/}
-							<video id="videoStream" controls style={{width: "100%"}}></video>
-						</div>
-					}
+					<div className="column">
+						{/*<audio id="audioStream" controls />*/}
+						<video id="videoStream" controls style={{width: "100%"}} />
+					</div>
+				</div>
+				<div className="row align-spaced">
+					<div className="column medium-5">
+						<button type="button" className="button success" disabled={this.state.isCalling} onClick={this.onGreenBtnClick}>{greenBtnText}</button>
+					</div>
+					<div className="column medium-5">
+						<button type="button" className="button alert" disabled={!this.state.isCalling} onClick={this.onRedBtnClick}>Raccrocher</button>
+					</div>
 				</div>
 			</div>
 		);
@@ -60,6 +66,22 @@ class Cube extends React.Component {
 			});
 		}
 		peer.on('call', this.onReceiveCall);
+	}
+
+	onGreenBtnClick() {
+		if(this.state.isReceivingCall) {
+			this.answerCall();
+		} else if(!this.state.isCalling) {
+			this.callPeer();
+		}
+	}
+
+	onRedBtnClick() {
+		if(this.state.isReceivingCall) {
+			this.rejectCall();
+		} else if(this.state.isCalling) {
+			this.endCall();
+		}
 	}
 
 	/****************************************************************
@@ -103,30 +125,6 @@ class Cube extends React.Component {
 		});
 	}
 
-	onReceiveCall(mediaConnection) {
-		let component = this;
-
-		this.setState({
-			isReceivingCall: true,
-			mediaConnection: mediaConnection
-		});
-
-		// If the caller ends the call before the user could answer it, close the connection
-		// TODO: do something working... (to prevent the user to answer to a call that has been ended by the caller)
-		mediaConnection.on("close", function() {
-			component.rejectCall();
-		});
-
-		setTimeout(function() {
-			// If the user has not answered to the call after 5 seconds, rejects it
-			if(component.state.isReceivingCall
-				&& component.state.mediaConnection
-				&& !component.state.mediaConnection.open) {
-				component.rejectCall();
-			}
-		}, TIME_BEFORE_REJECT);
-	}
-
 	answerCall() {
 		let component = this;
 		let mediaConnection = this.state.mediaConnection;
@@ -155,6 +153,30 @@ class Cube extends React.Component {
 			isReceivingCall: false,
 			mediaConnection: undefined
 		});
+	}
+
+	onReceiveCall(mediaConnection) {
+		let component = this;
+
+		this.setState({
+			isReceivingCall: true,
+			mediaConnection: mediaConnection
+		});
+
+		// If the caller ends the call before the user could answer it, close the connection
+		// TODO: do something working... (to prevent the user to answer to a call that has been ended by the caller)
+		mediaConnection.on("close", function() {
+			component.rejectCall();
+		});
+
+		setTimeout(function() {
+			// If the user has not answered to the call after 5 seconds, rejects it
+			if(component.state.isReceivingCall
+				&& component.state.mediaConnection
+				&& !component.state.mediaConnection.open) {
+				component.rejectCall();
+			}
+		}, TIME_BEFORE_REJECT);
 	}
 
 	askMediaDevicesPermission(callback) {
@@ -216,7 +238,6 @@ class Cube extends React.Component {
 			videoComponent.play();
 		}
 	}
-
 }
 
-export default Cube;
+export default VideoChat;

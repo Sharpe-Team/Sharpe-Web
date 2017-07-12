@@ -342,8 +342,9 @@ input, button {
 
 .admin-page, .moderation-page, .circle-searcher-page {
     background: url("resource/background.png");
-    height: 100%;
+    background-attachment: fixed;
     background-size: cover;
+    min-height: inherit;
 }
 
 .not-found-link, .not-authorized-link {
@@ -438,4 +439,23 @@ input, button {
 
 .video-chat button {
     margin-bottom: 5px !important;
+}
+
+.no-circle {
+    background: url("resource/background-circle.png")
+}
+
+.cube-space-item {
+    white-space: nowrap;
+}
+
+.no-circle-message {
+    text-align: center;
+    font-size: 20px;
+    margin-top: 15%;
+    margin-bottom: 20px;
+}
+
+.no-circle-button {
+    margin: 20px;
 }

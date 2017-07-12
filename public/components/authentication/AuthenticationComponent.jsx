@@ -87,7 +87,7 @@ function requireAuth(Component, neededUserType, moderation) {
 
                     // CHECK USER RIGHTS
 					if((moderation && !component.checkModeration(rucs)) ||
-						(neededUserType == userType.admin && user.admin != 1)) {
+				        (neededUserType == userType.admin && user.admin != 1)) {
 						component.redirectToNotAuthorized();
 					}
 

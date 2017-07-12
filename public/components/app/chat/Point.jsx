@@ -52,7 +52,7 @@ class Point extends React.Component {
 		let minutes = date.getMinutes();
 		minutes = minutes < 10 ? '0' + minutes : minutes;
         if(this.props.date){
-            return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " " + date.getHours() + ":" + minutes;
+            return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + minutes;
         }
 		return date.getHours() + ":" + minutes;
 	}

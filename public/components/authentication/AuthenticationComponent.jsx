@@ -49,7 +49,7 @@ function requireAuth(Component, neededUserType, moderation) {
 					}
 
 					if(user) {
-                        component.getRuc(user.id);
+                        component.getRuc(user);
 					} else {
                         component.redirectToLogin();
 					}
@@ -68,10 +68,10 @@ function requireAuth(Component, neededUserType, moderation) {
             return false;
         }
         
-        getRuc(idUser) {
+        getRuc(user) {
             const component = this;
             
-            fetch(API_URL + 'rucs?user_id=' + idUser, {
+            fetch(API_URL + 'rucs?user_id=' + user.id, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('token')

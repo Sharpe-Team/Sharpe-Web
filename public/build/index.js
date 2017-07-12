@@ -12589,7 +12589,7 @@ module.exports = canDefineProperty;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -12607,87 +12607,90 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Point = function (_React$Component) {
-  _inherits(Point, _React$Component);
+    _inherits(Point, _React$Component);
 
-  function Point(props) {
-    _classCallCheck(this, Point);
+    function Point(props) {
+        _classCallCheck(this, Point);
 
-    return _possibleConstructorReturn(this, (Point.__proto__ || Object.getPrototypeOf(Point)).call(this, props));
-  }
-
-  _createClass(Point, [{
-    key: "render",
-    value: function render() {
-      var pictureUrl = this.props.point.user.profilePicture;
-      if (!pictureUrl) {
-        pictureUrl = "/resource/unknown-person.png";
-      } else {
-        pictureUrl = "/uploads/" + pictureUrl;
-      }
-
-      var displayedPoint = void 0;
-      if (this.props.point.url) {
-        displayedPoint = _react2.default.createElement("img", { src: "/uploads/" + this.props.point.url, style: { height: "200px" } });
-      } else {
-        displayedPoint = this.props.point.content;
-      }
-
-      return _react2.default.createElement(
-        "div",
-        { className: "row align-top" },
-        _react2.default.createElement(
-          "div",
-          { className: "imageLine column medium-1" },
-          _react2.default.createElement("img", { className: "userPicture", src: pictureUrl })
-        ),
-        _react2.default.createElement(
-          "div",
-          { className: "column medium-11" },
-          _react2.default.createElement(
-            "div",
-            { className: "row" },
-            _react2.default.createElement(
-              "div",
-              { className: "userPoint column medium-6" },
-              _react2.default.createElement(
-                "b",
-                null,
-                this.props.point.user.firstname
-              ),
-              "\xA0",
-              this.props.point.user.lastname
-            ),
-            _react2.default.createElement(
-              "div",
-              { className: "datePoint column medium-6" },
-              this.renderDate(this.props.point.created)
-            )
-          ),
-          _react2.default.createElement(
-            "div",
-            { className: "row" },
-            _react2.default.createElement(
-              "div",
-              { className: "point column medium-12" },
-              displayedPoint
-            )
-          )
-        )
-      );
+        return _possibleConstructorReturn(this, (Point.__proto__ || Object.getPrototypeOf(Point)).call(this, props));
     }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {}
-  }, {
-    key: "renderDate",
-    value: function renderDate(date) {
-      var minutes = date.getMinutes();
-      minutes = minutes < 10 ? '0' + minutes : minutes;
-      return date.getHours() + ":" + minutes;
-    }
-  }]);
 
-  return Point;
+    _createClass(Point, [{
+        key: "render",
+        value: function render() {
+            var pictureUrl = this.props.point.user.profilePicture;
+            if (!pictureUrl) {
+                pictureUrl = "/resource/unknown-person.png";
+            } else {
+                pictureUrl = "/uploads/" + pictureUrl;
+            }
+
+            var displayedPoint = void 0;
+            if (this.props.point.url) {
+                displayedPoint = _react2.default.createElement("img", { src: "/uploads/" + this.props.point.url, style: { height: "200px" } });
+            } else {
+                displayedPoint = this.props.point.content;
+            }
+
+            return _react2.default.createElement(
+                "div",
+                { className: "row align-top" },
+                _react2.default.createElement(
+                    "div",
+                    { className: "imageLine column medium-1" },
+                    _react2.default.createElement("img", { className: "userPicture", src: pictureUrl })
+                ),
+                _react2.default.createElement(
+                    "div",
+                    { className: "column medium-11" },
+                    _react2.default.createElement(
+                        "div",
+                        { className: "row" },
+                        _react2.default.createElement(
+                            "div",
+                            { className: "userPoint column medium-6" },
+                            _react2.default.createElement(
+                                "b",
+                                null,
+                                this.props.point.user.firstname
+                            ),
+                            "\xA0",
+                            this.props.point.user.lastname
+                        ),
+                        _react2.default.createElement(
+                            "div",
+                            { className: "datePoint column medium-6" },
+                            this.renderDate(this.props.point.created)
+                        )
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        { className: "row" },
+                        _react2.default.createElement(
+                            "div",
+                            { className: "point column medium-12" },
+                            displayedPoint
+                        )
+                    )
+                )
+            );
+        }
+    }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {}
+    }, {
+        key: "renderDate",
+        value: function renderDate(date) {
+            var minutes = date.getMinutes();
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            if (this.props.date) {
+                return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " " + date.getHours() + ":" + minutes;
+            }
+            return date.getHours() + ":" + minutes;
+        }
+    }]);
+
+    return Point;
 }(_react2.default.Component);
 
 exports.default = Point;
@@ -27959,6 +27962,33 @@ var CubeSpace = function (_React$Component) {
 			);
 		}
 	}, {
+		key: 'componentWillMount',
+		value: function componentWillMount() {
+			var component = this;
+
+			socket.on('new-cube', function (cube) {
+				component.manageNewCube(cube);
+			});
+
+			socket.on('new-private-cube', function (cube) {
+				component.manageNewCube(cube);
+			});
+		}
+	}, {
+		key: 'manageNewCube',
+		value: function manageNewCube(cube) {
+			// If the user is on the line where the new point belongs to, we display it
+			if (cube.idLine == this.state.line.id) {
+				// Display the new point
+				cube.created = new Date(cube.created);
+				var cubes = this.state.cubes;
+				cubes.push(cube);
+				this.setState({
+					cubes: cubes
+				});
+			}
+		}
+	}, {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
 			this.setState({
@@ -28246,6 +28276,7 @@ var Line = function (_React$Component) {
 		_this.updateState = _this.updateState.bind(_this);
 		_this.concatArrays = _this.concatArrays.bind(_this);
 		_this.hideAnnouncement = _this.hideAnnouncement.bind(_this);
+		_this.dateIsDifferent = _this.dateIsDifferent.bind(_this);
 		return _this;
 	}
 
@@ -28262,6 +28293,20 @@ var Line = function (_React$Component) {
 					'ul',
 					{ id: 'points', style: { height: "calc(100% - " + this.state.newPointHeight + "px)" } },
 					this.state.concatArray.map(function (object, index) {
+						var date;
+						if (index > 0) {
+							if (this.dateIsDifferent(object, this.state.concatArray[index - 1])) return _react2.default.createElement(
+								'li',
+								{ key: index },
+								_react2.default.createElement(_Point2.default, { point: object, date: 'true' })
+							);
+						} else {
+							return _react2.default.createElement(
+								'li',
+								{ key: index },
+								_react2.default.createElement(_Point2.default, { point: object, date: 'true' })
+							);
+						}
 						return _react2.default.createElement(
 							'li',
 							{ key: index },
@@ -28297,6 +28342,11 @@ var Line = function (_React$Component) {
 					)
 				)
 			);
+		}
+	}, {
+		key: 'dateIsDifferent',
+		value: function dateIsDifferent(cube1, cube2) {
+			return cube1.created.getDay() != cube2.created.getDay() || cube1.created.getMonth() != cube2.created.getMonth() || cube1.created.getFullYear() != cube2.created.getFullYear();
 		}
 	}, {
 		key: 'componentWillMount',
@@ -30873,15 +30923,14 @@ function requireAuth(Component, neededUserType, moderation) {
 			return _this;
 		}
 
-<<<<<<< HEAD
 		_createClass(AuthenticationComponent, [{
 			key: 'render',
 			value: function render() {
 				return this.state.isAuthorized ? _react2.default.createElement(Component, this.props) : null;
 			}
 		}, {
-			key: 'componentDidMount',
-			value: function componentDidMount() {
+			key: 'componentWillMount',
+			value: function componentWillMount() {
 				var component = this;
 
 				socket.on('disconnected-user', function (user) {
@@ -30905,23 +30954,6 @@ function requireAuth(Component, neededUserType, moderation) {
 							user = userFromToken;
 							component.storeUserInStorage(user);
 						}
-=======
-        _createClass(AuthenticationComponent, [{
-            key: 'render',
-            value: function render() {
-                return this.state.isAuthorized ? _react2.default.createElement(Component, this.props) : null;
-            }
-        }, {
-            key: 'componentWillMount',
-            value: function componentWillMount() {
-                var component = this;
-
-                socket.on('disconnected-user', function (user) {
-                    if (!localStorage.getItem('user-id')) {
-                        component.redirectToLogin(component.props);
-                    }
-                });
->>>>>>> 42ed7fecad689f8f5795fb5dcfdc2d9749bc939f
 
 						if (user) {
 							component.getRuc(user.id);

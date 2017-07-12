@@ -24,7 +24,7 @@ function requireAuth(Component, neededUserType, moderation) {
 			return this.state.isAuthorized ? <Component { ...this.props } /> : null;
 		}
 
-		componentDidMount() {
+		componentWillMount() {
 			const component = this;
 			
 			socket.on('disconnected-user', function(user) {

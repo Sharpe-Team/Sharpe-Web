@@ -28,6 +28,31 @@ class CubeSpace extends React.Component {
         )
     }
     
+    componentWillMount(){
+        let component = this;
+        
+        socket.on('new-cube', function(cube) {
+			component.manageNewCube(cube);
+		});
+
+		socket.on('new-private-cube', function(cube) {
+			component.manageNewCube(cube);
+		});
+    }
+    
+    manageNewCube(cube) {
+		// If the user is on the line where the new point belongs to, we display it
+		if(cube.idLine == this.state.line.id) {
+			// Display the new point
+			cube.created = new Date(cube.created);
+			let cubes = this.state.cubes;
+			cubes.push(cube);
+			this.setState({
+				cubes: cubes,
+			});
+		}
+	}
+    
     componentWillReceiveProps(nextProps) {
 		this.setState({
 			line: nextProps.line,

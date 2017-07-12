@@ -27430,7 +27430,7 @@ exports.default = CircleSearcher;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -27450,219 +27450,254 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var CircleSearcherList = function (_React$Component) {
-  _inherits(CircleSearcherList, _React$Component);
+    _inherits(CircleSearcherList, _React$Component);
 
-  function CircleSearcherList(props) {
-    _classCallCheck(this, CircleSearcherList);
+    function CircleSearcherList(props) {
+        _classCallCheck(this, CircleSearcherList);
 
-    var _this = _possibleConstructorReturn(this, (CircleSearcherList.__proto__ || Object.getPrototypeOf(CircleSearcherList)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (CircleSearcherList.__proto__ || Object.getPrototypeOf(CircleSearcherList)).call(this, props));
 
-    _this.state = {
-      circles: [],
-      joiningRequests: [],
-      search: _this.props.search
-    };
+        _this.state = {
+            circles: [],
+            joiningRequests: [],
+            search: _this.props.search
+        };
 
-    _this.getAllCircles = _this.getAllCircles.bind(_this);
-    _this.isNotLinked = _this.isNotLinked.bind(_this);
-    _this.getJoiningRequests = _this.getJoiningRequests.bind(_this);
-    return _this;
-  }
+        _this.getAllCircles = _this.getAllCircles.bind(_this);
+        _this.isNotLinked = _this.isNotLinked.bind(_this);
+        _this.getJoiningRequests = _this.getJoiningRequests.bind(_this);
+        return _this;
+    }
 
-  _createClass(CircleSearcherList, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          'ul',
-          { id: 'circle-search' },
-          this.state.circles.map(function (circle) {
-            if (circle.name.toLowerCase().includes(this.state.search.toLowerCase())) {
-
-              var requestStatus = _react2.default.createElement('img', { className: 'request-icon', src: 'resource/validated-request.png' });
-
-              if (this.isNotLinked(circle.id)) {
-                requestStatus = _react2.default.createElement(
-                  'button',
-                  { onClick: this.createJoiningRequest.bind(this, circle.id), className: 'button tiny join-button' },
-                  'Rejoindre'
-                );
-              } else if (this.requestIsCreated(circle.id)) {
-                requestStatus = _react2.default.createElement('img', { className: 'request-icon', src: 'resource/waiting-request.png' });
-              }
-
-              return _react2.default.createElement(
-                'li',
-                { id: 'circle-search-item', key: circle.id },
+    _createClass(CircleSearcherList, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
                 _react2.default.createElement(
-                  'div',
-                  { className: 'row' },
-                  _react2.default.createElement(
-                    'div',
-                    { className: 'column medium-1' },
+                    'ul',
+                    { id: 'circle-search' },
                     _react2.default.createElement(
-                      'div',
-                      { className: 'circularImageContainer-search' },
-                      circle.pictureUrl && _react2.default.createElement('img', { className: 'search-picture', src: 'uploads/' + circle.pictureUrl })
-                    )
-                  ),
-                  _react2.default.createElement(
-                    'div',
-                    { className: 'column medium-10' },
-                    circle.name
-                  ),
-                  _react2.default.createElement(
-                    'div',
-                    { className: 'column medium-1' },
-                    requestStatus
-                  )
+                        'li',
+                        { id: 'circle-search-item' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'row' },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'column medium-1' },
+                                _react2.default.createElement(
+                                    'b',
+                                    null,
+                                    'Image'
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'column medium-10' },
+                                _react2.default.createElement(
+                                    'b',
+                                    null,
+                                    'Nom du cercle'
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'column medium-1' },
+                                _react2.default.createElement(
+                                    'b',
+                                    null,
+                                    'Status'
+                                )
+                            )
+                        )
+                    ),
+                    this.state.circles.map(function (circle) {
+                        if (circle.name.toLowerCase().includes(this.state.search.toLowerCase())) {
+
+                            var requestStatus = _react2.default.createElement('img', { className: 'request-icon', src: 'resource/validated-request.png' });
+
+                            if (this.isNotLinked(circle.id)) {
+                                requestStatus = _react2.default.createElement(
+                                    'button',
+                                    { onClick: this.createJoiningRequest.bind(this, circle.id), className: 'button tiny join-button' },
+                                    'Rejoindre'
+                                );
+                            } else if (this.requestIsCreated(circle.id)) {
+                                requestStatus = _react2.default.createElement('img', { className: 'request-icon', src: 'resource/waiting-request.png' });
+                            }
+
+                            return _react2.default.createElement(
+                                'li',
+                                { id: 'circle-search-item', key: circle.id },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'row' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'column medium-1' },
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'circularImageContainer-search' },
+                                            circle.pictureUrl && _react2.default.createElement('img', { className: 'search-picture', src: 'uploads/' + circle.pictureUrl })
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'column medium-10' },
+                                        circle.name
+                                    ),
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'column medium-1' },
+                                        requestStatus
+                                    )
+                                )
+                            );
+                        }
+                    }, this)
                 )
-              );
+            );
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.getAllCircles();
+            this.getJoiningRequests();
+        }
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            this.setState({
+                search: nextProps.search
+            });
+        }
+    }, {
+        key: 'getAllCircles',
+        value: function getAllCircles() {
+            var component = this;
+
+            fetch(_Common.API_URL + 'circles/publics', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(function (response) {
+                return response.json();
+            }).then(function (circles) {
+                if (circles) {
+                    (0, _Common.handleAPIResult)(component, false, "");
+
+                    component.setState({
+                        circles: circles
+                    });
+                } else {
+                    (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des cercles...");
+                }
+            }).catch(function (error) {
+                console.log(error);
+                (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des cercles...");
+            });
+        }
+    }, {
+        key: 'isNotLinked',
+        value: function isNotLinked(idCircle) {
+            var rucs = (0, _Common.getUserFromStorage)().ruc;
+
+            for (var i = 0; i < rucs.length; i++) {
+                if (rucs[i].idCircle == idCircle) {
+                    return false;
+                }
             }
-          }, this)
-        )
-      );
-    }
-  }, {
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.getAllCircles();
-      this.getJoiningRequests();
-    }
-  }, {
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      this.setState({
-        search: nextProps.search
-      });
-    }
-  }, {
-    key: 'getAllCircles',
-    value: function getAllCircles() {
-      var component = this;
 
-      fetch(_Common.API_URL + 'circles/publics', {
-        method: 'GET',
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
+            for (var j = 0; j < this.state.joiningRequests.length; j++) {
+                if (this.state.joiningRequests[j].idCircle == idCircle) {
+                    return false;
+                }
+            }
+
+            return true;
         }
-      }).then(function (response) {
-        return response.json();
-      }).then(function (circles) {
-        if (circles) {
-          (0, _Common.handleAPIResult)(component, false, "");
+    }, {
+        key: 'requestIsCreated',
+        value: function requestIsCreated(idCircle) {
+            for (var j = 0; j < this.state.joiningRequests.length; j++) {
+                if (this.state.joiningRequests[j].idCircle == idCircle) {
+                    return true;
+                }
+            }
 
-          component.setState({
-            circles: circles
-          });
-        } else {
-          (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des cercles...");
+            return false;
         }
-      }).catch(function (error) {
-        console.log(error);
-        (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des cercles...");
-      });
-    }
-  }, {
-    key: 'isNotLinked',
-    value: function isNotLinked(idCircle) {
-      var rucs = (0, _Common.getUserFromStorage)().ruc;
+    }, {
+        key: 'getJoiningRequests',
+        value: function getJoiningRequests() {
+            var component = this;
 
-      for (var i = 0; i < rucs.length; i++) {
-        if (rucs[i].idCircle == idCircle) {
-          return false;
+            var userId = (0, _Common.getUserFromStorage)().id;
+
+            fetch(_Common.API_URL + 'joining-requests/?user_id=' + userId, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(function (response) {
+                return response.json();
+            }).then(function (joiningRequests) {
+                if (joiningRequests) {
+                    (0, _Common.handleAPIResult)(component, false, "");
+
+                    component.setState({
+                        joiningRequests: joiningRequests
+                    });
+                } else {
+                    (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des demandes...");
+                }
+            }).catch(function (error) {
+                console.log(error);
+                (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des demandes...");
+            });
         }
-      }
+    }, {
+        key: 'createJoiningRequest',
+        value: function createJoiningRequest(circleId) {
+            var component = this;
 
-      for (var j = 0; j < this.state.joiningRequests.length; j++) {
-        if (this.state.joiningRequests[j].idCircle == idCircle) {
-          return false;
+            var userId = (0, _Common.getUserFromStorage)().id;
+
+            fetch(_Common.API_URL + 'joining-requests', {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                },
+                body: JSON.stringify({
+                    idCircle: circleId,
+                    idUser: userId
+                })
+            }).then(function (response) {
+                return response.json();
+            }).then(function (joiningRequest) {
+                if (joiningRequest) {
+                    var newJoiningRequests = component.state.joiningRequests;
+                    newJoiningRequests.push(joiningRequest);
+                    component.setState({ joiningRequests: newJoiningRequests });
+
+                    (0, _Common.handleAPIResult)(component, false, "");
+                } else {
+                    (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la demande !");
+                }
+            }).catch(function (error) {
+                console.log(error);
+                (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la demande !");
+            });
         }
-      }
+    }]);
 
-      return true;
-    }
-  }, {
-    key: 'requestIsCreated',
-    value: function requestIsCreated(idCircle) {
-      for (var j = 0; j < this.state.joiningRequests.length; j++) {
-        if (this.state.joiningRequests[j].idCircle == idCircle) {
-          return true;
-        }
-      }
-
-      return false;
-    }
-  }, {
-    key: 'getJoiningRequests',
-    value: function getJoiningRequests() {
-      var component = this;
-
-      var userId = (0, _Common.getUserFromStorage)().id;
-
-      fetch(_Common.API_URL + 'joining-requests/?user_id=' + userId, {
-        method: 'GET',
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
-      }).then(function (response) {
-        return response.json();
-      }).then(function (joiningRequests) {
-        if (joiningRequests) {
-          (0, _Common.handleAPIResult)(component, false, "");
-
-          component.setState({
-            joiningRequests: joiningRequests
-          });
-        } else {
-          (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des demandes...");
-        }
-      }).catch(function (error) {
-        console.log(error);
-        (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la récupération des demandes...");
-      });
-    }
-  }, {
-    key: 'createJoiningRequest',
-    value: function createJoiningRequest(circleId) {
-      var component = this;
-
-      var userId = (0, _Common.getUserFromStorage)().id;
-
-      fetch(_Common.API_URL + 'joining-requests', {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
-        },
-        body: JSON.stringify({
-          idCircle: circleId,
-          idUser: userId
-        })
-      }).then(function (response) {
-        return response.json();
-      }).then(function (joiningRequest) {
-        if (joiningRequest) {
-          var newJoiningRequests = component.state.joiningRequests;
-          newJoiningRequests.push(joiningRequest);
-          component.setState({ joiningRequests: newJoiningRequests });
-
-          (0, _Common.handleAPIResult)(component, false, "");
-        } else {
-          (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la demande !");
-        }
-      }).catch(function (error) {
-        console.log(error);
-        (0, _Common.handleAPIResult)(component, true, "Une erreur est survenue lors de la demande !");
-      });
-    }
-  }]);
-
-  return CircleSearcherList;
+    return CircleSearcherList;
 }(_react2.default.Component);
 
 exports.default = CircleSearcherList;

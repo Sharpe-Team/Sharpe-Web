@@ -124,7 +124,7 @@ class UserList extends React.Component {
 		let currentUserId = parseInt(localStorage.getItem('user-id'));
 		if(!currentUserId
 			|| currentUserId < 0
-			|| (this.props.selectedCircle && this.props.selectedCircle.receiverUserId == user.id)) {
+			|| (this.props.selectedCircle && this.props.selectedCircle.receiverUser && this.props.selectedCircle.receiverUser.id === user.id)) {
 			return;
 		}
 
@@ -145,7 +145,7 @@ class UserList extends React.Component {
 				handleAPIResult(component, false, "");
 
 				circle['nbUnreadPoints'] = 0;
-				circle['receiverUserId'] = user.id;
+				circle['receiverUser'] = user;
 
 				component.updateUnreadPointsUser(user.id, true);
 

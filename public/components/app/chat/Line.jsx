@@ -65,14 +65,13 @@ class Line extends React.Component {
 				<ul id="points" style={{height: "calc(100% - " + this.state.newPointHeight + "px)"}}>
 					{
 						this.state.concatArray.map(function(object, index) {
-                            var date;
                             if(index > 0){
                                 if(this.dateIsDifferent(object, this.state.concatArray[index-1]))
-                                    return <li key={index}><Point point={object} date="true"></Point></li>;
+                                    return (<li key={index}><Point point={object} date="true"></Point></li>);
                             } else {
-                                return <li key={index}><Point point={object} date="true"></Point></li>;
+                                return (<li key={index}><Point point={object} date="true"></Point></li>);
                             }
-                            return <li key={index}><Point point={object}></Point></li>
+                            return (<li key={index}><Point point={object}></Point></li>);
 						}, this)
 					}
 				</ul>
@@ -313,7 +312,7 @@ class Line extends React.Component {
 
             	if(component.props.circle.type == 2) {
             		// Send a private point to the receiver user
-            		socket.emit('new-private-point', point, component.props.circle.receiverUserId);
+            		socket.emit('new-private-point', point, component.props.circle.receiverUser.id);
             	} else {
                 	// Send the new point to the connected users
                 	socket.emit('new-point', point);

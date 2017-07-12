@@ -9,7 +9,8 @@ class InsertImageItem extends React.Component {
 		this.state = {
 			image: "",
 			percent: 0,
-			finalPath: ""
+			finalPath: "",
+			acceptedFiles: "image/*, audio/*, video/*, .xlsx, .xls, .doc, .docx, .ppt, .pptx, .txt, .pdf, .zip, .tar, .html, .xml, .js"
 		};
 
 		this.saveNewImage = this.saveNewImage.bind(this);
@@ -19,7 +20,7 @@ class InsertImageItem extends React.Component {
 		return (
 			<div>
 				<label htmlFor="new-image" className="button insert-btn">+</label>
-				<input type="file" id="new-image" name="newImage" className="show-for-sr" accept="image/*"/>
+				<input type="file" id="new-image" name="newImage" className="show-for-sr" accept={this.state.acceptedFiles}/>
 			</div>
 		);
 	}

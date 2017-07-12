@@ -27995,8 +27995,9 @@ var CubeSpace = function (_React$Component) {
 					this.state.cubes.map(function (object, index) {
 						return _react2.default.createElement(
 							'li',
-							{ key: index },
-							_react2.default.createElement(_CubeIcon2.default, { cube: object })
+							{ className: 'cube-space-item', key: index },
+							_react2.default.createElement(_CubeIcon2.default, { cube: object }),
+							object.url
 						);
 					}, this)
 				)

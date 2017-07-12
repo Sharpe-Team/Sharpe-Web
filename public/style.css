@@ -434,4 +434,9 @@ input, button {
 	overflow: scroll;
     padding: 5px;
     margin: 0px;
+    overflow: auto;
+}
+
+.cube-space-item {
+    white-space: nowrap;
 }

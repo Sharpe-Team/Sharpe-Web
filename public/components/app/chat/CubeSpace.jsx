@@ -20,7 +20,7 @@ class CubeSpace extends React.Component {
                 <ul className="cube-space-cubes">
 					{
 						this.state.cubes.map(function(object, index) {
-                            return <li key={index}><CubeIcon cube={object}/></li>
+                            return <li className="cube-space-item" key={index}><CubeIcon cube={object}/>{object.url}</li>
 						}, this)
 					}
 				</ul>

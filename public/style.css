@@ -438,6 +438,21 @@ input, button {
     overflow: auto;
 }
 
+.no-circle {
+    background: url("resource/background-circle.png")
+}
+
 .cube-space-item {
     white-space: nowrap;
+}
+
+.no-circle-message {
+    text-align: center;
+    font-size: 20px;
+    margin-top: 15%;
+    margin-bottom: 20px;
+}
+
+.no-circle-button {
+    margin: 20px;
 }

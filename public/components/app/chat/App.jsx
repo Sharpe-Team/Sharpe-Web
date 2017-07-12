@@ -1,5 +1,6 @@
 import React from 'react';
 import Circle from './Circle.jsx';
+import NoCircle from './NoCircle.jsx';
 import Navigator from './Navigator.jsx';
 
 class App extends React.Component {
@@ -15,12 +16,17 @@ class App extends React.Component {
 	}
 
 	render() {
+        let circleDisplay;
+        if(this.state.selectedCircle) {
+            circleDisplay = (<Circle circle={this.state.selectedCircle} updateUnreadPoints={this.navigatorRef.updateUnreadPointsBadge} />);
+        } else {
+            circleDisplay = (<NoCircle />);
+        }
+        
 		return (
 			<div id="div-app" className="expanded row">
 				<Navigator updateSelectedCircle={this.updateSelectedCircle} selectedCircle={this.state.selectedCircle} ref={ (instance) => { this.navigatorRef = instance; }} />
-				{ this.state.selectedCircle &&
-					<Circle circle={this.state.selectedCircle} updateUnreadPoints={this.navigatorRef.updateUnreadPointsBadge} />
-				}
+                {circleDisplay}
 			</div>
 		);
 	}

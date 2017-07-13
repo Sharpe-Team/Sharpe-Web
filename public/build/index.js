@@ -18216,7 +18216,7 @@ var VideoChat = function (_React$Component) {
 						{ className: "column medium-3", style: { textAlign: "center" } },
 						_react2.default.createElement(
 							"button",
-							{ type: "button", disabled: !this.state.isCalling, onClick: this.onRedBtnClick },
+							{ type: "button", disabled: !this.state.isCalling && !this.state.isReceivingCall, onClick: this.onRedBtnClick },
 							_react2.default.createElement("img", { src: "/resource/red-phone.png", width: "40" })
 						)
 					)

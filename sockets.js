@@ -141,11 +141,11 @@ function onNewPrivatePoint(socket, point, userId) {
 		for(let i=0; i<userSockets.length; i++) {
 			userSockets[i].emit('new-private-point', point);
 		}
+	}
 
-		// If the sender and the receiver are not the same user, send the message to the sender
-		if(!userSockets.includes(socket)) {
-			socket.emit('new-private-point', point);
-		}
+	// If the sender and the receiver are not the same user, send the message to the sender
+	if(!userSockets.includes(socket)) {
+		socket.emit('new-private-point', point);
 	}
 }
 
@@ -157,10 +157,10 @@ function onNewPrivateCube(socket, cube, userId) {
 		for(let i=0; i<userSockets.length; i++) {
 			userSockets[i].emit('new-private-cube', cube);
 		}
-
-		if(!userSockets.includes(socket)) {
-			socket.emit('new-private-cube', cube);
-		}
+	}
+	
+	if(!userSockets.includes(socket)) {
+		socket.emit('new-private-cube', cube);
 	}
 }
 

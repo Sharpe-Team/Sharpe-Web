@@ -2,7 +2,7 @@
 let path = require('path');
 let fs = require('fs');
 let express = require('express');
-let https = require('https');
+let http = require('http');
 let socketIO = require('socket.io');
 let socketIOFileUpload = require('socketio-file-upload');
 let ExpressPeerServer = require('peer').ExpressPeerServer;
@@ -12,16 +12,8 @@ let initSocketIO = require('./sockets.js');
 const ROOT_PATH_VIEW = __dirname + '/public';
 const UPLOAD_DIRECTORY = __dirname + '/public/uploads';
 
-const serverOptions = {
-	key: fs.readFileSync(__dirname + '/ssl/server.key'),
-	cert: fs.readFileSync(__dirname + '/ssl/server.crt'),
-	passphrase: "270195Boy77",
-	requestCert: false,
-	rejectUnauthorized: false
-};
-
 let app = express();
-let server = https.createServer(serverOptions, app);
+let server = http.createServer(app);
 let io = socketIO.listen(server);
 
 /**
@@ -48,7 +40,7 @@ fs.mkdir(UPLOAD_DIRECTORY, 777, function(err) {
 });
 
 /**
- * Start the HTTPS server listening incoming connections on port 3000
+ * Start the HTTP server listening incoming connections on port 3000
  */
 server.listen(3000, function () {
 	console.log('Server is listening on *:3000');

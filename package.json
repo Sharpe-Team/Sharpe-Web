@@ -29,7 +29,8 @@
   },
   "scripts": {
     "start-dev": "webpack-dev-server --hot --watch",
-    "start": "node server",
+    "start-http": "node http-server",
+    "start-https": "node https-server",
     "build": "webpack"
   }
 }

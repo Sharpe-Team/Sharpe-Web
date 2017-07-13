@@ -1,11 +1,18 @@
 // Import lib
-var path = require('path');
-var fs = require('fs');
-var express = require('express');
-var app = express();
-var https = require('https');
+let path = require('path');
+let fs = require('fs');
+let express = require('express');
+let https = require('https');
+let socketIO = require('socket.io');
+let socketIOFileUpload = require('socketio-file-upload');
+let ExpressPeerServer = require('peer').ExpressPeerServer;
+let initSocketIO = require('./sockets.js');
 
-const options = {
+// Define CONSTANTS
+const ROOT_PATH_VIEW = __dirname + '/public';
+const UPLOAD_DIRECTORY = __dirname + '/public/uploads';
+
+const serverOptions = {
 	key: fs.readFileSync(__dirname + '/ssl/server.key'),
 	cert: fs.readFileSync(__dirname + '/ssl/server.crt'),
 	passphrase: "270195Boy77",
@@ -13,16 +20,9 @@ const options = {
 	rejectUnauthorized: false
 };
 
-var server = https.createServer(options, app);
-var io = require('socket.io').listen(server);
-var socketIOFileUpload = require('socketio-file-upload');
-var ExpressPeerServer = require('peer').ExpressPeerServer;
-
-var initSocketIO = require('./sockets.js');
-
-// Define CONSTANTS
-const ROOT_PATH_VIEW = __dirname + '/public';
-const UPLOAD_DIRECTORY = __dirname + '/public/uploads';
+let app = express();
+let server = https.createServer(serverOptions, app);
+let io = socketIO.listen(server);
 
 /**
  * Manage users's HTTP requests by sending them files from public directory
@@ -42,13 +42,13 @@ initSocketIO(io, socketIOFileUpload, UPLOAD_DIRECTORY);
 
 // Create directory for uploads if it doesn't exist
 fs.mkdir(UPLOAD_DIRECTORY, 777, function(err) {
-	if (err && err.code != 'EEXIST') {
+	if (err && err.code !== 'EEXIST') {
 		console.log("An error happened while creating the 'upload' directory...", err);
 	}
 });
 
 /**
- * Start the server listening incoming connections on port 3000
+ * Start the HTTPS server listening incoming connections on port 3000
  */
 server.listen(3000, function () {
 	console.log('Server is listening on *:3000');

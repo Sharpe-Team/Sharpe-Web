@@ -18767,7 +18767,7 @@ var VideoChat = function (_React$Component) {
 						{ className: "column medium-3", style: { textAlign: "center" } },
 						_react2.default.createElement(
 							"button",
-							{ type: "button", disabled: !this.state.isCalling, onClick: this.onRedBtnClick },
+							{ type: "button", disabled: !this.state.isCalling && !this.state.isReceivingCall, onClick: this.onRedBtnClick },
 							_react2.default.createElement("img", { src: "/resource/red-phone.png", width: "40" })
 						)
 					)
@@ -29135,6 +29135,41 @@ var CircleSearcherList = function (_React$Component) {
         _react2.default.createElement(
           'ul',
           { id: 'circle-search' },
+          _react2.default.createElement(
+            'li',
+            { id: 'circle-search-item' },
+            _react2.default.createElement(
+              'div',
+              { className: 'row' },
+              _react2.default.createElement(
+                'div',
+                { className: 'column medium-1' },
+                _react2.default.createElement(
+                  'b',
+                  null,
+                  'Image'
+                )
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'column medium-10' },
+                _react2.default.createElement(
+                  'b',
+                  null,
+                  'Nom du cercle'
+                )
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'column medium-1' },
+                _react2.default.createElement(
+                  'b',
+                  null,
+                  'Status'
+                )
+              )
+            )
+          ),
           this.state.circles.map(function (circle) {
             if (circle.name.toLowerCase().includes(this.state.search.toLowerCase())) {
 

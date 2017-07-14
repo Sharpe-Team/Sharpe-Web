@@ -21,6 +21,13 @@ class CircleSearcherList extends React.Component {
 		return (
 			<div>
 				<ul id="circle-search">
+                    <li id="circle-search-item">
+                        <div className="row">
+                            <div className="column medium-1"><b>Image</b></div>
+                            <div className="column medium-10"><b>Nom du cercle</b></div>
+                            <div className="column medium-1"><b>Status</b></div>
+                        </div>
+                    </li>
 					{
 						this.state.circles.map(function(circle) {
                             if(circle.name.toLowerCase().includes(this.state.search.toLowerCase())) {

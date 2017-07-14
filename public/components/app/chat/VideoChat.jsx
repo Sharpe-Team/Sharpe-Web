@@ -47,7 +47,7 @@ class VideoChat extends React.Component {
 						</button>
 					</div>
 					<div className="column medium-3"  style={{textAlign: "center"}}>
-						<button type="button" disabled={!this.state.isCalling} onClick={this.onRedBtnClick}>
+						<button type="button" disabled={!this.state.isCalling && !this.state.isReceivingCall} onClick={this.onRedBtnClick}>
 							<img src="/resource/red-phone.png" width="40"/>
 						</button>
 					</div>

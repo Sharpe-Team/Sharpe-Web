@@ -1,7 +1,7 @@
 /**
  * URL of the API
  */
-const API_URL = "https://localhost:8443/";
+const API_URL = "https://fouan.ddns.net:8443/";
 
 /**
  * Function to hide the ErrorComponent by setting showError to false in the state

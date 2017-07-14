@@ -51,5 +51,5 @@ fs.mkdir(UPLOAD_DIRECTORY, 777, function(err) {
  * Start the HTTPS server listening incoming connections on port 3000
  */
 server.listen(3443, function () {
-	console.log('Server is listening on *:3000');
+	console.log('Server is listening on *:3443');
 });

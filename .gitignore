@@ -3,3 +3,4 @@ node_modules
 public/bootstrap
 public/uploads
 .idea
+npm-debug.log

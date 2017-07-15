@@ -90,7 +90,7 @@ class UserList extends React.Component {
 
 		socket.on('disconnected-user', function(disconnectedUser) {
 			let updatedUsers = component.state.users.filter(function(element) {
-				return element.id != disconnectedUser.id;
+				return element.id !== disconnectedUser.id;
 			});
 			component.setState({
 				users: updatedUsers

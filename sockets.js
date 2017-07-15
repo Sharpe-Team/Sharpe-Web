@@ -1,14 +1,14 @@
 // Import lib
-var nJwt = require('njwt');
-var io;
-var socketIOFileUpload;
+let nJwt = require('njwt');
+let io;
+let socketIOFileUpload;
 
 // CONSTANTS
 const SECRET_KEY = "ThisIsASecret";
 const ALGORITHM = 'HS512';
-var UPLOAD_DIRECTORY;
+let UPLOAD_DIRECTORY;
 
-var connectedUsersMap = new Map();
+let connectedUsersMap = new Map();
 
 /**
  * 	Check if the user is in the list
@@ -39,7 +39,7 @@ function getDecodedToken(token) {
 function getUserSockets(userId) {
 	let sockets = [];
 
-	for(var [key, value] of connectedUsersMap) {
+	for(let [key, value] of connectedUsersMap) {
 		if(value.user.id == userId) {
 			sockets.push(value.socket);
 		}
@@ -51,7 +51,7 @@ function getUserSockets(userId) {
 function computeFileUpload(socket) {
 
 	// Make an instance of SocketIOFileUpload and listen on this socket:
-    var uploader = new socketIOFileUpload();
+    let uploader = new socketIOFileUpload();
     uploader.dir = UPLOAD_DIRECTORY;
     uploader.listen(socket);
 
@@ -67,7 +67,7 @@ function computeFileUpload(socket) {
 }
 
 function onLogin(socket, token, loggedUser, callback) {
-	var decodedToken;
+	let decodedToken;
 
 	if(token && (decodedToken = getDecodedToken(token))) {
 		if(connectedUsersMap.has(token)) {
@@ -113,13 +113,13 @@ function onDisconnect(socket, loggedUser) {
 }
 
 function onVerifyToken(socket, token, callback) {
-	var decodedToken = getDecodedToken(token);
+	let decodedToken = getDecodedToken(token);
 	callback((decodedToken) ? decodedToken.body.user : null);
 }
 
 function onGetConnectedUsers(socket, callback) {
-	var listUsers = new Array();
-	for(var [key, value] of connectedUsersMap) {
+	let listUsers = [];
+	for(let [key, value] of connectedUsersMap) {
 		if(!isPresent(listUsers, value.user)) {
 			listUsers.push(value.user);
 		}
@@ -129,7 +129,11 @@ function onGetConnectedUsers(socket, callback) {
 }
 
 function onLogout(socket, loggedUser) {
-	socket.broadcast.emit('disconnected-user', loggedUser.user);
+	// Send a disconnected-user event if the user disconnects on the only socket he has
+	if(getUserSockets(loggedUser.user.id).length === 1) {
+		socket.broadcast.emit('disconnected-user', loggedUser.user);
+	}
+
 	connectedUsersMap.delete(loggedUser.token);
 }
 
@@ -158,7 +162,7 @@ function onNewPrivateCube(socket, cube, userId) {
 			userSockets[i].emit('new-private-cube', cube);
 		}
 	}
-	
+
 	if(!userSockets.includes(socket)) {
 		socket.emit('new-private-cube', cube);
 	}

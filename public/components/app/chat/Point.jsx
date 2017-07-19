@@ -19,7 +19,7 @@ class Point extends React.Component {
 
         let displayedPoint;
         if(this.props.point.url) {
-			displayedPoint = this.getDisplayedCube(this.props.point.url);
+			displayedPoint = this.getDisplayedCube();
 		} else {
         	displayedPoint = this.props.point.content;
 		}
@@ -57,11 +57,11 @@ class Point extends React.Component {
 		return date.getHours() + ":" + minutes;
 	}
 
-	getDisplayedCube(url) {
+	getDisplayedCube() {
 		const image = ["jpg", "jpeg", "png", "bmp", "gif"];
 		const audio = ["mp3", "flac", "ogg", "wave"];
 		const video = ["mp4"];
-		let extension = url.split(".").pop();
+		let extension = this.props.point.url.split(".").pop();
 
 		if(image.includes(extension)) {
 			return (
@@ -74,7 +74,7 @@ class Point extends React.Component {
 		} else if(video.includes(extension)) {
 			return (<video src={"/uploads/" + this.props.point.url} controls style={{height: "200px"}} />);
 		} else {
-			let filename = url.split("/").pop();
+			let filename = this.props.point.url.split("/").pop();
 			let name = filename.substring(0, filename.lastIndexOf("."));
 
 			return (

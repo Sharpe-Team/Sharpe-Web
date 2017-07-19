@@ -13028,7 +13028,7 @@ var Point = function (_React$Component) {
 
 			var displayedPoint = void 0;
 			if (this.props.point.url) {
-				displayedPoint = this.getDisplayedCube(this.props.point.url);
+				displayedPoint = this.getDisplayedCube();
 			} else {
 				displayedPoint = this.props.point.content;
 			}
@@ -13091,11 +13091,11 @@ var Point = function (_React$Component) {
 		}
 	}, {
 		key: "getDisplayedCube",
-		value: function getDisplayedCube(url) {
+		value: function getDisplayedCube() {
 			var image = ["jpg", "jpeg", "png", "bmp", "gif"];
 			var audio = ["mp3", "flac", "ogg", "wave"];
 			var video = ["mp4"];
-			var extension = url.split(".").pop();
+			var extension = this.props.point.url.split(".").pop();
 
 			if (image.includes(extension)) {
 				return _react2.default.createElement(
@@ -13108,7 +13108,7 @@ var Point = function (_React$Component) {
 			} else if (video.includes(extension)) {
 				return _react2.default.createElement("video", { src: "/uploads/" + this.props.point.url, controls: true, style: { height: "200px" } });
 			} else {
-				var filename = url.split("/").pop();
+				var filename = this.props.point.url.split("/").pop();
 				var name = filename.substring(0, filename.lastIndexOf("."));
 
 				return _react2.default.createElement(
@@ -18047,7 +18047,7 @@ var CubeIcon = function (_React$Component) {
             return _react2.default.createElement(
                 'a',
                 { href: "/uploads/" + this.state.cube.url },
-                _react2.default.createElement('img', { className: 'cube-space-icon', src: this.state.iconUrl, onError: this.onError.bind(this) })
+                _react2.default.createElement('img', { className: 'cube-space-icon', src: this.state.iconUrl, onError: this.onError })
             );
         }
     }, {
@@ -28661,7 +28661,7 @@ var UserList = function (_React$Component) {
 
 			socket.on('disconnected-user', function (disconnectedUser) {
 				var updatedUsers = component.state.users.filter(function (element) {
-					return element.id != disconnectedUser.id;
+					return element.id !== disconnectedUser.id;
 				});
 				component.setState({
 					users: updatedUsers

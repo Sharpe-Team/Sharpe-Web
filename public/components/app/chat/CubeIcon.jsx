@@ -15,7 +15,7 @@ class CubeIcon extends React.Component {
     render(){
         return (
             <a href={"/uploads/"+this.state.cube.url}>
-                <img className="cube-space-icon" src={this.state.iconUrl} onError={this.onError.bind(this)} />
+                <img className="cube-space-icon" src={this.state.iconUrl} onError={this.onError} />
             </a>
             
         )
